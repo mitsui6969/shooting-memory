@@ -1,0 +1,115 @@
+/* 背景の設定 */
+body {
+	background-image: url('/src/assets/background-lantern.jpeg');
+	background-size: contain; /* 画像全体が表示される */
+	background-position: center; /* 画像を中央に表示 */
+	background-repeat: no-repeat;
+	height: 100vh;
+}
+
+/* toppageのスタイル */
+.toppage {
+	display: flex;
+	flex-direction: column; /* 縦に並べる */
+	align-items: center;    /* 水平方向の中央揃え */
+	justify-content: center;
+	padding-top: 170px;
+	font-size: 4rem;
+	font-family: "Georgia", serif; /* Georgiaフォントを適用 */
+	position: relative;  /* 子要素のabsolute位置指定の基準とする */
+}
+
+/* ボタンの共通スタイル */
+button {
+	background-color: transparent;
+	color: white;
+	padding: 15px 30px;
+	font-size: 16px;
+	border: 2px solid white;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+	background-color: white;
+	color: black;
+}
+
+button:active {
+	background-color: rgba(255, 255, 255, 0.1);
+	box-shadow: 0 5px #666;
+	transform: translateX(-50%) translateY(4px); /* 横と縦の動きを両方指定 */
+}
+
+/* 部屋作成画面に移動するボタンの位置を調整 */
+.createroom {
+	position: absolute; /* 親要素内で絶対位置を指定 */
+	top: 350px;         /* 上から350px */
+	left: 50%;          /* 左から50%（中央揃え） */
+	transform: translateX(-50%); /* 中央に寄せるための変換 */
+	width: 250px; /* ボタンの横幅を250pxに設定 */
+}
+
+/* リンク送信ボタンの位置を調整 */
+.submit-link {
+	position: absolute; /* 親要素内で絶対位置を指定 */
+	top: 475px;         /* 上から475p */
+	left: 60%;          /* 左から60%（中央揃え） */
+	transform: translateX(-50%); /* 中央に寄せるための変換 */
+	width: 50px; /* ボタンの横幅を250pxに設定 */
+}
+
+/* 使い方ボタンの位置を調整 */
+.rule {
+	position: absolute; /* 親要素内で絶対位置を指定 */
+	top: 600px;         /* 上から600px */
+	left: 50%;          /* 左から50%（中央揃え） */
+	transform: translateX(-50%); /* 中央に寄せるための変換 */
+}
+
+/* 使い方を消すボタンの位置を調整 */
+.close {
+	position: absolute; /* 親要素内で絶対位置を指定 */
+	top: 200px;         /* 上から200px */
+	left: 60%;          /* 左から60%（中央揃え） */
+	transform: translateX(-50%); /* 中央に寄せるための変換 */
+}
+
+.link-input {
+  padding: 10px;
+  margin-right: 10px;
+  font-size: 16px;
+  border: 2px solid white;
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+}
+
+/* プレースホルダーの色を白に設定 */
+.link-input::placeholder {
+  color: white;
+  opacity: 0.7; /* プレースホルダーの透明度を調整（任意） */
+}
+
+.submit-link {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit-link:hover {
+  background-color: white;
+  color: black;
+}
+
+.form1{
+	position: absolute; /* 親要素内で絶対位置を指定 */
+	top: 475px;         /* 上から475p */
+	left: 50%;          /* 左から50%（中央揃え） */
+	transform: translateX(-50%); /* 中央に寄せるための変換 */
+	width: 230px; /* ボタンの横幅を250pxに設定 */
+}
