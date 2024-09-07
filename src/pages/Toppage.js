@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import "../App.css";
 import Modal from '../components/Modal/Modal';
+import Button from '../components/Button/Button';
+import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Toppage = () => {
   // 「使い方」ボタンを押した時に四角を表示する
@@ -34,41 +37,47 @@ const Toppage = () => {
   }
 
   return (
-    <div className="toppage">
-      {/* TODO: タイトルをいい感じにする */}
-      <div>思い出射撃</div>
+    <div className="flex flex-col items-center h-[100vh] pt-60">
 
-      {/* 部屋作成画面に移動 */}
-      <button className="button-common createroom" onClick={() => navigate('/createroom')}>部屋を作成</button>
+      <h2 className="text-7xl font-bold bg-gradient-to-b from-[#000000] to-gray-500 inline-block text-transparent bg-clip-text font-extrabold">思い出射撃</h2>
+      <div className='flex flex-col items-center gap-16 mt-40 font-extrabold'>
 
-      {/* リンクを入力するフォーム */}
-      <form onSubmit={handleLinkSubmit}>
-        <input
-          type='text'
-          placeholder='リンクをお持ちの方'
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
-          className="link-input form1"
-        />
-        <button type='submit' className="button-common submit-link">→</button>
-      </form>
+        {/* 部屋作成画面に移動 */}
+        <div className='w-60'>
+          <Button onClick={() => navigate('/createroom')}>
+            部屋を作成
+          </Button>
+        </div>
 
-      <Modal
-        show={showUsage}
-        setShow={setShowUsage}
-        title={"使い方"}
-        content={ModalContent()}
-        action={
-          <button
-            // NOTE: tailwindで書いたボタンのCSS
-            // className="bg-transparent text-white py-3 px-7 text-base border-2 border-white rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-white hover:text-black active:bg-white/10 active:shadow-[0_5px_#666]"
-            className="button-common rule"
-            onClick={() => setShowUsage(true)}
-          >
-            使い方
+        {/* リンクを入力するフォーム */}
+        <form onSubmit={handleLinkSubmit} className='w-70 flex gap-2'>
+          <span className="h-16 w-16" />
+          <input
+            type='text'
+            placeholder='          リンクをお持ちの方'
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            className="h-16 bg-gradient-to-r from-sky-300 to-[#ffffff] text-[#0B4180] placeholder-[#0B4180] w-60 rounded-md placeholer:text-center text-md"
+          />
+          <button type='submit' className="text-white rounded-md h-16 w-16">
+            <FontAwesomeIcon icon={faCircleRight} size='2xl' />
           </button>
-        }
-      />
+        </form>
+
+        <Modal
+          show={showUsage}
+          setShow={setShowUsage}
+          title={"使い方"}
+          content={ModalContent()}
+          action={
+            <div className='w-40'>
+              <Button onClick={() => setShowUsage(true)}>
+                使い方
+              </Button>
+            </div>
+          }
+        />
+      </div>
     </div>
   )
 }
