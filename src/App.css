@@ -15,7 +15,7 @@ body {
 	justify-content: center;
 	padding-top: 170px;
 	font-size: 4rem;
-	font-family: "Georgia", serif; /* Georgiaフォントを適用 */
+	font-family: "Shippori Mincho", "Georgia", serif; /* Georgiaフォントを適用 */
 	position: relative;  /* 子要素のabsolute位置指定の基準とする */
 }
 
@@ -113,4 +113,34 @@ body {
 	left: 50%;          /* 左から50%（中央揃え） */
 	transform: translateX(-50%); /* 中央に寄せるための変換 */
 	width: 230px; /* ボタンの横幅を250pxに設定 */
+}
+
+.shippori-mincho-regular {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.shippori-mincho-medium {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.shippori-mincho-semibold {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.shippori-mincho-bold {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.shippori-mincho-extrabold {
+  font-family: "Shippori Mincho", serif;
+  font-weight: 800;
+  font-style: normal;
 }
