@@ -73,7 +73,6 @@ body{
   font-size: 1.5rem; /* アイコンのサイズを調整 */
 }
 
-
 /* 使い方ボタンの位置を調整 */
 .rule {
 	position: absolute; /* 親要素内で絶対位置を指定 */

@@ -20,8 +20,6 @@ body {
   gap: 1rem;                /* 入力フィールドとボタンの間に余白を入れる */
 }
 
-
-
 .shippori-mincho-regular {
   font-family: "Shippori Mincho", serif;
   font-weight: 400;
