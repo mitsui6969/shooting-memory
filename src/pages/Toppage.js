@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import "./Toppage.css"; // CSSファイルをインポート
+import "../App.css"
 import Modal from '../components/Modal/Modal';
 import Button from '../components/Button/Button';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
@@ -35,28 +36,29 @@ const Toppage = () => {
   }
 
   return (
-    <div className="container">
-      <h2 className="title">思い出射撃</h2>
-      <div className='button-container'>
+    <div className="toppage">
+      <div className='title'>思い出射撃</div>
 
         {/* 部屋作成画面に移動 */}
-        <div className='button-wrapper'>
+
+        <div className='createroom'>
           <Button onClick={() => navigate('/createroom')}>
             部屋を作成
           </Button>
         </div>
+        
 
         {/* リンクを入力するフォーム */}
         <form onSubmit={handleLinkSubmit} className='form'>
           <span className="spacer" />
           <input
             type='text'
-            placeholder='          リンクをお持ちの方'
+            placeholder='リンクをお持ちの方'
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            className="input-field"
+            className="input-field link-input"
           />
-          <button type='submit' className="submit-button">
+          <button type='submit' className="submit-link">
             <FontAwesomeIcon icon={faCircleRight} size='2xl' />
           </button>
         </form>
@@ -67,15 +69,13 @@ const Toppage = () => {
           title={"使い方"}
           content={ModalContent()}
           action={
-            <div className='button-wrapper'>
-              <Button onClick={() => setShowUsage(true)}>
-                使い方
-              </Button>
+            <div className='rule'>
+              <Button onClick={() => setShowUsage(true)}>使い方</Button>
             </div>
           }
         />
       </div>
-    </div>
+    
   )
 }
 

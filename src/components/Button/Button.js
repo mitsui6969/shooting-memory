@@ -3,7 +3,7 @@ import './Button.css'; // 外部CSSファイルをインポート
 
 const Button = ({ children, ...rest }) => {
     return (
-        <button className="custom-button" {...rest}>
+        <button className="button-common" {...rest}>
             {children}
         </button>
     )

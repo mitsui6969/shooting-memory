@@ -1,11 +1,17 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; /* 縦方向に中央揃え */
-    height: 50vh;
-    padding-top: 0; /* pt-60を削除 */
-    margin:11rem;;
+/* toppageのスタイル */
+.toppage {
+	display: flex;
+	flex-direction: column; /* 縦に並べる */
+	align-items: center;    /* 水平方向の中央揃え */
+	justify-content: center;
+	padding-top: 170px;
+	font-size: 4rem;
+	font-family: "Shippori Mincho", "Georgia", serif; /* Georgiaフォントを適用 */
+	position: relative;  /* 子要素のabsolute位置指定の基準とする */
+}
+
+body{
+    background-image: url('/src/assets/background-lantern.jpeg');
 }
 
 .title {
@@ -15,48 +21,71 @@
     color: transparent;
     -webkit-background-clip: text; /* bg-clip-text */
     font-weight: 800; /* font-extrabold */
+    position: absolute; /* 絶対位置を設定 */
+    top: 150px; /* 上から100pxの位置に配置 */
+    left: 50%; /* 左右中央に配置 */
+    transform: translateX(-50%); /* 中央揃えの調整 */
 }
 
-.button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4rem; /* gap-16 */
-    margin-top: 2rem; /* mt-40 を 2rem に修正 */
-    font-weight: 800; /* font-extrabold */
+.createroom {
+  position: absolute;
+  top: 350px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;          /* 横幅を指定 */
+  box-sizing: border-box; /* パディングとボーダーを幅と高さに含める */
+
+  display: flex;
+  justify-content: center; /* 水平方向の中央揃え */
+  align-items: center;     /* 垂直方向の中央揃え */
+  text-align: center;      /* テキストの中央揃え */
 }
 
-.button-wrapper {
-    width: 15rem; /* w-60 */
+
+.link-input {
+  width: 250px;              /* 入力フィールドの幅を指定 */
+  text-align: center;         /* テキストを中央揃え */
+  height: 60px;               /* 高さを指定 */
+  border-radius: 0.375rem;     /* 角を丸く */
+  font-size: 1rem;
+	position: absolute;   /* 絶対位置を指定 */
+  top: 475px;           /* 上から475pxの位置に配置 */
+  left: 50%;            /* 左から50%の位置に配置（中央揃え） */
+  transform: translateX(-50%); /* 水平方向の中央揃え */
 }
 
-.form {
-    display: flex;
-    gap: 0.5rem; /* gap-2 */
-    width: 17.5rem; /* w-70 */
+/* リンク送信ボタンの位置を調整 */
+.submit-link {
+  color: white;
+  border-radius: 0.375rem; /* 角を丸く */
+  height: 4rem;            /* ボタンの高さ */
+  width: 4rem;             /* ボタンの幅 */
+  display: flex;           /* アイコンを中央揃えにするためにフレックスボックスを使用 */
+  justify-content: center; /* 水平方向の中央揃え */
+  align-items: center;     /* 垂直方向の中央揃え */
+  cursor: pointer;
+  position: absolute;      /* 絶対位置を指定 */
+  top: 475px;              /* 上から475pxの位置に配置 */
+  left: 62%;               /* 左から62%の位置に配置 */
+  transform: translateX(-50%); /* 水平方向の中央揃え */
+  
+  /* アイコンのサイズを調整 */
+  font-size: 1.5rem; /* アイコンのサイズを調整 */
 }
 
-.spacer {
-    height: 4rem; /* h-16 */
-    width: 4rem; /* w-16 */
+
+/* 使い方ボタンの位置を調整 */
+.rule {
+	position: absolute; /* 親要素内で絶対位置を指定 */
+	top: 570px;         /* 上から600px */
+	left: 50%;          /* 左から50%（中央揃え） */
+	transform: translateX(-50%); /* 中央に寄せるための変換 */
 }
 
-.input-field {
-    height: 4rem; /* h-16 */
-    background: linear-gradient(to right, #87CEEB, #ffffff); /* bg-gradient-to-r from-sky-300 to-white */
-    color: #0B4180; /* text-[#0B4180] */
-    placeholder-color: #0B4180; /* placeholder-[#0B4180] */
-    width: 15rem; /* w-60 */
-    border-radius: 0.375rem; /* rounded-md */
-    font-size: 1rem; /* text-md */
-}
 
-.submit-button {
-    color: white;
-    border-radius: 0.375rem; /* rounded-md */
-    height: 4rem; /* h-16 */
-    width: 4rem; /* w-16 */
-}
+
+
+
 
 .modal-center {
     display: flex;
@@ -84,3 +113,4 @@
 .modal-button:focus {
     outline: none; /* focus:outline-none */
 }
+
