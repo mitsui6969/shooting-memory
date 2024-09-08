@@ -1,0 +1,85 @@
+.modal-overlay {
+    position: relative;
+    z-index: 10;
+  }
+  
+  .modal-background {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3); /* bg-opacity-30 */
+    backdrop-filter: blur(10px); /* backdrop-blur-sm */
+    transition: opacity 0.3s; /* transition-opacity */
+  }
+  
+  .modal-container {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    width: 100vw;
+    overflow-y: auto;
+  }
+  
+  .modal-content-wrapper {
+    display: flex;
+    min-height: 100vh;
+    align-items: flex-end; /* items-end */
+    justify-content: center;
+    padding: 1rem; /* p-4 */
+    text-align: center;
+  }
+  
+  @media (min-width: 640px) {
+    .modal-content-wrapper {
+      align-items: center; /* sm:items-center */
+      padding: 0; /* sm:p-0 */
+    }
+  }
+  
+  .modal {
+    position: relative;
+    transform: scale(1);
+    overflow: hidden;
+    border-radius: 0.5rem; /* rounded-lg */
+    background-color: #3B82F6; /* bg-blue-500 */
+    text-align: left;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1); /* shadow-xl */
+    transition: all 0.3s; /* transition-all */
+    width: 100%;
+    max-width: 32rem; /* sm:max-w-lg */
+    min-height: 70vh; /* sm:min-h-[70vh] */
+    margin: 2rem 0; /* sm:my-8 */
+  }
+  
+  .modal-content {
+    background-color: #3B82F6; /* bg-blue-500 */
+    padding: 1rem 1.5rem; /* px-4 pb-4 pt-5 */
+  }
+  
+  .modal-header {
+    position: relative;
+    text-align: center;
+  }
+  
+  .modal-title {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 600; /* font-semibold */
+    line-height: 1.5rem; /* leading-6 */
+    color: white; /* text-white */
+  }
+  
+  .modal-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 0.5rem; /* mt-2 */
+    margin-right: 0.5rem; /* mr-2 */
+    color: white; /* text-white */
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: bold; /* font-bold */
+    outline: none; /* focus:outline-none */
+  }
+  
+  .modal-body {
+    margin-top: 1rem; /* mt-4 */
+    color: white; /* text-white */
+  }

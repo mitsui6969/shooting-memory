@@ -1,0 +1,24 @@
+.custom-button {
+    background-color: transparent; /* bg-transparent */
+    color: white; /* text-white */
+    height: 100%; /* h-full */
+    padding-top: 1rem; /* py-4 */
+    padding-bottom: 1rem;
+    padding-left: 1.5rem; /* px-6 */
+    padding-right: 1.5rem;
+    font-size: 1rem; /* text-md */
+    border: 2px solid white; /* border-2 border-white */
+    border-radius: 0.5rem; /* rounded-lg */
+    cursor: pointer; /* cursor-pointer */
+    transition: all 0.3s ease-in-out; /* transition-all duration-300 ease-in-out */
+}
+
+.custom-button:hover {
+    background-color: white; /* hover:bg-white */
+    color: black; /* hover:text-black */
+}
+
+.custom-button:active {
+    background-color: rgba(255, 255, 255, 0.1); /* active:bg-white/10 */
+    box-shadow: 0 5px #666; /* active:shadow-[0_5px_#666] */
+}

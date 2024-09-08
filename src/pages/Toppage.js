@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
-import "../App.css";
+import "./Toppage.css"; // CSSファイルをインポート
 import Modal from '../components/Modal/Modal';
 import Button from '../components/Button/Button';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Toppage = () => {
-  // 「使い方」ボタンを押した時に四角を表示する
   const [showUsage, setShowUsage] = useState(false);
   const navigate = useNavigate(); // navigate関数を定義
 
-  const [link, setLink] = useState("");//入力フォームの状態管理
+  const [link, setLink] = useState(""); // 入力フォームの状態管理
   const handleLinkSubmit = (e) => {
     e.preventDefault();
     console.log("入力されたリンク：", link);
-    //→ボタンが押されたら待機ページに遷移
-    navigate("/waitroom");
+    navigate("/waitroom"); // →ボタンが押されたら待機ページに遷移
   }
 
   const ModalContent = () => {
@@ -25,9 +23,9 @@ const Toppage = () => {
         <p>1, ---------------</p>
         <p>2, ---------------</p>
         <p>3, ---------------</p>
-        <div className="flex justify-center mt-8">
+        <div className="modal-center">
           <button
-            className="inline-flex justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus:outline-none"
+            className="modal-button"
             onClick={() => setShowUsage(false)}>
             完全に理解した
           </button>
@@ -37,29 +35,28 @@ const Toppage = () => {
   }
 
   return (
-    <div className="flex flex-col items-center h-[100vh] pt-60">
-
-      <h2 className="text-7xl font-bold bg-gradient-to-b from-[#000000] to-gray-500 inline-block text-transparent bg-clip-text font-extrabold">思い出射撃</h2>
-      <div className='flex flex-col items-center gap-16 mt-40 font-extrabold'>
+    <div className="container">
+      <h2 className="title">思い出射撃</h2>
+      <div className='button-container'>
 
         {/* 部屋作成画面に移動 */}
-        <div className='w-60'>
+        <div className='button-wrapper'>
           <Button onClick={() => navigate('/createroom')}>
             部屋を作成
           </Button>
         </div>
 
         {/* リンクを入力するフォーム */}
-        <form onSubmit={handleLinkSubmit} className='w-70 flex gap-2'>
-          <span className="h-16 w-16" />
+        <form onSubmit={handleLinkSubmit} className='form'>
+          <span className="spacer" />
           <input
             type='text'
             placeholder='          リンクをお持ちの方'
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            className="h-16 bg-gradient-to-r from-sky-300 to-[#ffffff] text-[#0B4180] placeholder-[#0B4180] w-60 rounded-md placeholer:text-center text-md"
+            className="input-field"
           />
-          <button type='submit' className="text-white rounded-md h-16 w-16">
+          <button type='submit' className="submit-button">
             <FontAwesomeIcon icon={faCircleRight} size='2xl' />
           </button>
         </form>
@@ -70,7 +67,7 @@ const Toppage = () => {
           title={"使い方"}
           content={ModalContent()}
           action={
-            <div className='w-40'>
+            <div className='button-wrapper'>
               <Button onClick={() => setShowUsage(true)}>
                 使い方
               </Button>
@@ -82,7 +79,4 @@ const Toppage = () => {
   )
 }
 
-
-
 export default Toppage;
-
