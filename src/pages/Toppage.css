@@ -1,24 +1,22 @@
-
-/* toppageのスタイル */
-.toppage {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding-top: 170px;
-	font-size: 43px;
-	font-family: "Shippori Mincho", "Georgia", serif;
-	position: relative;
-
-  background-image: url('/src/assets/background-lantern.jpeg');
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-  background-size: cover;
-	height: 1000px;
-  width: 520px;
-  margin: 0 auto;
+	/* 背景の設定 */
+* {
+  margin: 0;
+  padding: 0;
 }
+
+html {
+  background-color: #ffffff;
+}
+
+body {
+  background-image: url("/src/assets/background-lantern.jpeg");
+  height: 100vh;
+  width: 480px;
+  margin: 0 auto;
+  background-color: #87ceeb;
+  background-size: cover;
+}
+
 
 .title {
     font-size: 43px;
@@ -76,7 +74,7 @@
   cursor: pointer;
   position: absolute;
   top: 475px;
-  left: 85%;
+  left: 62%;
   transform: translateX(-50%);
   
   /* アイコンのサイズを調整 */
@@ -90,8 +88,6 @@
 	left: 50%;
 	transform: translateX(-50%);
 }
-
-
 
 
 

@@ -10,7 +10,7 @@
 }
 
 .spinner-container {
-	margin-top: -100px;
+	margin-top: 150px;
 }
 
 /* テキストの位置を任意に指定 */
@@ -21,4 +21,28 @@
 	transform: translate(-50%, -50%);
 	font-size: 24px;
 	color: white;
+}
+
+.text-host {
+	position: absolute;
+	top: 500px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 24px;
+	color: white;
+}
+
+.start-button{
+	position: absolute;
+  top: 550px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  box-sizing: border-box;
+  font-size: 19px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	text-align: center;
 }

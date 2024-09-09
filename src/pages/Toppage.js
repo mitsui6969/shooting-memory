@@ -51,7 +51,6 @@ const Toppage = () => {
           </Button>
         </div>
         
-
         {/* リンクを入力するフォーム */}
         <form onSubmit={handleLinkSubmit} className='form'>
           <span className="spacer" />
