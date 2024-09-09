@@ -1,0 +1,22 @@
+/* ボタンの共通スタイル */
+.button-white {
+    width: 100%; /* 親要素（.createroom）の幅に合わせてボタンを広げる */
+    background-color: transparent;
+    color: white;
+    padding: 15px 30px;
+    font-size: 19px;
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+.button-white:hover {
+	background-color: white;
+	color: black;
+}
+.button-white:active {
+background-color: rgba(255, 255, 255, 0.1);
+box-shadow: 0 5px #666;
+/* transform: translateX(-50%) translateY(4px); */
+/* 横と縦の動きを両方指定 */
+}
