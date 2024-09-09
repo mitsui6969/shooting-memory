@@ -1,12 +1,8 @@
-.frame-selection{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0;
-    margin: auto;
-    height: 80%;
+.frame-selection {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 h2 {
@@ -16,16 +12,13 @@ h2 {
     margin: 20px;
 }
 
-.frames{
-    height: 500px;
-    width: 300px;
-    margin: 20px auto; 
-    align-items: center;
-    overflow: scroll;
-    background-color: rgba(255, 255, 255, 0.451);
-    border: solid 20px rgba(209, 207, 207, 0);
-    border-radius: 20px;
-    
+.frames {
+    gap: 3rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* height: 100%; */
 }
 
 .frame{
@@ -34,5 +27,5 @@ h2 {
 
     margin: 20px auto;
 
-    background-color: aqua;
+    background-color: rgb(183, 0, 255);
 }
