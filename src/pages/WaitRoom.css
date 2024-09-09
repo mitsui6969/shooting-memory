@@ -1,0 +1,11 @@
+/* WaitRoomのスタイル */
+.waitroom {
+	display: flex;
+	flex-direction: column; /* 縦に並べる */
+	align-items: center;    /* 水平方向の中央揃え */
+	justify-content: center;
+	padding-top: 170px;
+	font-size: 4rem;
+	font-family: "Shippori Mincho", "Georgia", serif; /* Georgiaフォントを適用 */
+	position: relative;  /* 子要素のabsolute位置指定の基準とする */
+}

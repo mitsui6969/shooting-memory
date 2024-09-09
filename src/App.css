@@ -1,5 +1,6 @@
 /* 背景の設定 */
 body {
+  background-image: url('/src/assets/background-lantern.jpeg');
 	background-size: contain; /* 画像全体が表示される */
 	background-position: center; /* 画像を中央に表示 */
 	background-repeat: no-repeat;
