@@ -1,0 +1,30 @@
+.shooting-container {
+  text-align: center;
+}
+
+.target-container {
+  background-color: #fff;
+  height: 570px;
+  margin: 15px 25px;
+  padding: 10px;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  justify-content: center;
+}
+
+.target-container img {
+  padding: 10px;
+  font-size: 16px;
+  cursor: url("/src/assets/image/focus.cur"), auto;
+}
+
+img {
+  width: 80%;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}

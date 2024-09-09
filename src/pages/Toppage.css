@@ -10,7 +10,7 @@
 	font-family: "Shippori Mincho", "Georgia", serif;
 	position: relative;
 
-  background-image: url('/src/assets/background-lantern.jpeg');
+  background-image: url('/src/assets/image/toppage-background.jpeg');
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -78,7 +78,7 @@
   top: 475px;              /* 上から475pxの位置に配置 */
   left: 85%;               /* 左から62%の位置に配置 */
   transform: translateX(-50%); /* 水平方向の中央揃え */
-  
+
   /* アイコンのサイズを調整 */
   font-size: 1.5rem; /* アイコンのサイズを調整 */
 }
