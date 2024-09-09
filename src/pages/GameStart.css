@@ -9,11 +9,116 @@
 }
 
 /* テキストの位置を任意に指定 */
-.text {
+.text{
 	position: absolute;
-	top: 200px;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	font-size: 24px;
 	color: white;
+}
+
+.name {
+	top: 200px;
+}
+
+.select{
+	top: 325px
+}
+
+.input-name{
+  width: 300px;
+	text-align: center;
+  height: 40px;
+  border-radius: 0.375rem;
+  font-size: 19px;
+	position: absolute;
+  top: 225px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input-name {
+  outline: none; /* フォーカス時のアウトラインを無くす */
+  border: none;  /* ボーダーも無くす場合はこれを追加 */
+}
+
+.input-name:focus {
+  outline: none; /* フォーカス時もアウトラインを表示しない */
+}
+
+/* アップロードコンポーネント全体のスタイル */
+.gamestart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-button {
+  margin-bottom: 20px;
+}
+
+.text {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.input-name {
+  width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* アップロードコンポーネント全体のスタイル */
+.image-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute; /* 位置を絶対指定にする */
+  top: 350px; /* 上から350pxの位置に配置 */
+  left: 50%; /* 水平方向中央に配置 */
+  transform: translateX(-50%); /* 左右中央揃え */
+	
+}
+
+/* input[type="file"] を非表示 */
+.file-input {
+  display: none;
+}
+
+.preview-image {
+  width: 200px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* カスタムアップロードボタンとして画像を使用 */
+.file-label {
+  cursor: pointer;
+  display: inline-block; /* 要素をインラインブロックにして幅と高さを設定可能にする */
+  width: 210%; /* 枠の横幅を指定 */
+  height: 130px; /* 枠の縦幅を指定 */
+  padding: 20px; /* クリック範囲を広げるためのパディング */
+  border: 2px solid #ebf0f3; /* 枠の色 */
+  border-radius: 10px; /* 角を丸くする */
+  transition: border-color 0.3s ease; /* マウスオーバー時の効果を追加 */
+  display: flex; /* 内部の画像を中央に配置 */
+  justify-content: center; /* 水平方向の中央揃え */
+  align-items: center; /* 垂直方向の中央揃え */
+	background-color: white; /* 枠内を白で塗りつぶす */
+}
+
+.file-label:hover {
+  border-color: #2980b9; /* マウスオーバー時に枠の色を変更 */
+}
+
+.upload-image {
+  max-width: 100%; /* 画像の幅を枠内にフィットさせる */
+  max-height: 100%; /* 画像の高さを枠内にフィットさせる */
+}
+
+/* プレビュー画像コンテナのスタイル */
+.preview-container {
+  margin-top: 20px;
 }
