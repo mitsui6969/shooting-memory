@@ -1,0 +1,19 @@
+.gamestart {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: 43px;
+	font-family: "Shippori Mincho", "Georgia", serif;
+	position: relative;
+}
+
+/* テキストの位置を任意に指定 */
+.text {
+	position: absolute;
+	top: 200px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 24px;
+	color: white;
+}

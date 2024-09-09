@@ -8,7 +8,7 @@ html {
   background-color: #ffffff;
 }
 
-body {
+.toppage{
   background-image: url("/src/assets/background-lantern.jpeg");
   height: 100vh;
   width: 480px;

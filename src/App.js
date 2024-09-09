@@ -4,6 +4,7 @@ import Toppage from "./pages/Toppage";
 import CreateRoom from "./pages/CreateRoom";
 import WaitRoom from "./pages/WaitRoom";
 import ShootingScreen from "./pages/ShootingScreen";
+import GameStart from "./pages/GameStart";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/createroom" element={<CreateRoom />} />
         <Route path="/waitroom" element={<WaitRoom />} />
         <Route path="/shooting-screen" element={<ShootingScreen />} />
+        <Route path="/gamestart" element={<GameStart />}/>
       </Routes>
     </Router>
   );
