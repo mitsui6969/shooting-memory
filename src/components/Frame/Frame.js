@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import styles from './Frame.module.css';
 import defaultBackImage from"../../assets/プラスのアイコン素材.png"
 
-export default function Frame({ imageCount, title, date, selectColor }) {
+export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
 
-    imageCount = 2
+    imageCount = 4
     title = "感謝感激あめあられ"
     date = "2044/04/04"
-    selectColor = "white"
+    selectColor = "white" // white/black/blue //
+    selectBorder = 0 // 1(on)/0(of) //
+    selectTitle = 1 // 1(on)/0(of) //
     const [imageList, setImageList] = useState(Array.from({ length: imageCount }));
 
     const getLayoutClass = () => {
@@ -36,13 +38,25 @@ export default function Frame({ imageCount, title, date, selectColor }) {
         }
     }
 
+    const getBorder = () => {
+        if (selectBorder===1){
+            return styles.frameBorder
+        }
+    }
+
+    const getOverlay = () => {
+        if (selectTitle===0) {
+            return styles.hiddenTitle
+        }
+    }
+
     //画像入れ替え
     const handleImage = () => {
 
     }
 
     return (
-        <div className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()}`}>
+        <div className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()} ${getBorder()}`}>
             {imageList.map((_, index) => (
                 <div key={index} className={styles.imageContainer}>                    
                     <img
@@ -53,7 +67,7 @@ export default function Frame({ imageCount, title, date, selectColor }) {
                 </div>
             ))}
 
-            <div className={`${styles.overlay} ${getBackgroundColor()}`}>
+            <div className={`${styles.overlay} ${getBackgroundColor()} ${getOverlay()}`}>
                 <div className={styles.texts}>
                     <p className={styles.title}>{title}</p>
                     <p className={styles.date}>{date}</p>
