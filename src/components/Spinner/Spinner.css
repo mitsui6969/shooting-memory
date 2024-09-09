@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;  /* 水平方向に中央揃え */
   align-items: center;      /* 垂直方向に中央揃え */
-  height: 1000px;            /* 画面全体の高さ */
-  width: 520px;             /* 画面全体の幅 */
+  height: 300px;            /* 画面全体の高さ */
+  width: 300px;             /* 画面全体の幅 */
 }
 
 .spinner {
@@ -73,4 +73,3 @@
     box-shadow: 0em -3em 0 0 #ffffff, 2em -2em 0 -1em #ffffff, 3em 0 0 -1em #ffffff, 2em 2em 0 -1em #ffffff, 0 3em 0 -1em #ffffff, -2em 2em 0 0, -3em 0em 0 0 #ffffff, -2em -2em 0 0.2em #ffffff;
   }
 }
-

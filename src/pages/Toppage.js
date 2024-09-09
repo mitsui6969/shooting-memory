@@ -51,7 +51,6 @@ const Toppage = () => {
           </Button>
         </div>
         
-
         {/* リンクを入力するフォーム */}
         <form onSubmit={handleLinkSubmit} className='form'>
           <span className="spacer" />
@@ -62,7 +61,7 @@ const Toppage = () => {
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />
-          <button type='submit' className="submit-link">
+          <button type="submit"className='submit-link' onClick={() => navigate('/waitroom', { state: { from: 'Toppage' } })}>
             <FontAwesomeIcon icon={faCircleRight} size='2xl' />
           </button>
         </form>
