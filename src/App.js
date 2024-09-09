@@ -4,6 +4,7 @@ import Toppage from "./pages/Toppage";
 import CreateRoom from "./pages/CreateRoom";
 import WaitRoom from "./pages/WaitRoom";
 import ShootingScreen from "./pages/ShootingScreen";
+import FrameSelection from "./pages/FrameSelection";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/createroom" element={<CreateRoom />} />
         <Route path="/waitroom" element={<WaitRoom />} />
         <Route path="/shooting-screen" element={<ShootingScreen />} />
+        <Route path="/frame-selection" element={<FrameSelection />} />
       </Routes>
     </Router>
   );
