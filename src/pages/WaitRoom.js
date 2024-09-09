@@ -1,9 +1,10 @@
 import React from 'react'
 import "../App.css";
+import "./WaitRoom.css"
 
 const WaitRoom = () => {
   return (
-    <div>WaitRoom</div>
+    <div className=''>WaitRoom</div>
   )
 }
 
