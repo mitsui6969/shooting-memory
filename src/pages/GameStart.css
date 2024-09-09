@@ -9,20 +9,20 @@
 }
 
 /* テキストの位置を任意に指定 */
-.text{
+.text-base{
 	position: absolute;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	font-size: 24px;
-	color: white;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  color: white;
 }
 
 .name {
-	top: 200px;
+	top: 190px;
 }
 
 .select{
-	top: 325px
+	top: 315px
 }
 
 .input-name{
