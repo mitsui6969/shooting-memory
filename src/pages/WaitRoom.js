@@ -24,6 +24,8 @@ const WaitRoom = () => {
       ) : (
         <h1>コンテンツが読み込まれました！</h1>
       )}
+
+      <div className='text'>ホストが開始するまでしばらくお待ちください</div>
     </div>
   );
 };

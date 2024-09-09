@@ -14,10 +14,10 @@
 	background-size: contain;
 	background-position: center;
 	background-repeat: no-repeat;
-  background-size: cover;        /* 画像を画面全体にフィットさせる */
+  background-size: cover;
 	height: 1000px;
-  width: 520px;  /* 幅を1200pxに固定 */
-  margin: 0 auto; /* 中央揃え */
+  width: 520px;
+  margin: 0 auto;
 }
 
 .title {
@@ -67,28 +67,28 @@
 /* リンク送信ボタンの位置を調整 */
 .submit-link {
   color: white;
-  border-radius: 0.375rem; /* 角を丸く */
-  height: 4rem;            /* ボタンの高さ */
-  width: 4rem;             /* ボタンの幅 */
-  display: flex;           /* アイコンを中央揃えにするためにフレックスボックスを使用 */
-  justify-content: center; /* 水平方向の中央揃え */
-  align-items: center;     /* 垂直方向の中央揃え */
+  border-radius: 0.375rem;
+  height: 4rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  position: absolute;      /* 絶対位置を指定 */
-  top: 475px;              /* 上から475pxの位置に配置 */
-  left: 85%;               /* 左から62%の位置に配置 */
-  transform: translateX(-50%); /* 水平方向の中央揃え */
+  position: absolute;
+  top: 475px;
+  left: 85%;
+  transform: translateX(-50%);
   
   /* アイコンのサイズを調整 */
-  font-size: 1.5rem; /* アイコンのサイズを調整 */
+  font-size: 1.5rem;
 }
 
 /* 使い方ボタンの位置を調整 */
 .rule {
-	position: absolute; /* 親要素内で絶対位置を指定 */
-	top: 570px;         /* 上から600px */
-	left: 50%;          /* 左から50%（中央揃え） */
-	transform: translateX(-50%); /* 中央に寄せるための変換 */
+	position: absolute;
+	top: 570px;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 
