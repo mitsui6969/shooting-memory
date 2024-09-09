@@ -1,0 +1,38 @@
+.frame-selection{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: auto;
+    height: 80%;
+}
+
+h2 {
+    font-size: larger;
+    text-align: center;
+    color: antiquewhite;
+    margin: 20px;
+}
+
+.frames{
+    height: 500px;
+    width: 300px;
+    margin: 20px auto; 
+    align-items: center;
+    overflow: scroll;
+    background-color: rgba(255, 255, 255, 0.451);
+    border: solid 20px rgba(209, 207, 207, 0);
+    border-radius: 20px;
+    
+}
+
+.frame{
+    height: 200px;
+    width: 150px;
+
+    margin: 20px auto;
+
+    background-color: aqua;
+}
