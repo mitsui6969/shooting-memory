@@ -1,0 +1,66 @@
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
+/* コラージュ部分 */
+.collagePage {
+    margin: 0;
+    height: 80%;
+    align-items: center;
+    text-align: center;
+}
+
+.frameArea{
+    height: 360px;
+    width: 270px;
+    background-color: rgba(222, 222, 222, 0.68);
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* 画像部分 */
+.imagesArea{
+    height: 200px;
+    width: 80%;
+    background-color: rgba(222, 222, 222, 0.68);
+    margin: 20px auto;
+    padding: 0 20px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.imagesArray {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    width: auto;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow: scroll;
+}
+
+.imageContainer {
+    flex: 0 0 auto;
+    position: relative;
+    max-height: 80%;
+    min-height: 30%;
+    max-width: 80%;
+    min-width: 30%;
+    aspect-ratio: 1;
+    margin: 10px;
+    display: flex;
+    background-color: aquamarine;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.image{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
