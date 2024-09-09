@@ -56,11 +56,11 @@ const Toppage = () => {
         <form onSubmit={handleLinkSubmit} className='form'>
           <span className="spacer" />
           <input
+            className="input-field link-input"
             type='text'
             placeholder='リンクをお持ちの方'
             value={link}
             onChange={(e) => setLink(e.target.value)}
-            className="input-field link-input"
           />
           <button type='submit' className="submit-link">
             <FontAwesomeIcon icon={faCircleRight} size='2xl' />
