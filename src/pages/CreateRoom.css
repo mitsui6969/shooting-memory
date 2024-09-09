@@ -1,0 +1,100 @@
+.CreateRoom {
+	display: flex;
+	flex-direction: column; /* 縦に並べる */
+	align-items: center;    /* 水平方向の中央揃え */
+	justify-content: center;
+	padding-top: 170px;
+	font-size: 4rem;
+	font-family: "Shippori Mincho", "Georgia", serif; /* Georgiaフォントを適用 */
+    position: relative;  /* 子要素のabsolute位置指定の基準とする */
+}
+
+.titleName {
+    color:white;
+    font-size: 30px;
+    font-weight: 600;
+    display: flex;           /* アイコンを中央揃えにするためにフレックスボックスを使用 */
+    position: absolute;      /* 絶対位置を指定 */
+    top: 240px;              /* 上から475pxの位置に配置 */
+    position: relative;
+    display:flex;            /* 左から62%の位置に配置 */  
+    justify-content: center; 
+}
+
+.inputform {
+    color: white;
+    position: absolute;      /* 絶対位置を指定 */
+    top: -180px;              /* 上から475pxの位置に配置 */
+    left: 50%;            /* 上から475pxの位置に配置 */
+     
+}
+
+.link-input_title {
+    color:black;
+    height: 40px;               /* 高さを指定 */
+    width: 320px;               /* 入力フィールドの幅を指定 */
+    text-align: center;         /* テキストを中央揃え */
+
+    outline:none;
+    border-radius: 0.375rem;     /* 角を丸く */
+    font-size: 1rem;
+      position: absolute;   /* 絶対位置を指定 */
+    top: 475px;           /* 上から475pxの位置に配置 */
+    left: 50%;            /* 左から50%の位置に配置（中央揃え） */
+    transform: translateX(-50%); /* 水平方向の中央揃え */
+  }
+
+  .nanigaiikana{
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    position: absolute; /* 絶対位置指定 */
+    position: relative;
+    display:flex;
+    justify-content: center; 
+    top: 335px; 
+}
+
+.selectbox {
+    position: relative;
+    display:flex;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    top: 330px;
+    justify-content: center; 
+}
+  
+select {
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    width: 200px;
+  }
+  
+  .result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    left: 30%;
+}
+
+.create {
+    font-weight: 600;
+    position: absolute; /* 絶対位置指定 */
+    top: 400px; 
+    width: 150px;                  
+}
+
+.attention {
+        text-align: center;    /* テキストを中央揃え */
+        color: white;          /* 文字色を白に設定 */
+        font-size: 19px;       /* 文字サイズを小さく設定 */
+        position: absolute; /* 絶対位置指定 */
+        top: 340px;         /* 上から600px */
+        position: relative;
+        display:flex;
+        justify-content: center; 
+}
+
