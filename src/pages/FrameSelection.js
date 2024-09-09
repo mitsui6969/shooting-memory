@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Frame from '../components/Frame/Frame';
+import './styles/FrameSelection.css'
 
 const FrameSelection = () => {
     const [selectedImages, setSelectedImages] = useState(['/src/assets/background-lantern.jpeg', '/src/assets/background.jpeg']);
@@ -32,17 +32,12 @@ const FrameSelection = () => {
 
     return (
         <div>
-            <div>FrameSelection</div>
-
-            <input
-                type='file'
-                multiple
-                accept='image/*'
-                onChange={handleInputFile}
-            />
-
-            {/* `Frame` コンポーネントに `images` プロパティとして渡す */}
-            <Frame images={selectedImages} title="Sample Title" date="2024-09-09" />
+            <h2>フレームを選択してください</h2>
+            <div className='frames'>
+                <div className='frame nomal'></div>
+                <div className='frame onborder'></div>
+                <div className='frame notitle'></div>
+            </div>
         </div>
     );
 };
