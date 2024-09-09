@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Toppage />} />
-        <Route path="/create-room" element={<CreateRoom />} />
+        <Route path="/createroom" element={<CreateRoom />} />
         <Route path="/waitroom" element={<WaitRoom />} />
         <Route path="/shooting-screen" element={<ShootingScreen />} />
       </Routes>
