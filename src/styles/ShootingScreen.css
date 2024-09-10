@@ -1,30 +1,64 @@
-.shooting-container {
-  text-align: center;
-}
-
 .target-container {
   background-color: #fff;
   height: 570px;
   margin: 15px 25px;
   padding: 10px;
   border-radius: 12px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .target-container img {
-  padding: 10px;
-  font-size: 16px;
+  margin: 0 20px;
+  width: 110px;
+  height: auto;
+  object-fit: cover;
   cursor: url("/src/assets/image/focus.cur"), auto;
 }
 
-img {
-  width: 80%;
+.click-target {
+  background-color: #fff;
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  animation: expand 1s ease-out forwards;
+  padding: 20px 10px;
+  display: flex;
+  flex-flow: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
-button {
-  border: none;
-  background-color: transparent;
+.click-target img {
+  margin: 20px auto;
+  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+  width: 90%;
+}
+
+@keyframes expand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+}
+
+.click-target.closing {
+  animation: shrink 1s ease-out forwards;
 }
