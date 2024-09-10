@@ -1,6 +1,6 @@
 import React from "react";
 import Frame from "../components/Frame/Frame";
-import "./styles/CollagePage.css";
+import "../styles/CollagePage.css";
 import testImage from "../assets/image/toppage-background.jpeg";
 
 const CollagePage = (images = []) => {

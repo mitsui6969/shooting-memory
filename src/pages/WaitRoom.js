@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from "react";
 import "../App.css";
-import "./WaitRoom.css";
-import { useLocation } from 'react-router-dom';
-import Spinner from '../components/Spinner/Spinner'; 
-import Button from '../components/Button_orange/Button_orange';
-import { useNavigate } from 'react-router-dom'; 
+import "../styles/WaitRoom.css";
+import { useLocation } from "react-router-dom";
+import Spinner from "../components/Spinner/Spinner";
+import Button from "../components/Button_orange/Button_orange";
+import { useNavigate } from "react-router-dom";
 
 const WaitRoom = () => {
-  const location = useLocation(); 
-  const navigate = useNavigate(); 
+  const location = useLocation();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
@@ -19,9 +19,9 @@ const WaitRoom = () => {
     }, 300000); // 300秒後にロード完了
 
     // どのページから来たかを確認し、メッセージを変える
-    if (location.state && location.state.from === 'gamestart') {
+    if (location.state && location.state.from === "gamestart") {
       setMessage("GameStart");
-    } else if (location.state && location.state.from === 'Toppage') {
+    } else if (location.state && location.state.from === "Toppage") {
       setMessage("Toppage");
     } else {
       setMessage("CreateRoom");
@@ -31,7 +31,7 @@ const WaitRoom = () => {
   }, [location.state]);
 
   return (
-    <div className='waitroom'>
+    <div className="waitroom">
       {loading ? (
         <div className="spinner-container">
           <Spinner /> {/* ローディング中はスピナーを表示 */}
@@ -41,21 +41,21 @@ const WaitRoom = () => {
       )}
 
       {message === "Toppage" && (
-        <div className='text'>ホストが開始するまでしばらくお待ちください</div>
+        <div className="text">ホストが開始するまでしばらくお待ちください</div>
       )}
 
       {message === "CreateRoom" && (
         <>
-          <div className='text-host'>参加人数〇人</div>
+          <div className="text-host">参加人数〇人</div>
           <div className="start-button">
-            <Button onClick={() => navigate('/gamestart')}>はじめる</Button>
+            <Button onClick={() => navigate("/gamestart")}>はじめる</Button>
           </div>
         </>
       )}
 
       {message === "GameStart" && (
         <>
-          <div className='text'>画像が出揃うまで少々お待ちください</div>
+          <div className="text">画像が出揃うまで少々お待ちください</div>
         </>
       )}
     </div>
