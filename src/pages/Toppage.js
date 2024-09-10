@@ -1,19 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigateをインポート
 import "../styles/Toppage.css"; // CSSファイルをインポート
-<<<<<<< HEAD
-import "../App.css"
-import Modal from '../components/Modal/Modal';
-import Button from '../components/Button_white/Button_white';
-import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-=======
 import "../App.css";
 import Modal from "../components/Modal/Modal";
 import Button from "../components/Button_white/Button_white";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
->>>>>>> main
 
 const Toppage = () => {
   const [showUsage, setShowUsage] = useState(false);
@@ -48,7 +40,7 @@ const Toppage = () => {
       {/* 部屋作成画面に移動 */}
       <div className="main-container">
         <div className="createroom">
-          <Button onClick={() => navigate("/createroom")}>部屋を作成</Button>
+          <Button onClick={() => navigate("/edit-fin")}>部屋を作成</Button>
         </div>
 
         {/* リンクを入力するフォーム */}

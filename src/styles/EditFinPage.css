@@ -9,20 +9,11 @@
 	position: relative;
 }
 
-.EditFinPage {
-  position: relative;
-  width: 100vw;
-  height: 100vh; /* 画面全体を埋める */
-  font-size: 43px;
-  font-family: "Shippori Mincho", "Georgia", serif;
-}
-
 .moving-image {
   width: 300px; /* 画像のサイズ */
   position: absolute; /* 画像の位置を絶対指定 */
   cursor: pointer; /* クリックできることを示すポインタ */
-  border: 5px solid; /* ボーダーを設定 */
-  transition: border-color 0.3s ease, top 0.3s ease, left 0.3s ease; /* 色と位置の切り替えをスムーズに */
+  transition: border-color 0.3s ease, top 0.3s ease, left 0.3s ease, z-index 0.3s ease; /* 色と位置の切り替えをスムーズに */
 }
 
 @keyframes moveImage {
