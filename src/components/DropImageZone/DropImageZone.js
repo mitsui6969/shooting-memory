@@ -1,20 +1,25 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
+import './DropImagezone.css'
+import plusIcon from '../../assets/plus-icon.png'
 
 const DropImageZone = () => {
-    const [file, setFile] = React.useState(null);
+    const [file, setFile] = useState(null);
 
     const onDrop = useCallback((files) => {
-        if (files.length > 0) {
-            setFile(files[0]);
+        if (files.length === 1) {
+            const newFile = files[0];
+            setFile(newFile); // 新しいファイルで既存のファイルを置き換える
         }
     }, []);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
-            'image/png': ['.png', '.jpg', '.jpeg'],
+            'image/png': ['.png', '.jpg', '.jpeg'], // 許可されるファイルタイプ
         },
+        noClick: true, // クリックでのファイル選択を無効にする
+        multiple: false,
     });
 
     const dropAreaBackground = isDragActive ? 'gray' : '';
@@ -32,17 +37,18 @@ const DropImageZone = () => {
     return (
         <div className="image-upload-container">
             {file ? (
-                filePreview
-            ) : (
-                <div className="file_plus">
-                    <p>画像アップロード</p>
+                <div className="file-preview-container">
+                    {filePreview}
                     <div {...getRootProps()} className={`drop-area ${dropAreaBackground}`}>
                         <input {...getInputProps()} />
-                        <p>
-                            ファイルを選択または
-                            <br />
-                            ドラッグアンドドロップ
-                        </p>
+                    </div>
+                </div>
+            ) : (
+                <div className="file_plus">
+                    <div {...getRootProps()} className={`drop-area ${dropAreaBackground}`}>
+                        {/* ドラッグ＆ドロップのみでアップロード */}
+                        <input {...getInputProps()} />
+                        <img src={plusIcon} className='plus-icon' />
                     </div>
                 </div>
             )}
