@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Frame.module.css';
 import defaultBackImage from"../../assets/plus-icon.png"
+import DropImageZone from '../DropImageZone/DropImageZone';
 
 export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
 
@@ -59,11 +60,12 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
         <div className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()} ${getBorder()}`}>
             {imageList.map((_, index) => (
                 <div key={index} className={styles.imageContainer}>                    
-                    <img
+                    {/* <img
                         src={defaultBackImage} // デフォルト画像を設定
                         alt={`Collage image ${index + 1}`}
                         className={styles.image}
-                    />                    
+                    />                     */}
+                    <DropImageZone/>
                 </div>
             ))}
 
