@@ -8,7 +8,6 @@ import Button from '../components/Button_white/Button_white';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
 const Toppage = () => {
   const [showUsage, setShowUsage] = useState(false);
   const navigate = useNavigate(); // navigate関数を定義
@@ -46,7 +45,7 @@ const Toppage = () => {
         {/* 部屋作成画面に移動 */}
 
         <div className='createroom'>
-          <Button onClick={() => navigate('/createroom')}>
+          <Button onClick={() => navigate('/edit-fin')}>
             部屋を作成
           </Button>
         </div>
