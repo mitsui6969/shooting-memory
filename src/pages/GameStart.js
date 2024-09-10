@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; // useStateを追加してインポート
 import "../App.css";
 import "./GameStart.css";
-import Button from '../components/Button/Button';
+import Button from '../components/Button_orange/Button_orange';
 import { useNavigate } from 'react-router-dom';
 import Images from "../assets/images.png"; // ローカル画像のインポート
 
