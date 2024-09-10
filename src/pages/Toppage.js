@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
-import "./Toppage.css"; // CSSファイルをインポート
+import "../styles/Toppage.css"; // CSSファイルをインポート
 import "../App.css"
 import Modal from '../components/Modal/Modal';
 import Button from '../components/Button_white/Button_white';
@@ -46,11 +46,11 @@ const Toppage = () => {
         {/* 部屋作成画面に移動 */}
 
         <div className='createroom'>
-          <Button onClick={() => navigate('frame-selection')}>
+          <Button onClick={() => navigate('/createroom')}>
             部屋を作成
           </Button>
         </div>
-        
+
         {/* リンクを入力するフォーム */}
         <form onSubmit={handleLinkSubmit} className='form'>
           <span className="spacer" />
@@ -78,7 +78,7 @@ const Toppage = () => {
           }
         />
       </div>
-    
+
   )
 }
 
