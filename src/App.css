@@ -1,7 +1,9 @@
-/* 背景の設定 */
 * {
   margin: 0;
   padding: 0;
+  font-family: "Shippori Mincho";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 html {
@@ -9,25 +11,25 @@ html {
 }
 
 body {
-  background-image: url("/src/assets/background.jpeg");
+  background-image: url("/src/assets/image/background.jpeg");
   height: 100vh;
-  width: 480px;
+  width: 414px;
   margin: 0 auto;
-  background-color: #87ceeb;
   background-size: cover;
 }
 
-/*入力フォーム共通設定*/
+h2 {
+  text-align: center;
+  color: #ffffff;
+  padding-top: 35px;
+  text-shadow: 2px 2px 4px #020031;
+}
+
 .input-field {
-  background: linear-gradient(
-    to right,
-    #87ceeb,
-    #ffffff
-  );
+  background: linear-gradient(to right, #87ceeb, #ffffff);
   color: #0b4180;
 }
 
-/*form共通設定*/
 .form {
   display: flex;
   align-items: center;
