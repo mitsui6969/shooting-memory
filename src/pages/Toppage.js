@@ -46,7 +46,7 @@ const Toppage = () => {
         {/* 部屋作成画面に移動 */}
 
         <div className='createroom'>
-          <Button onClick={() => navigate('/createroom')}>
+          <Button onClick={() => navigate('frame-selection')}>
             部屋を作成
           </Button>
         </div>
