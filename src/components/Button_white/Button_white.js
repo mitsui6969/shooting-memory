@@ -1,10 +1,10 @@
 
 import React from 'react';
-import './Button.css'; // 外部CSSファイルをインポート
+import './Button_white.css'; // 外部CSSファイルをインポート
 
 const Button = ({ children, ...rest }) => {
     return (
-        <button className="button-common" {...rest}>
+        <button className="button-white" {...rest}>
             {children}
         </button>
     )
