@@ -1,4 +1,3 @@
-/* 背景の設定 */
 * {
   margin: 0;
   padding: 0;
@@ -23,20 +22,14 @@ h2 {
   text-align: center;
   color: #ffffff;
   padding-top: 35px;
-	text-shadow: 2px 2px 4px #020031;
+  text-shadow: 2px 2px 4px #020031;
 }
 
-/*入力フォーム共通設定*/
 .input-field {
-  background: linear-gradient(
-    to right,
-    #87ceeb,
-    #ffffff
-  );
+  background: linear-gradient(to right, #87ceeb, #ffffff);
   color: #0b4180;
 }
 
-/*form共通設定*/
 .form {
   display: flex;
   align-items: center;
