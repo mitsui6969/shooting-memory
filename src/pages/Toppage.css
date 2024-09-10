@@ -1,4 +1,4 @@
-	/* 背景の設定 */
+/* 背景の設定 */
 * {
   margin: 0;
   padding: 0;
@@ -8,8 +8,8 @@ html {
   background-color: #ffffff;
 }
 
-.toppage{
-  background-image: url("/src/assets/background-lantern.jpeg");
+.toppage {
+  background-image: url("/src/assets/image/toppage-background.jpeg");
   height: 100vh;
   width: 480px;
   margin: 0 auto;
@@ -17,18 +17,17 @@ html {
   background-size: cover;
 }
 
-
 .title {
-    font-size: 43px;
-    font-weight: bold;
-    background: linear-gradient(to bottom, #000000, #808080);
-    color: transparent;
-    -webkit-background-clip: text;
-    font-weight: 800;
-    position: absolute;
-    top: 150px;
-    left: 50%;
-    transform: translateX(-50%);
+  font-size: 43px;
+  font-weight: bold;
+  background: linear-gradient(to bottom, #000000, #808080);
+  color: transparent;
+  -webkit-background-clip: text;
+  font-weight: 800;
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .createroom {
@@ -52,7 +51,7 @@ html {
   height: 60px;
   border-radius: 0.375rem;
   font-size: 19px;
-	position: absolute;
+  position: absolute;
   top: 475px;
   left: 50%;
   transform: translateX(-50%);
@@ -72,9 +71,9 @@ html {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  position: absolute;      /* 絶対位置を指定 */
-  top: 475px;              /* 上から475pxの位置に配置 */
-  left: 85%;               /* 左から62%の位置に配置 */
+  position: absolute; /* 絶対位置を指定 */
+  top: 475px; /* 上から475pxの位置に配置 */
+  left: 85%; /* 左から62%の位置に配置 */
   transform: translateX(-50%); /* 水平方向の中央揃え */
 
   /* アイコンのサイズを調整 */
@@ -83,39 +82,35 @@ html {
 
 /* 使い方ボタンの位置を調整 */
 .rule {
-	position: absolute;
-	top: 570px;
-	left: 50%;
-	transform: translateX(-50%);
+  position: absolute;
+  top: 570px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-
-
-
 .modal-center {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem; /* mt-8 */
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem; /* mt-8 */
 }
 
 .modal-button {
-    display: inline-flex;
-    justify-content: center;
-    background-color: #16A34A; /* bg-green-600 */
-    padding: 0.5rem 1rem; /* px-4 py-2 */
-    font-size: 0.875rem; /* text-sm */
-    font-weight: 600; /* font-semibold */
-    color: white;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
-    border-radius: 0.375rem; /* rounded-md */
-    transition: background-color 0.2s;
+  display: inline-flex;
+  justify-content: center;
+  background-color: #16a34a; /* bg-green-600 */
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+  border-radius: 0.375rem; /* rounded-md */
+  transition: background-color 0.2s;
 }
 
 .modal-button:hover {
-    background-color: #15803D; /* hover:bg-green-500 */
+  background-color: #15803d; /* hover:bg-green-500 */
 }
 
 .modal-button:focus {
-    outline: none; /* focus:outline-none */
+  outline: none; /* focus:outline-none */
 }
-
