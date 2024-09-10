@@ -1,0 +1,23 @@
+/* ボタンの共通スタイル */
+.button-orange {
+    width: 100%; /* 親要素（.createroom）の幅に合わせてボタンを広げる */
+    background: linear-gradient(to bottom, #ffa438, #ffd39f); /* 上から下へのグラデーション */
+    color: black; /* 文字色を黒にする */
+    padding: 15px 30px;
+    font-size: 16px;
+    border: none; /* 白いふちを無くす */
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ホバー時のスタイル */
+.button-orange:hover {
+    background: linear-gradient(to bottom, #ffa438, #ffd39f);; /* 背景色を白にする */
+    color: black; /* 文字色を黒にする */
+    border: none; /* ホバー時に黒いふちを追加 */
+}
+
+/* アクティブ時のスタイル */
+.button-orange:active {
+    transform: translateY(4px); /* ボタンを押したときに下に移動する */
+}

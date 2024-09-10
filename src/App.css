@@ -23,16 +23,16 @@ body {
     to right,
     #87ceeb,
     #ffffff
-  ); /* bg-gradient-to-r from-sky-300 to-white */
-  color: #0b4180; /* text-[#0B4180] */
+  );
+  color: #0b4180;
 }
 
 /*form共通設定*/
 .form {
-  display: flex; /* フレックスボックスを使用して横並びに */
-  align-items: center; /* 垂直方向の中央揃え */
-  justify-content: center; /* 水平方向の中央揃え */
-  gap: 1rem; /* 入力フィールドとボタンの間に余白を入れる */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .shippori-mincho-regular {
