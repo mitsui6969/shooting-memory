@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import "./Toppage.css"; // CSSファイルをインポート
 import "../App.css"
 import Modal from '../components/Modal/Modal';
-import Button from '../components/Button/Button';
+import Button from '../components/Button/Button.js';
 import { faCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
