@@ -3,7 +3,6 @@ import "../styles/ShootingScreen.css";
 import bearImage from "../assets/image/bear.png";
 import usagiImage from "../assets/image/usagi.png";
 import weddingbearImage from "../assets/image/wedding_bear.png";
-import presentImage from "../assets/image/present_box.png";
 
 const ShootingScreen = () => {
   const [showSquare, setShowSquare] = useState(false);
@@ -29,8 +28,8 @@ const ShootingScreen = () => {
         <img src={bearImage} alt="target" onClick={handleClick} />
         <img src={usagiImage} alt="target" onClick={handleClick} />
         <img src={weddingbearImage} alt="target" onClick={handleClick} />
-        <img src={presentImage} alt="target" onClick={handleClick} />
-        <img src={presentImage} alt="target" onClick={handleClick} />
+        <img src={bearImage} alt="target" onClick={handleClick} />
+        <img src={usagiImage} alt="target" onClick={handleClick} />
         <img src={bearImage} alt="target" onClick={handleClick} />
         <img src={usagiImage} alt="target" onClick={handleClick} />
         <img src={bearImage} alt="target" onClick={handleClick} />

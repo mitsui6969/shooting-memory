@@ -1,3 +1,12 @@
+.shooting-container {
+  text-align: center;
+  align-items: center;
+}
+
+.shooting-container h2 {
+  padding-top: 35px;
+}
+
 .target-container {
   background-color: #fff;
   height: 570px;
@@ -12,8 +21,8 @@
 }
 
 .target-container img {
-  margin: 0 20px;
-  width: 110px;
+  margin: 0 30px;
+  width: 100px;
   height: auto;
   object-fit: cover;
   cursor: url("/src/assets/image/focus.cur"), auto;
@@ -36,7 +45,7 @@
 .click-target img {
   margin: 20px auto;
   box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
-  width: 90%;
+  width: 80%;
 }
 
 @keyframes expand {
