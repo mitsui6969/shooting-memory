@@ -3,7 +3,7 @@ import "../App.css";
 import "./WaitRoom.css";
 import { useLocation } from 'react-router-dom';
 import Spinner from '../components/Spinner/Spinner'; 
-import Button from '../components/Button/Button';
+import Button from '../components/Button_orange/Button_orange';
 import { useNavigate } from 'react-router-dom'; 
 
 const WaitRoom = () => {
