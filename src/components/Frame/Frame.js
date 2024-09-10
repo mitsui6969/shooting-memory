@@ -5,8 +5,8 @@ import defaultBackImage from"../../assets/プラスのアイコン素材.png"
 export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
 
     imageCount = 4
-    title = "感謝感激あめあられ"
-    date = "2044/04/04"
+    title = "タイトル"
+    date = "yyyy/mm/dd"
     selectColor = "white" // white/black/blue //
     selectBorder = 0 // 1(on)/0(of) //
     selectTitle = 1 // 1(on)/0(of) //
