@@ -1,75 +1,135 @@
+/* 枠 */
 .collage {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: 8px;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background-color: #f3f4f6;
-    padding: 8px;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    padding: 0;
     border-radius: 8px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
+.frameBorder {
+    padding: 8px;
+}
+
+/* 背景色 */
+.white {
+    background-color: #fefefe;
+}
+
+.black {
+    background-color: rgb(19, 19, 19);
+    color: #fefefe;
+}
+
+.blue {
+    background-color: #0c59c4;
+    color: #fefefe;
+}
+
+/* 枚数別レイアウト */
 .twoImages {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(2, 1fr);
 }
 
 .threeImages {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas:
+        "top top"
+        "bottom-L bottom-R";    
 }
+
+.threeImages > :nth-child(1) { grid-area: top; }
+.threeImages > :nth-child(2) { grid-area: bottom-L; }
+.threeImages > :nth-child(3) { grid-area: bottom-R; }
 
 .fourImages {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
 }
 
+/* 画像エリア */
 .imageContainer {
     position: relative;
     overflow: hidden;
-    border-radius: 6px;
     box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    background-color: #eee9e6;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .image {
     transition: transform 0.3s ease;
+    height: 3em;
+    width: 3em;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 2;
 }
 
 .imageContainer:hover .image {
     transform: scale(1.1);
 }
 
+/* タイトルエリア */
 .overlay {
     position: absolute;
-    inset: 0;
+    aspect-ratio: 1;
+    width: 40%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 0;
+    border-radius: 80px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.titleContainer {
-    background-color: rgba(255, 255, 255, 0.75);
-    border-radius: 9999px;
-    padding: 16px;
+    justify-items: center;
     text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease;
+    align-items: center;
+    z-index: 1000;
 }
 
-.titleContainer:hover {
-    transform: scale(1.05);
+.hiddenTitle {
+    display: none;
+}
+
+.texts {
+    height: 60%;
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.title, .date {
+    width: auto; 
+    font-size: 2vw;
+    margin: 0;
 }
 
 .title {
-    font-weight: bold;
-    font-size: 1.125rem;
-    color: #1f2937;
+    font-size: 0.7em;
+    margin-bottom: 1px;
 }
 
 .date {
-    font-size: 0.875rem;
-    color: #4b5563;
-}
-
-.error {
-    color: #ef4444;
-    font-weight: bold;
+    font-size: 0.68em;
 }

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Frame.module.css';
+import defaultBackImage from"../../assets/plus-icon.png"
 
-export default function Frame({ images=[], title='', date='' }) {
-    const imageCount = images.length;
+export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
 
-    if (imageCount < 2 || imageCount > 4) {
-        return <div className={styles.error}>Please provide 2-4 images for the collage.</div>;
-    }
+    imageCount = 4
+    title = "タイトル"
+    date = "yyyy/mm/dd"
+    selectColor = "white" // white/black/blue //
+    selectBorder = 0 // 1(on)/0(of) //
+    selectTitle = 1 // 1(on)/0(of) //
+    const [imageList, setImageList] = useState(Array.from({ length: imageCount }));
 
     const getLayoutClass = () => {
         switch (imageCount) {
@@ -21,25 +25,54 @@ export default function Frame({ images=[], title='', date='' }) {
         }
     };
 
+    const getBackgroundColor = () => {
+        switch (selectColor) {
+            case "white":
+                return styles.white;
+            case "black":
+                return styles.black;
+            case "blue":
+                return styles.blue;
+            default:
+                return "white"
+        }
+    }
+
+    const getBorder = () => {
+        if (selectBorder===1){
+            return styles.frameBorder
+        }
+    }
+
+    const getOverlay = () => {
+        if (selectTitle===0) {
+            return styles.hiddenTitle
+        }
+    }
+
+    //画像入れ替え
+    const handleImage = () => {
+
+    }
+
     return (
-        <div className={`${styles.collage} ${getLayoutClass()}`}>
-        {images.map((src, index) => (
-            <div key={index} className={styles.imageContainer}>
-            <img
-                src={src}
-                alt={`Collage image ${index + 1}`}
-                className={styles.image}
-            />
-            {index === 0 && (
-                <div className={styles.overlay}>
-                <div className={styles.titleContainer}>
-                    <h2 className={styles.title}>{title}</h2>
+        <div className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()} ${getBorder()}`}>
+            {imageList.map((_, index) => (
+                <div key={index} className={styles.imageContainer}>                    
+                    <img
+                        src={defaultBackImage} // デフォルト画像を設定
+                        alt={`Collage image ${index + 1}`}
+                        className={styles.image}
+                    />                    
+                </div>
+            ))}
+
+            <div className={`${styles.overlay} ${getBackgroundColor()} ${getOverlay()}`}>
+                <div className={styles.texts}>
+                    <p className={styles.title}>{title}</p>
                     <p className={styles.date}>{date}</p>
                 </div>
-                </div>
-            )}
             </div>
-        ))}
         </div>
     );
 }

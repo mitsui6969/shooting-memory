@@ -23,9 +23,13 @@ h2 {
 
 .frame{
     height: 200px;
-    width: 150px;
-
+    aspect-ratio: 3 / 4;
     margin: 20px auto;
+}
 
-    background-color: rgb(183, 0, 255);
+img {
+    width: 150px;
+    aspect-ratio: 3 / 4;
+    object-fit: fill;
+    border-radius: 5px;
 }
