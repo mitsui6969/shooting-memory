@@ -90,7 +90,13 @@ html {
 }
 
 
+.modal{
+  min-height: 70vh; /* sm:min-h-[70vh] */
+}
 
+.modal-content-wrapper {
+  min-height: 100vh;
+}
 
 .modal-center {
     display: flex;

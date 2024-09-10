@@ -22,7 +22,7 @@ const WaitRoom = () => {
     if (location.state && location.state.from === 'gamestart') {
       setMessage("GameStart");
     } else if (location.state && location.state.from === 'Toppage') {
-      setMessage("CreateRoom");
+      setMessage("Toppage");
     } else {
       setMessage("CreateRoom");
     }

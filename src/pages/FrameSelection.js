@@ -1,6 +1,4 @@
-
-import React, { useNavigate } from 'react';
-
+import React from 'react'
 import './styles/FrameSelection.css'
 import titleBorder from '../assets/layoutSanple/title-border.png'
 import titleNone from '../assets/layoutSanple/title-none.png'
