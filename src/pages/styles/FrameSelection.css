@@ -1,0 +1,35 @@
+.frame-selection {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    font-size: larger;
+    text-align: center;
+    color: antiquewhite;
+    margin: 20px;
+}
+
+.frames {
+    gap: 3rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* height: 100%; */
+}
+
+.frame{
+    height: 200px;
+    aspect-ratio: 3 / 4;
+    margin: 20px auto;
+}
+
+img {
+    width: 150px;
+    aspect-ratio: 3 / 4;
+    object-fit: fill;
+    border-radius: 5px;
+}

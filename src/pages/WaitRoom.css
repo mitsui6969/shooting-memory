@@ -4,8 +4,45 @@
 	flex-direction: column; /* 縦に並べる */
 	align-items: center;    /* 水平方向の中央揃え */
 	justify-content: center;
-	padding-top: 170px;
-	font-size: 4rem;
-	font-family: "Shippori Mincho", "Georgia", serif; /* Georgiaフォントを適用 */
-	position: relative;  /* 子要素のabsolute位置指定の基準とする */
+	font-size: 43px;
+	font-family: "Shippori Mincho", "Georgia", serif;
+	position: relative;
+}
+
+.spinner-container {
+	margin-top: 150px;
+}
+
+/* テキストの位置を任意に指定 */
+.text {
+	position: absolute;
+	top: 600px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 24px;
+	color: white;
+}
+
+.text-host {
+	position: absolute;
+	top: 500px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 24px;
+	color: white;
+}
+
+.start-button{
+	position: absolute;
+  top: 550px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  box-sizing: border-box;
+  font-size: 19px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	text-align: center;
 }
