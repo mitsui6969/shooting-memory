@@ -64,4 +64,13 @@ h2 {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
+    cursor:-moz-grab;
+    cursor:-webkit-grab;
+    cursor: grab;
+}
+
+.image:active {
+    cursor:-moz-grabbing;
+    cursor:-webkit-grabbing;
+    cursor: grabbing;
 }
