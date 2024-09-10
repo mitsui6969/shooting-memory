@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import "./CreateRoom.css"
+import "../styles/CreateRoom.css";
 import Button from '../components/Button_orange/Button_orange';
 
 const CreateRoom = () => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'; // useStateを追加してインポート
 import "../App.css";
-import "./GameStart.css";
+import "../styles/GameStart.css";
 import Button from '../components/Button_orange/Button_orange';
 import { useNavigate } from 'react-router-dom';
 import Images from "../assets/images.png"; // ローカル画像のインポート
@@ -68,12 +68,12 @@ const GameStart = () => {
 
 
       <div className="image-uploader">
-        <input 
-          type="file" 
-          id="file-input" 
-          accept="image/*" 
-          onChange={handleImageChange} 
-          className="file-input" 
+        <input
+          type="file"
+          id="file-input"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="file-input"
         />
 				<label htmlFor="file-input" className="file-label">
           <img src={Images} alt="Upload" className="upload-image" />
