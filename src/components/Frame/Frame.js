@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Frame.module.css';
-import defaultBackImage from"../../assets/プラスのアイコン素材.png"
+import defaultBackImage from"../../assets/plus-icon.png"
 
 export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
 
