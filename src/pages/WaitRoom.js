@@ -16,19 +16,26 @@ const WaitRoom = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 300000); // 300秒後にロード完了
+    }, 3000); // 3秒後にロード完了
 
     // どのページから来たかを確認し、メッセージを変える
     if (location.state && location.state.from === 'gamestart') {
       setMessage("GameStart");
     } else if (location.state && location.state.from === 'Toppage') {
-      setMessage("Toppage");
+      setMessage("CreateRoom");
     } else {
       setMessage("CreateRoom");
     }
 
     return () => clearTimeout(timer);
   }, [location.state]);
+
+  // ロードが終了し、かつmessageがGameStartの場合、gamestartに移動する
+  useEffect(() => {
+    if (!loading && message === "GameStart") {
+      navigate('/shooting-screen');
+    }
+  }, [loading, message, navigate]);
 
   return (
     <div className='waitroom'>
@@ -54,9 +61,7 @@ const WaitRoom = () => {
       )}
 
       {message === "GameStart" && (
-        <>
-          <div className='text'>画像が出揃うまで少々お待ちください</div>
-        </>
+        <div className='text-host'>画像が出揃うまで少々お待ちください</div>
       )}
     </div>
   );
