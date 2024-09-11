@@ -1,13 +1,3 @@
-/* 背景の設定 */
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  background-color: #ffffff;
-}
-
 .toppage {
   background-image: url("/src/assets/image/toppage-background.jpeg");
   height: 100vh;
