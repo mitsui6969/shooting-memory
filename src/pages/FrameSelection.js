@@ -13,9 +13,8 @@ const FrameSelection = () => {
     return (
         <div className='frame-selection'>
             <h2>フレームを選択してください</h2>
-            <div className='frames'>
-
-                <div>
+            <div className='selection-area'>
+                <div className='frames'>
                     {layoutCatalog.map((src, index) => (
                         <div key={index} className='frame'>
                             <img
