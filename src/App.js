@@ -7,6 +7,7 @@ import ShootingScreen from "./pages/ShootingScreen";
 import GameStart from "./pages/GameStart";
 import FrameSelection from "./pages/FrameSelection";
 import CollagePage from "./pages/CollagePage";
+import CompliteRoom from "./pages/CompleteRoom";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/gamestart" element={<GameStart />}/>
         <Route path="/frame-selection" element={<FrameSelection />} />
         <Route path="/collage-page" element={<CollagePage />} />
+        <Route path="/compliteroom" element={<CompliteRoom />} />
       </Routes>
     </Router>
   );
