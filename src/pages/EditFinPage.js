@@ -4,14 +4,15 @@ import Images1 from "../assets/sample.png";
 import Images2 from "../assets/sample2.png";
 import Images3 from "../assets/sample3.png";
 import Images4 from "../assets/sample2.png";  // 4つ目の画像をインポート
+import Button from '../components/Button_orange/Button_orange';
 
 const EditFinPage = () => {
   // 任意の位置を指定して画像の座標を管理する
   const [positions, setPositions] = useState({
-    firstImage: { top: '200px', left: '50px', borderColor: 'blue', zIndex: 0 },  // 1つ目の画像の初期座標
-    secondImage: { top: '220px', left: '70px', borderColor: 'green', zIndex: 0 }, // 2つ目の画像の初期座標
-    thirdImage: { top: '240px', left: '90px', borderColor: 'red', zIndex: 0 },   // 3つ目の画像の初期座標
-    fourthImage: { top: '260px', left: '110px', borderColor: 'purple', zIndex: 0 } // 4つ目の画像の初期座標
+    firstImage: { top: '190px', left: '30px', borderColor: 'blue', zIndex: 0 },  // 1つ目の画像の初期座標
+    secondImage: { top: '210px', left: '50px', borderColor: 'green', zIndex: 0 }, // 2つ目の画像の初期座標
+    thirdImage: { top: '230px', left: '70px', borderColor: 'red', zIndex: 0 },   // 3つ目の画像の初期座標
+    fourthImage: { top: '250px', left: '90px', borderColor: 'purple', zIndex: 0 } // 4つ目の画像の初期座標
   });
 
   // 一番右下に来た画像を前面に出すために z-index を管理
@@ -43,13 +44,13 @@ const EditFinPage = () => {
     });
   };
 
-  // クリックするたびに画像の位置と色を入れ替える
+  // クリックするたびに画像の位置と色を逆順に入れ替える
   const handleImageClick = () => {
     setPositions((prevPositions) => ({
-      firstImage: prevPositions.secondImage,
-      secondImage: prevPositions.thirdImage,
-      thirdImage: prevPositions.fourthImage,
-      fourthImage: prevPositions.firstImage,
+      firstImage: prevPositions.fourthImage,
+      secondImage: prevPositions.firstImage,
+      thirdImage: prevPositions.secondImage,
+      fourthImage: prevPositions.thirdImage,
     }));
   };
 
@@ -71,6 +72,10 @@ const EditFinPage = () => {
       {/* 前面に出ている画像に応じて表示するテキスト */}
       <div className="displayed-text">
         {getDisplayedText()}
+      </div>
+
+      <div className='finish-button'>
+          <Button type="submit">終了</Button>
       </div>
 
       {/* 1つ目の画像（任意の位置に配置） */}

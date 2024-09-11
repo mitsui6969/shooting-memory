@@ -16,6 +16,23 @@
   transition: border-color 0.3s ease, top 0.3s ease, left 0.3s ease, z-index 0.3s ease; /* 色と位置の切り替えをスムーズに */
 }
 
+/* テキストの位置を任意に指定 */
+.displayed-text{
+	position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  color: rgb(241, 234, 234);
+  top: 100px;
+}
+
+.finish-button{
+  font-weight: 600;
+	width: 150px;
+	margin-top: 650px;
+}
+
+
 @keyframes moveImage {
   0% {
     transform: translateX(-100px);
