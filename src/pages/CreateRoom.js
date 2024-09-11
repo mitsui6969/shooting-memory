@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import "../styles/CreateRoom.css";
-import Button from '../components/Button_orange/Button_orange';
+import Button from '../components/Button_orange/Button_orange'
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
+import db from "../firebase/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 const CreateRoom = () => {
+
   const [selectedValue, setSelectedValue] = useState('');
   const [title, setTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの表示状態を管理
@@ -20,12 +23,23 @@ const CreateRoom = () => {
   };
 
   // フォーム送信時の処理
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("タイトル:", title);
-    console.log("選択された写真枚数:", selectedValue);
-    setIsModalOpen(true); // フォーム送信後にモーダルを表示
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // ここでデフォルトのフォーム送信動作を防ぐ
+
+    try {
+      const postData = collection(db, "posts");
+      await addDoc(postData, {
+        title: title,
+        content: selectedValue,
+      });
+      console.log("タイトル:", title);
+      console.log("選択された写真枚数:", selectedValue);
+      setIsModalOpen(true); // フォーム送信後にモーダルを表示
+    } catch (error) {
+      console.error("エラーが発生しました: ", error);
+    }
   };
+
 
   // モーダルを閉じる処理とページ遷移
   const handleCloseModal = () => {
@@ -59,7 +73,7 @@ const CreateRoom = () => {
         </div>
 
         <div className='create'>
-          <Button type="submit">作成</Button>
+          <Button type="submit" >作成</Button>
         </div>
       </form>
 
