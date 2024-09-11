@@ -9,10 +9,10 @@ import Button from '../components/Button_orange/Button_orange';
 const EditFinPage = () => {
   // 任意の位置を指定して画像の座標を管理する
   const [positions, setPositions] = useState({
-    firstImage: { top: '190px', left: '30px', borderColor: 'blue', zIndex: 0 },  // 1つ目の画像の初期座標
-    secondImage: { top: '210px', left: '50px', borderColor: 'green', zIndex: 0 }, // 2つ目の画像の初期座標
-    thirdImage: { top: '230px', left: '70px', borderColor: 'red', zIndex: 0 },   // 3つ目の画像の初期座標
-    fourthImage: { top: '250px', left: '90px', borderColor: 'purple', zIndex: 0 } // 4つ目の画像の初期座標
+    firstImage: { top: '170px', left: '30px', borderColor: 'blue', zIndex: 0 },  // 1つ目の画像の初期座標
+    secondImage: { top: '190px', left: '50px', borderColor: 'green', zIndex: 0 }, // 2つ目の画像の初期座標
+    thirdImage: { top: '210px', left: '70px', borderColor: 'red', zIndex: 0 },   // 3つ目の画像の初期座標
+    fourthImage: { top: '230px', left: '90px', borderColor: 'purple', zIndex: 0 } // 4つ目の画像の初期座標
   });
 
   // 一番右下に来た画像を前面に出すために z-index を管理
