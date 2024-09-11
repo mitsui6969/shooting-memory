@@ -14,7 +14,7 @@ const Toppage = () => {
   const handleLinkSubmit = (e) => {
     e.preventDefault();
     console.log("入力されたリンク：", link);
-    navigate("/waitroom"); // →ボタンが押されたら待機ページに遷移
+    navigate("/wait-room"); // →ボタンが押されたら待機ページに遷移
   };
 
   const ModalContent = () => {
