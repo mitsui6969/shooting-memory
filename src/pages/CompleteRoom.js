@@ -38,22 +38,38 @@ const CompleteRoom = () => {
       <div className="coordinate">
         <div>
           <h2>出揃いました</h2>
+<<<<<<< HEAD
           <div className="white-box" {...handlers}> {/* スワイプを有効にする */}
+=======
+          <div className="white-box" {...handlers}>
+>>>>>>> d7c4fccf5212c6f9c3d307a85e7d71ea034d68f0
             <img
               src={imageList[currentIndex]}
               alt="swipeable content"
               className="image"
             />
           </div>
+<<<<<<< HEAD
           <div className="image-button-container">
             <Button onClick={handleNext}>
               次へ
             </Button>
           </div>
+=======
+    <div className="next">
+    <Button type="submit">
+        次へ
+    </Button>
+    </div>
+>>>>>>> d7c4fccf5212c6f9c3d307a85e7d71ea034d68f0
         </div>
       </div>
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default CompleteRoom;
+=======
+export default CompleteRoom;
+>>>>>>> d7c4fccf5212c6f9c3d307a85e7d71ea034d68f0
