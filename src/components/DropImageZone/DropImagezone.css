@@ -34,9 +34,26 @@ input{
 }
 
 .file-preview-container {
-    overflow: scroll;
+    display: flex;
+    align-items: center;
+    overflow: auto;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    position: relative;
 }
 
 .file-preview {
+    height: 100%;
+    width: 100%;
     object-fit: cover;
+    cursor: grab; 
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.2s ease; /* スムーズな変換効果 */
+}
+
+.file-preview:active {
+    cursor: grabbing; /* クリック中のカーソル */
 }
