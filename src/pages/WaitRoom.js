@@ -55,7 +55,7 @@ const WaitRoom = () => {
         <>
           <div className="text-host">参加人数〇人</div>
           <div className="start-button">
-            <Button onClick={() => navigate("/gamestart")}>はじめる</Button>
+            <Button onClick={() => navigate("/game-start")}>はじめる</Button>
           </div>
         </>
       )}
