@@ -51,7 +51,7 @@ const Toppage = () => {
             type="submit"
             className="submit-link"
             onClick={() =>
-              navigate("/waitroom", { state: { from: "Toppage" } })
+              navigate("/wait-room", { state: { from: "Toppage" } })
             }
           >
             <FontAwesomeIcon icon={faCircleRight} size="2xl" />
