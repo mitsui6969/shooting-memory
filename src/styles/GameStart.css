@@ -122,3 +122,20 @@
 .preview-container {
   margin-top: 20px;
 }
+
+/* GameStart.css */
+.preview-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-image {
+  width: 50px; /* 画像の横幅を指定 */
+  height: auto; /* アスペクト比を保ったまま高さを自動調整 */
+  border-radius: 8px; /* 角を丸める */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 画像に影を追加 */
+  object-fit: cover; /* 画像の表示を綺麗に整える */
+}
+

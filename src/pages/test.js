@@ -29,28 +29,28 @@
 
 
 
-import React from "react";
-import db from "../firebase/firebase";
-import { collection, addDoc } from "firebase/firestore";
+// import React from "react";
+// import db from "../firebase/firebase";
+// import { collection, addDoc } from "firebase/firestore";
 
-function AddPost() {
-  const handleSubmit = async () => {
-    try {
-      const postData = collection(db, "posts");
-      await addDoc(postData, {
-        title: "固定されたタイトル",
-        content: "これは固定された内容です。",
-      });
-    } catch (error) {
-      console.error("エラーが発生しました: ", error);
-    }
-  };
+// function AddPost() {
+//   const handleSubmit = async () => {
+//     try {
+//       const postData = collection(db, "posts");
+//       await addDoc(postData, {
+//         title: "固定されたタイトル",
+//         content: "これは固定された内容です。",
+//       });
+//     } catch (error) {
+//       console.error("エラーが発生しました: ", error);
+//     }
+//   };
 
-  return (
-    <div>
-      <button onClick={handleSubmit}>送信</button>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <button onClick={handleSubmit}>送信</button>
+//     </div>
+//   );
+// }
 
-export default AddPost;
+// export default AddPost;

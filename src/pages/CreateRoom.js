@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import "../styles/CreateRoom.css";
 import Button from '../components/Button_orange/Button_orange'
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
-import db from "../firebase/firebase";
+import db from "../firebase/firebase-db";
 import { collection, addDoc } from "firebase/firestore";
 
 const CreateRoom = () => {
