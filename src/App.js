@@ -14,10 +14,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Toppage />} />
-        <Route path="/createroom" element={<CreateRoom />} />
-        <Route path="/waitroom" element={<WaitRoom />} />
+        <Route path="/create-room" element={<CreateRoom />} />
+        <Route path="/wait-room" element={<WaitRoom />} />
         <Route path="/shooting-screen" element={<ShootingScreen />} />
-        <Route path="/gamestart" element={<GameStart />}/>
+        <Route path="/game-start" element={<GameStart />}/>
         <Route path="/frame-selection" element={<FrameSelection />} />
         <Route path="/collage-page" element={<CollagePage />} />
         <Route path="/edit-fin" element={<EditFinPage />} />
