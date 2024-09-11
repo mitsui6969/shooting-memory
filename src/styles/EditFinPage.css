@@ -1,0 +1,26 @@
+/* WaitRoomのスタイル */
+.EditFinPage {
+	display: flex;
+	flex-direction: column; /* 縦に並べる */
+	align-items: center;    /* 水平方向の中央揃え */
+	justify-content: center;
+	font-size: 43px;
+	font-family: "Shippori Mincho", "Georgia", serif;
+	position: relative;
+}
+
+.moving-image {
+  width: 300px; /* 画像のサイズ */
+  position: absolute; /* 画像の位置を絶対指定 */
+  cursor: pointer; /* クリックできることを示すポインタ */
+  transition: border-color 0.3s ease, top 0.3s ease, left 0.3s ease, z-index 0.3s ease; /* 色と位置の切り替えをスムーズに */
+}
+
+@keyframes moveImage {
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(100px);
+  }
+}

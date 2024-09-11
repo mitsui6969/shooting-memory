@@ -16,7 +16,7 @@ const WaitRoom = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 300000); // 300秒後にロード完了
+    }, 3000); // 3秒後にロード完了
 
     // どのページから来たかを確認し、メッセージを変える
     if (location.state && location.state.from === "gamestart") {
@@ -29,6 +29,13 @@ const WaitRoom = () => {
 
     return () => clearTimeout(timer);
   }, [location.state]);
+
+  // ロードが終了し、かつmessageがGameStartの場合、gamestartに移動する
+  useEffect(() => {
+    if (!loading && message === "GameStart") {
+      navigate('/shooting-screen');
+    }
+  }, [loading, message, navigate]);
 
   return (
     <div className="waitroom">
