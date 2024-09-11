@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigateをインポート
 import "../styles/Toppage.css"; // CSSファイルをインポート
-import "../App.css";
 import Modal from "../components/Modal/Modal";
 import Button from "../components/Button_white/Button_white";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
@@ -36,19 +35,15 @@ const Toppage = () => {
   return (
     <div className="toppage">
       <div className="title">思い出射撃</div>
-
-      {/* 部屋作成画面に移動 */}
       <div className="main-container">
         <div className="createroom">
           <Button onClick={() => navigate("/create-room")}>部屋を作成</Button>
         </div>
-
-        {/* リンクを入力するフォーム */}
         <form onSubmit={handleLinkSubmit} className="toppage-form">
           <input
-            className="input-field link-input"
+            className="link-input"
             type="text"
-            placeholder="リンクをお持ちの方"
+            placeholder="リンクをお持ちの方はこちら"
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />

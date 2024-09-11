@@ -36,9 +36,23 @@ html {
 .link-input {
   width: 250px;
   text-align: center;
-  height: 60px;
+  height: 50px;
   border-radius: 12px;
-  font-size: 19px;
+  font-size: 16px;
+  border: none;
+  background-image: linear-gradient(
+    90deg,
+    rgba(168, 202, 240, 0.9),
+    rgba(233, 240, 250, 0.9)
+  );
+}
+
+.link-input:focus {
+  background-color: #f0f8ff;
+  border-color: #00f;
+  box-shadow: 0 0 8px #0000ff80;
+  transform: scale(1.05);
+  outline: none;
 }
 
 .toppage-form {
@@ -54,7 +68,7 @@ html {
   cursor: pointer;
   font-size: 20px;
   position: absolute;
-  top: 12px;
+  top: 6px;
   margin-left: 10px;
 }
 
