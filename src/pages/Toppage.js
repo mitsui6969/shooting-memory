@@ -37,7 +37,7 @@ const Toppage = () => {
       <div className="title">思い出射撃</div>
       <div className="main-container">
         <div className="createroom">
-          <Button onClick={() => navigate("/create-room")}>部屋を作成</Button>
+          <Button onClick={() => navigate("/complite-room")}>部屋を作成</Button>
         </div>
         <form onSubmit={handleLinkSubmit} className="toppage-form">
           <input

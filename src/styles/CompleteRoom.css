@@ -1,0 +1,47 @@
+.coordinate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 25%;
+}
+
+h2 {
+    font-size: larger;
+    text-align: center;
+    color: antiquewhite;
+    margin: 8%;
+}
+
+.white-box {
+    background-color: white;
+    border-radius: 10px;
+    width: 340px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.image-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%; /* 親要素の幅を100%にしても問題ありません */
+}
+
+.image-button {
+    width: 150px; /* ボタンの横幅を150pxに固定 */
+    height: 50px; /* ボタンの高さを指定 */
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0; /* 幅が縮小しないように設定 */
+    flex-grow: 0; /* 幅が成長しないように設定 */
+    box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
+}
