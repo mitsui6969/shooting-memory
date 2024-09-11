@@ -8,8 +8,6 @@ const CollagePage = (images = []) => {
 
   return (
     <div className="collagePage">
-      <h2>collage page</h2>
-
       <div className="frameArea">
         <Frame />
       </div>

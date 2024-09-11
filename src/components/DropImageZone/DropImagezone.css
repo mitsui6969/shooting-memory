@@ -1,0 +1,34 @@
+.image-upload-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(209, 209, 209);
+}
+
+.drop-area{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.gray {
+    background-color: rgb(237, 237, 237);
+}
+
+input{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.plus-icon {
+    width: 45%;
+    aspect-ratio: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}

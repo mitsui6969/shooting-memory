@@ -1,22 +1,21 @@
-h2 {
-    margin: 0;
-    padding: 0;
-}
-
 /* コラージュ部分 */
 .collagePage {
     margin: 0;
+    padding: 0;
     height: 80%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     text-align: center;
+    border-radius: 8px;
 }
 
 .frameArea{
-    height: 360px;
-    width: 270px;
+    height: 50vh;
     aspect-ratio: 3 / 4;
     background-color: rgba(222, 222, 222, 0.68);
-    margin: 20px auto;
+    margin: 20px;
     padding: 10px;
     border-radius: 10px;
 }
@@ -54,7 +53,7 @@ h2 {
     aspect-ratio: 1;
     margin: 10px;
     display: flex;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     border-radius: 5px;
     align-items: center;
     justify-content: center;
