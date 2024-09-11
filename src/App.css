@@ -13,7 +13,7 @@ html {
 body {
   background-image: url("/src/assets/image/background.jpeg");
   height: 100vh;
-  width: 414px;
+  width: 480px;
   margin: 0 auto;
   background-size: cover;
 }
