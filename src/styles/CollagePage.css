@@ -2,7 +2,6 @@
 .collagePage {
     margin: 0;
     padding: 0;
-    height: 80%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -13,19 +12,23 @@
 
 .frameArea{
     height: 50vh;
+    max-height: 34.7vh;
+    min-height: 50vh;
+    max-width: 75%;
     aspect-ratio: 3 / 4;
     background-color: rgba(222, 222, 222, 0.68);
-    margin: 20px;
+    margin: 7vh 0 3vh;
     padding: 10px;
     border-radius: 10px;
 }
 
 /* 画像部分 */
 .imagesArea{
-    height: 200px;
+    height: 30vh;
+    min-height: 20vh;
     width: 80%;
     background-color: rgba(222, 222, 222, 0.68);
-    margin: 20px auto;
+    margin: 1vh;
     padding: 0 20px;
     overflow: hidden;
     border-radius: 8px;
@@ -40,7 +43,7 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    overflow: scroll;
+    overflow-x: scroll;
 }
 
 .imageContainer {
@@ -63,6 +66,8 @@
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
+    display: flex;
+    justify-items: center;
     cursor:-moz-grab;
     cursor:-webkit-grab;
     cursor: grab;
