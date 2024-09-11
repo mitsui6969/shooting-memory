@@ -23,13 +23,13 @@
   transform: translateX(-50%);
   font-size: 24px;
   color: rgb(241, 234, 234);
-  top: 100px;
+  top: 50px;
 }
 
 .finish-button{
   font-weight: 600;
 	width: 150px;
-	margin-top: 650px;
+	margin-top: 600px;
 }
 
 
