@@ -56,9 +56,9 @@ const EditFinPage = () => {
 
   // 前面の画像に基づいて異なるテキストを表示する
   const getDisplayedText = () => {
-    if (positions.firstImage.zIndex === 3) return "一人目さん";
-    if (positions.secondImage.zIndex === 3) return "二人目さん";
-    if (positions.thirdImage.zIndex === 3) return "三人目さん";
+    if (positions.firstImage.zIndex === 3) return "一人目";
+    if (positions.secondImage.zIndex === 3) return "二人目";
+    if (positions.thirdImage.zIndex === 3) return "三人目";
     return "四人目さん";
   };
 
