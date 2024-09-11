@@ -29,7 +29,7 @@ const CreateRoom = () => {
 
   // モーダルを閉じる処理とページ遷移
   const handleCloseModal = () => {
-    navigate('/waitroom'); 
+    navigate('/wait-room'); 
   };
 
   return (

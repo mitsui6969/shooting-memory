@@ -31,7 +31,7 @@ const GameStart = () => {
     e.preventDefault();
     console.log("名前が送信されました: ", name); // デバッグ用にコンソールに表示
     // ページ遷移時にstateとして情報を渡す
-    navigate('/waitroom', { state: { from: 'gamestart' } });
+    navigate('/wait-room', { state: { from: 'gamestart' } });
   };
 
 
