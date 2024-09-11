@@ -32,3 +32,11 @@ input{
     right: 0;
     margin: auto;
 }
+
+.file-preview-container {
+    overflow: scroll;
+}
+
+.file-preview {
+    object-fit: cover;
+}

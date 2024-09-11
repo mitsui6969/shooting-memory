@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Frame.module.css';
-import defaultBackImage from"../../assets/plus-icon.png"
+import defaultBackImage from"../../assets/image/plus-icon.png"
 import DropImageZone from '../DropImageZone/DropImageZone';
 
 export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
@@ -8,8 +8,8 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
     imageCount = 4
     title = "タイトル"
     date = "yyyy/mm/dd"
-    selectColor = "white" // white/black/blue //
-    selectBorder = 0 // 1(on)/0(of) //
+    selectColor = 4 // 0.white/1.black/2.blue/3.white2p/4.black2p //
+    selectBorder = 1 // 1(on)/0(of) //
     selectTitle = 1 // 1(on)/0(of) //
     const [imageList, setImageList] = useState(Array.from({ length: imageCount }));
 
@@ -28,12 +28,16 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
 
     const getBackgroundColor = () => {
         switch (selectColor) {
-            case "white":
+            case 0:
                 return styles.white;
-            case "black":
+            case 1:
                 return styles.black;
-            case "blue":
+            case 2:
                 return styles.blue;
+            case 3:
+                return styles.white2p;
+            case 4:
+                return styles.black2p;
             default:
                 return "white"
         }

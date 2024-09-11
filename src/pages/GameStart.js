@@ -3,7 +3,7 @@ import "../App.css";
 import "../styles/GameStart.css";
 import Button from '../components/Button_orange/Button_orange';
 import { useNavigate } from 'react-router-dom';
-import Images from "../assets/images.png"; // ローカル画像のインポート
+import Images from "../assets/image/images.png"; // ローカル画像のインポート
 
 const GameStart = () => {
   const navigate = useNavigate(); // navigate関数を定義

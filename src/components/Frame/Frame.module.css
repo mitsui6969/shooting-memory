@@ -9,6 +9,10 @@
     padding: 0;
     border-radius: 8px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .frameBorder {
@@ -26,7 +30,17 @@
 }
 
 .blue {
-    background-color: #0c59c4;
+    /* background-color: #0c59c4; */
+    background-image: url('../../assets/image/frameColor/blue.jpeg');
+    color: #fefefe;
+}
+
+.white2p {
+    background-image: url('../../assets/image/frameColor/white.jpeg');
+}
+
+.black2p {
+    background-image: url('../../assets/image/frameColor/black.jpeg');
     color: #fefefe;
 }
 
@@ -126,10 +140,10 @@
 }
 
 .title {
-    font-size: 2vh;
+    font-size: 0.7em;
     margin-bottom: 1px;
 }
 
 .date {
-    font-size: 1.5vh;
+    font-size: 0.68em;
 }

@@ -1,34 +1,32 @@
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
 /* コラージュ部分 */
 .collagePage {
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
+    height: 80%;
     align-items: center;
     text-align: center;
-    border-radius: 8px;
 }
 
 .frameArea{
-    height: 50vh;
-    max-height: 34.7vh;
-    min-height: 50vh;
-    max-width: 75%;
+    height: 360px;
+    width: 270px;
     aspect-ratio: 3 / 4;
     background-color: rgba(222, 222, 222, 0.68);
-    margin: 7vh 0 3vh;
+    margin: 20px auto;
     padding: 10px;
     border-radius: 10px;
 }
 
 /* 画像部分 */
 .imagesArea{
-    height: 30vh;
-    min-height: 20vh;
+    height: 200px;
     width: 80%;
     background-color: rgba(222, 222, 222, 0.68);
-    margin: 1vh;
+    margin: 20px auto;
     padding: 0 20px;
     overflow: hidden;
     border-radius: 8px;
@@ -43,9 +41,10 @@
     padding: 0;
     margin: 0;
     list-style: none;
-    overflow-x: scroll;
+    overflow: scroll;
 }
 
+/* 画像 */
 .imageContainer {
     flex: 0 0 auto;
     position: relative;
@@ -66,8 +65,6 @@
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
-    display: flex;
-    justify-items: center;
     cursor:-moz-grab;
     cursor:-webkit-grab;
     cursor: grab;
