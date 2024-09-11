@@ -59,7 +59,7 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
     return (
         <div className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()} ${getBorder()}`}>
             {imageList.map((_, index) => (
-                <div key={index} className={styles.imageContainer}>                    
+                <div key={index} className={styles.imageContainer}>
                     {/* <img
                         src={defaultBackImage} // デフォルト画像を設定
                         alt={`Collage image ${index + 1}`}
