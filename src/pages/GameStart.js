@@ -4,8 +4,9 @@ import "../styles/GameStart.css";
 import Button from '../components/Button_orange/Button_orange';
 import { useNavigate } from 'react-router-dom';
 import Images from "../assets/images.png"; 
-import { storage } from '../firebase/firebase-app';
+import { storage, db } from '../firebase/firebase-app'; // FirestoreとStorageをインポート
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore"; // Firestore用の関数をインポート
 
 const GameStart = () => {
   const navigate = useNavigate();
@@ -28,27 +29,44 @@ const GameStart = () => {
     e.preventDefault();
 
     if (selectedImages.length > 0) {
-      selectedImages.forEach((image, index) => {
+      const imageUrls = [];
+
+      // Firestoreのドキュメント参照を定義
+      const docRef = doc(db, "selected_images", "kjfhBVrsYC8BOg8R298c"); // "selected_images"コレクションのドキュメントにアクセス
+
+      // 画像をアップロードし、そのURLを取得
+      for (let i = 0; i < selectedImages.length; i++) {
+        const image = selectedImages[i];
         const storageRef = ref(storage, `images/${image.name}`);
         const uploadTask = uploadBytesResumable(storageRef, image);
 
-        uploadTask.on('state_changed', 
-          null, // 状態の変化に対するコールバックを削除
-          (error) => {
-            console.error("エラー:", error);
-          }, 
-          async () => {
-            // アップロード完了後の処理
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            console.log(`画像 ${index + 1} のダウンロードURL:`, downloadURL);
+        // 画像アップロード
+        await new Promise((resolve, reject) => {
+          uploadTask.on('state_changed', 
+            null, 
+            (error) => {
+              console.error("エラー:", error);
+              reject(error);
+            }, 
+            async () => {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              console.log(`画像 ${i + 1} のダウンロードURL:`, downloadURL);
+              imageUrls.push(downloadURL); // URLを配列に追加
 
-            // すべての画像がアップロード完了したら次のページへ遷移
-            if (index === selectedImages.length - 1) {
-              navigate('/wait-room', { state: { from:"game-start" } });
+              // FirestoreにアップロードされたURLを保存
+              await updateDoc(docRef, {
+                photos: arrayUnion(downloadURL), // photos配列にURLを追加
+              });
+
+              resolve();
             }
-          }
-        );
-      });
+          );
+        });
+      }
+
+      // すべての画像がアップロード完了したら次のページへ遷移
+      navigate('/wait-room', { state: { from:"game-start" } });
+
     } else {
       // 画像が選択されていない場合でも名前だけで遷移する
       console.log("名前が送信されました: ", name);
