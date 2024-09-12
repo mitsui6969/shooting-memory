@@ -11,7 +11,6 @@ const GameStart = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [selectedImages, setSelectedImages] = useState([]); // 複数の画像を管理
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
@@ -34,10 +33,7 @@ const GameStart = () => {
         const uploadTask = uploadBytesResumable(storageRef, image);
 
         uploadTask.on('state_changed', 
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setUploadProgress(progress); // アップロードの進行状況を表示
-          }, 
+          null, // 状態の変化に対するコールバックを削除
           (error) => {
             console.error("エラー:", error);
           }, 
@@ -48,7 +44,7 @@ const GameStart = () => {
 
             // すべての画像がアップロード完了したら次のページへ遷移
             if (index === selectedImages.length - 1) {
-              navigate('/wait-room', { state: { name: name, imageURLs: selectedImages.map(() => downloadURL) } });
+              navigate('/wait-room', { state: { from:"game-start" } });
             }
           }
         );
@@ -94,8 +90,6 @@ const GameStart = () => {
             )}
           </label>
         </div>
-
-        {selectedImages.length > 0 && <p>アップロード進行状況: {uploadProgress}%</p>}
 
         <div className='start-button'>
           <Button type="submit">完了</Button>
