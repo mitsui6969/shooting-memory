@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-
 import '../styles/FrameSelection.css';
 import titleBorder from '../assets/layoutSanple/title-border.png';
 import titleNone from '../assets/layoutSanple/title-none.png';
 import noneBorder from '../assets/layoutSanple/none-border.png';
 import noneNone from '../assets/layoutSanple/none-none.png';
+import Frame from "../components/Frame/Frame"; // Frameコンポーネントをインポート
 
 const FrameSelection = () => {
-  const layoutCatalog = [titleBorder, titleNone, noneBorder, noneNone];
+  const layoutCatalog = [titleBorder, titleNone, noneBorder, noneNone]; // フレーム画像リスト
   const [selectedFrame, setSelectedFrame] = useState(null); // 選択されたフレームを保存
 
   return (
@@ -30,13 +30,21 @@ const FrameSelection = () => {
             </div>
           ))}
         </div>
-	    </div>
+      </div>
 
-      {/* 選択されたフレームを画面中央に表示 */}
+      {/* 選択されたフレームがある場合にFrameコンポーネントでプレビュー表示 */}
       {selectedFrame && (
         <div className='selected-frame-container'>
           <h3>選択されたフレーム</h3>
-          <img src={selectedFrame} alt='Selected Layout' className='selected-frame' />
+          {/* Frameコンポーネントでプレビューを表示 */}
+          <Frame 
+            imageCount={4} 
+            title="サンプルタイトル" 
+            date="2024/09/12" 
+            selectColor="blue" 
+            selectBorder={1} 
+            selectTitle={1} 
+          />
         </div>
       )}
     </div>
