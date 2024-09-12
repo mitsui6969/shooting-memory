@@ -39,7 +39,7 @@ const GameStart = () => {
             setUploadProgress(progress); // アップロードの進行状況を表示
           }, 
           (error) => {
-            console.error("アップロードエラー:", error);
+            console.error("エラー:", error);
           }, 
           async () => {
             // アップロード完了後の処理
