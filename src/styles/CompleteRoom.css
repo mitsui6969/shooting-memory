@@ -3,16 +3,16 @@
     align-items: center;
     justify-content: center;
     padding-top: 25%;
-}
-
-h2 {
+  }
+  
+  h2 {
     font-size: larger;
     text-align: center;
     color: antiquewhite;
     margin: 8%;
-}
-
-.white-box {
+  }
+  
+  .white-box {
     background-color: white;
     border-radius: 10px;
     width: 340px;
@@ -23,24 +23,25 @@ h2 {
     overflow: hidden;
     position: relative;
     user-select: none;
-}
-.image {
+  }
+  
+  .image {
     width: 100%;        /* 画像の幅を白いボックスの幅に合わせる */
     height: auto;       /* 高さを自動調整してアスペクト比を維持する */
-    max-width: 80%;     /* 最大幅を90%に制限して、白いボックス内に余白を作る */
-    max-height: 80%;    /* 最大高さを90%に制限して、ボックス内に収める */
+    max-width: 80%;     /* 最大幅を80%に制限して、白いボックス内に余白を作る */
+    max-height: 80%;    /* 最大高さを80%に制限して、ボックス内に収める */
     object-fit: contain; /* 画像のアスペクト比を維持しながら白いボックスに収める */
-}
-
-.image-button-container {
+  }
+  
+  .image-button-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
     width: 100%; /* 親要素の幅を100%にしても問題ありません */
-}
-
-.image-button {
+  }
+  
+  .image-button {
     width: 150px; /* ボタンの横幅を150pxに固定 */
     height: 50px; /* ボタンの高さを指定 */
     background-color: #4CAF50;
@@ -52,7 +53,56 @@ h2 {
     flex-shrink: 0; /* 幅が縮小しないように設定 */
     flex-grow: 0; /* 幅が成長しないように設定 */
     box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
-}
-.nopointer {
+  }
+  
+  .nopointer {
     user-select: none;
   }
+  
+  /* 矢印ボタン */
+  .left-arrow, .right-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+  .left-arrow {
+    left: -9px; /* 左端にさらに近づける */
+  }
+  
+  .right-arrow {
+    right: -9px; /* 右端にさらに近づける */
+  }
+  
+  .left-arrow img, .right-arrow img {
+    width: 30px; /* 矢印画像の大きさ */
+    height: 30px;
+  }
+  
+  .left-arrow:hover img, .right-arrow:hover img {
+    opacity: 0.8; /* ホバー時に少し薄くなる */
+  }
+  
+  /* インジケーター */
+  .indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .indicators span {
+    font-size: 20px;
+    cursor: pointer;
+    margin: 0 5px;
+    color: #ccc;
+  }
+  
+  .indicators .active {
+    color: #000;
+  }
+  
