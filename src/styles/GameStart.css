@@ -123,3 +123,11 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   object-fit: cover;
 }
+
+.text-base.select {
+  white-space: nowrap; /* 改行を防ぐ */
+  display: block;      /* 必要に応じて、displayプロパティを調整 */
+  text-align: center;  /* 中央揃えにする場合 */
+  width: 100%;         /* 幅を調整する */
+  font-size: 20px;
+}
