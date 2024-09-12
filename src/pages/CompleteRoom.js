@@ -80,10 +80,10 @@ const CompleteRoom = () => {
             ))}
           </div>
 
-          {/* 次へボタン */}
-          <div className="image-button-container">
-            <Button onClick={handleNext}>次へ</Button>
-          </div>
+        {/* 次へボタン */}
+        <div className="image-button-container">
+          <Button>次へ</Button>
+        </div>
         </div>
       </div>
     </div>

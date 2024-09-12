@@ -19,7 +19,7 @@ const WaitRoom = () => {
     }, 3000); // 3秒後にロード完了
 
     // どのページから来たかを確認し、メッセージを変える
-    if (location.state && location.state.from === "gamestart") {
+    if (location.state && location.state.from === "game-start") {
       setMessage("GameStart");
     } else if (location.state && location.state.from === "Toppage") {
       setMessage("Toppage");
