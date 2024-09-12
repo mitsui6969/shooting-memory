@@ -1,13 +1,13 @@
 /* コラージュ部分 */
 .collagePage {
+    position: relative;
     margin: 0;
-    height: 100vh;
     align-items: center;
     text-align: center;
 }
 
 .frameArea{
-    height: 50vh;
+    height: 45vh;
     aspect-ratio: 3 / 4;
     background-color: rgba(222, 222, 222, 0.68);
     margin: 0 auto;
@@ -17,7 +17,7 @@
 
 /* 画像部分 */
 .imagesArea{
-    height: 30vh;
+    height: 25vh;
     width: 80%;
     background-color: rgba(222, 222, 222, 0.68);
     margin: 20px auto;
@@ -71,4 +71,9 @@
 
 .dragging {
     opacity: 0.3;
+}
+
+.completionButton {
+    width: 30%;
+    margin: 0 auto;
 }

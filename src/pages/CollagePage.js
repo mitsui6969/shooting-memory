@@ -6,6 +6,8 @@ import testImage2 from "../assets/image/bear.png"
 import testImage3 from "../assets/image/usagi.png"
 import { DndProvider, useDrag } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import Button from "../components/Button_orange/Button_orange";
+import { useNavigate } from "react-router-dom";
 
 const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -36,35 +38,42 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
 const CollagePage = (images) => {
   images = [testImage, testImage2, testImage3];
   const [draggedImages, setDraggedImages] = useState([]);
+  const navigate = useNavigate()
 
   const removeImage = (index) => {
     setDraggedImages((prevDraggedImages) => [...prevDraggedImages, index])
   };
 
+  const handleCompletion = () => {
+    navigate('/');
+  }
+
 
   return (
+    <div className="collagePage">
     <DndProvider backend={HTML5Backend}>
-      <div className="collagePage">
+      <div className="frameArea">
+        <Frame imageCount={images.length}/>
+      </div>
 
-        <div className="frameArea">
-          <Frame imageCount={images.length}/>
-        </div>
-
-        <div className="imagesArea">
-          <ul className="imagesArray">
-            {images.map((src, index) => (
-              <DraggableImage
-                key={index}
-                src={src}
-                index={index}
-                removeImage={removeImage}
-                isDragging={draggedImages.includes(index)}
-              />
-            ))}
-          </ul>
-        </div>
+      <div className="imagesArea">
+        <ul className="imagesArray">
+          {images.map((src, index) => (
+            <DraggableImage
+              key={index}
+              src={src}
+              index={index}
+              removeImage={removeImage}
+              isDragging={draggedImages.includes(index)}
+            />
+          ))}
+        </ul>
       </div>
     </DndProvider>
+    <div className="completionButton">
+    <Button onClick={handleCompletion}>完成！</Button>
+    </div>
+    </div>
   );
 };
 
