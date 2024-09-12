@@ -1,29 +1,27 @@
 .image-upload-container {
-    position: relative;
     height: 100%;
     width: 100%;
     background-color: rgb(209, 209, 209);
 }
 
 .drop-area{
-    position: absolute;
     height: 100%;
     width: 100%;
     margin: 0;
 }
 
 .gray {
-    background-color: rgb(237, 237, 237);
+    background-color: #c2c2c2ca;
+    mix-blend-mode: screen;
 }
 
 input{
-    position: absolute;
     height: 100%;
     width: 100%;
 }
 
 .plus-icon {
-    width: 45%;
+    height: 30%;
     aspect-ratio: 1;
     position: absolute;
     top: 0;
@@ -51,9 +49,14 @@ input{
     position: absolute;
     top: 0;
     left: 0;
-    transition: transform 0.2s ease; /* スムーズな変換効果 */
 }
 
 .file-preview:active {
     cursor: grabbing; /* クリック中のカーソル */
+}
+
+.frameInImage {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
