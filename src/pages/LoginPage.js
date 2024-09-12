@@ -21,7 +21,7 @@ const LoginPage = () => {
       const timer = setTimeout(() => {
         const userId = auth.currentUser?.uid; // FirebaseでログインしているユーザーのUIDを取得
         navigate("/toppage", { state: { userId } }); // UIDを渡してToppageに遷移
-      }, ); // 3秒待つ
+      }, 3000); // 3秒待つ
 
       return () => clearTimeout(timer); // クリーンアップ
     }
