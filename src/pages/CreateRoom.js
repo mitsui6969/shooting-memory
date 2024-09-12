@@ -3,7 +3,7 @@ import "../styles/CreateRoom.css";
 import Button from '../components/Button_orange/Button_orange'
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import { db } from '../firebase/firebase-app';
-import { doc, updateDoc } from "firebase/firestore"; // docとupdateDocをインポート
+import { collection, doc, updateDoc } from "firebase/firestore"; // collectionとupdateDocをインポート
 
 const CreateRoom = () => {
 
@@ -27,8 +27,10 @@ const CreateRoom = () => {
     event.preventDefault(); // ここでデフォルトのフォーム送信動作を防ぐ
 
     try {
-      // 既存のドキュメントを参照
-      const roomDocRef = doc(db, "rooms", "0BozYVs3Tiq1UlO4zllm");
+      // コレクションを参照
+      const roomsCollectionRef = collection(db, "rooms");
+      // 既存のドキュメントを参照（0BozYVs3Tiq1UlO4zllm）
+      const roomDocRef = doc(roomsCollectionRef, "0BozYVs3Tiq1UlO4zllm");
       
       // ドキュメントのroomNameとphotoLimitを更新
       await updateDoc(roomDocRef, {

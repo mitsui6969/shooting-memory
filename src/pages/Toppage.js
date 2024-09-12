@@ -6,7 +6,7 @@ import Button from "../components/Button_white/Button_white";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { db } from "../firebase/firebase-app"; // Firestoreをインポート
-import { doc, updateDoc, arrayUnion } from "firebase/firestore"; // Firestoreの関数をインポート
+import { collection, doc, updateDoc, arrayUnion } from "firebase/firestore"; // collectionとupdateDocをインポート
 
 const Toppage = () => {
   const [showUsage, setShowUsage] = useState(false);
@@ -22,7 +22,8 @@ const Toppage = () => {
 
     if (id) {
       try {
-        const roomRef = doc(db, "rooms", "0BozYVs3Tiq1UlO4zllm"); // 更新する部屋の参照
+        const roomsCollectionRef = collection(db, "participants"); // コレクションリファレンスを参照
+        const roomRef = doc(roomsCollectionRef, "L9YQOzZ8vCzRDSSY7RXR"); // 更新する部屋の参照
 
         // 配列の最後に新しいIDを追加
         await updateDoc(roomRef, {
@@ -44,12 +45,14 @@ const Toppage = () => {
     const id = userId || guestId; // ログインIDか仮IDを使用
     if (id) {
       try {
-        const roomRef = doc(db, "rooms", "0BozYVs3Tiq1UlO4zllm"); // 更新する部屋の参照
+        const roomsCollectionRef = collection(db, "participants"); // コレクションリファレンスを参照
+        const roomRef = doc(roomsCollectionRef, "L9YQOzZ8vCzRDSSY7RXR"); // 更新する部屋の参照
+        
         await updateDoc(roomRef, {
           createdBy: id, // createdByフィールドを更新
         });
-        console.log("部屋が更新されました。ID:", "0BozYVs3Tiq1UlO4zllm");
-        navigate("/create-room", { state: { roomId: "0BozYVs3Tiq1UlO4zllm" } }); // 更新された部屋のIDを次のページに渡す
+        console.log("部屋が更新されました。ID:", "L9YQOzZ8vCzRDSSY7RXR");
+        navigate("/create-room", { state: { roomId: "L9YQOzZ8vCzRDSSY7RXR" } }); // 更新された部屋のIDを次のページに渡す
       } catch (e) {
         console.error("部屋の更新に失敗しました: ", e);
       }
