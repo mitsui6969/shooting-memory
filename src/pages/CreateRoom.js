@@ -3,7 +3,7 @@ import "../styles/CreateRoom.css";
 import Button from '../components/Button_orange/Button_orange'
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import { db } from '../firebase/firebase-app';
-import { collection, addDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore"; // docとupdateDocをインポート
 
 const CreateRoom = () => {
 
@@ -27,11 +27,15 @@ const CreateRoom = () => {
     event.preventDefault(); // ここでデフォルトのフォーム送信動作を防ぐ
 
     try {
-      const postData = collection(db, "create_room");
-      await addDoc(postData, {
-        title: title,
-        content: selectedValue,
+      // 既存のドキュメントを参照
+      const roomDocRef = doc(db, "rooms", "0BozYVs3Tiq1UlO4zllm");
+      
+      // ドキュメントのroomNameとphotoLimitを更新
+      await updateDoc(roomDocRef, {
+        roomName: title,
+        photoLimit: selectedValue,
       });
+
       console.log("タイトル:", title);
       console.log("選択された写真枚数:", selectedValue);
       setIsModalOpen(true); // フォーム送信後にモーダルを表示
@@ -39,7 +43,6 @@ const CreateRoom = () => {
       console.error("エラーが発生しました: ", error);
     }
   };
-
 
   // モーダルを閉じる処理とページ遷移
   const handleCloseModal = () => {
@@ -64,10 +67,10 @@ const CreateRoom = () => {
           <div className='selectbox'>
             <select value={selectedValue} onChange={handleChange}>
               <option value="">選択してください</option>
-              <option value="5枚">5枚</option>
-              <option value="6枚">6枚</option>
-              <option value="7枚">7枚</option>
-              <option value="8枚">8枚</option>
+              <option value="5">5枚</option>
+              <option value="6">6枚</option>
+              <option value="7">7枚</option>
+              <option value="8">8枚</option>
             </select>
           </div>
         </div>
