@@ -1,20 +1,61 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigateをインポート
+import { useNavigate, useLocation } from "react-router-dom"; // useNavigate, useLocationをインポート
 import "../styles/Toppage.css"; // CSSファイルをインポート
 import Modal from "../components/Modal/Modal";
 import Button from "../components/Button_white/Button_white";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { db } from "../firebase/firebase-app"; // Firestoreをインポート
+import { doc, updateDoc, arrayUnion } from "firebase/firestore"; // Firestoreの関数をインポート
 
 const Toppage = () => {
   const [showUsage, setShowUsage] = useState(false);
   const navigate = useNavigate(); // navigate関数を定義
+  const location = useLocation(); // useLocationで渡されたstateを取得
+  const { userId, guestId } = location.state || {}; // userIdまたはguestIdを取得
 
   const [link, setLink] = useState(""); // 入力フォームの状態管理
-  const handleLinkSubmit = (e) => {
+
+  const handleLinkSubmit = async (e) => {
     e.preventDefault();
-    console.log("入力されたリンク：", link);
-    navigate("/wait-room"); // →ボタンが押されたら待機ページに遷移
+    const id = userId || guestId; // ログインIDか仮IDを使用
+
+    if (id) {
+      try {
+        const roomRef = doc(db, "rooms", "0BozYVs3Tiq1UlO4zllm"); // 更新する部屋の参照
+
+        // 配列の最後に新しいIDを追加
+        await updateDoc(roomRef, {
+          members: arrayUnion(id), // members配列にIDを追加
+        });
+
+        console.log("IDがmembers配列の最後に追加されました:", id);
+        navigate("/wait-room", { state: { from: "Toppage" } }); // 次のページに遷移
+      } catch (e) {
+        console.error("members配列の更新に失敗しました: ", e);
+      }
+    } else {
+      console.error("ユーザーIDがありません。members配列を更新できません。");
+    }
+  };
+
+  // 部屋を作成してFirestoreにデータを追加する関数
+  const handleUpdateRoom = async () => {
+    const id = userId || guestId; // ログインIDか仮IDを使用
+    if (id) {
+      try {
+        const roomRef = doc(db, "rooms", "0BozYVs3Tiq1UlO4zllm"); // 更新する部屋の参照
+        await updateDoc(roomRef, {
+          createdBy: id, // createdByフィールドを更新
+        });
+        console.log("部屋が更新されました。ID:", "0BozYVs3Tiq1UlO4zllm");
+        navigate("/create-room", { state: { roomId: "0BozYVs3Tiq1UlO4zllm" } }); // 更新された部屋のIDを次のページに渡す
+      } catch (e) {
+        console.error("部屋の更新に失敗しました: ", e);
+      }
+    } else {
+      console.error("ユーザーIDがありません。部屋を更新できません。");
+    }
   };
 
   const ModalContent = () => {
@@ -35,9 +76,10 @@ const Toppage = () => {
   return (
     <div className="toppage">
       <div className="title">思い出射撃</div>
+
       <div className="main-container">
         <div className="createroom">
-          <Button onClick={() => navigate("/create-room")}>部屋を作成</Button>
+          <Button onClick={handleUpdateRoom}>部屋を作成</Button> {/* 部屋を更新ボタン */}
         </div>
         <form onSubmit={handleLinkSubmit} className="toppage-form">
           <input
@@ -50,9 +92,6 @@ const Toppage = () => {
           <button
             type="submit"
             className="submit-link"
-            onClick={() =>
-              navigate("/wait-room", { state: { from: "Toppage" } })
-            }
           >
             <FontAwesomeIcon icon={faCircleRight} size="2xl" />
           </button>
