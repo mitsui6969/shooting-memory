@@ -124,7 +124,7 @@
 
 .texts {
     height: 60%;
-    width: 70%;
+    width: 60%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -139,10 +139,10 @@
 }
 
 .title {
-    font-size: 2vh;
+    font-size: 1.5vh;
     margin-bottom: 1px;
 }
 
 .date {
-    font-size: 1.8vh;
+    font-size: 1.3vh;
 }

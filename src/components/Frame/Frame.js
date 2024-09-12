@@ -7,7 +7,7 @@ import DropImageZone from '../DropImageZone/DropImageZone';
 export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
 
     // imageCount = 2
-    title = "タイトル"
+    title = "タイトル" // 20文字まで
     date = "yyyy/mm/dd"
     selectColor = 4 // 0.white/1.black/2.blue/3.white2p/4.black2p //
     selectBorder = 1 // 1(on)/0(of) //
