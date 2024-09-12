@@ -8,7 +8,6 @@ import GameStart from "./pages/GameStart";
 import FrameSelection from "./pages/FrameSelection";
 import CollagePage from "./pages/CollagePage";
 import EditFinPage from "./pages/EditFinPage";
-import Test from "./pages/test";
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
         <Route path="/frame-selection" element={<FrameSelection />} />
         <Route path="/collage-page" element={<CollagePage />} />
         <Route path="/edit-fin" element={<EditFinPage />} />
-        <Route path="/test-page" element={<Test />} />
       </Routes>
     </Router>
   );
