@@ -5,12 +5,14 @@ import { getFirestore } from "firebase/firestore";
 
 // Firebaseの設定情報
 const firebaseConfig = {
-  apiKey: "AIzaSyDoapRsTh_-VkrOoZ0tuHQ74p_-gOw39CU",
-  authDomain: "hackthon-firebase.firebaseapp.com",
-  projectId: "hackthon-firebase",
-  storageBucket: "hackthon-firebase.appspot.com",
-  messagingSenderId: "429948710938",
-  appId: "1:429948710938:web:525887c15e88395abee1a3"
+  apiKey: "AIzaSyDb4R-ic3zS_ZuZ_B-I_9auKUDQ9bHEndo",
+  authDomain: "shooting-memory.firebaseapp.com",
+  databaseURL: "https://shooting-memory-default-rtdb.firebaseio.com",
+  projectId: "shooting-memory",
+  storageBucket: "shooting-memory.appspot.com",
+  messagingSenderId: "1060901624376",
+  appId: "1:1060901624376:web:102972d4b1e928184ea4cd",
+  measurementId: "G-FD5L6GZSS9"
 };
 
 // Firebaseアプリを初期化

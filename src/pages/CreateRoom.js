@@ -27,7 +27,7 @@ const CreateRoom = () => {
     event.preventDefault(); // ここでデフォルトのフォーム送信動作を防ぐ
 
     try {
-      const postData = collection(db, "posts");
+      const postData = collection(db, "detail");
       await addDoc(postData, {
         title: title,
         content: selectedValue,
