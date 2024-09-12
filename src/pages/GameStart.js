@@ -4,7 +4,7 @@ import "../styles/GameStart.css";
 import Button from '../components/Button_orange/Button_orange';
 import { useNavigate } from 'react-router-dom';
 import Images from "../assets/images.png"; 
-import storage  from '../firebase/firebase-storage'; // Firebaseストレージをインポート
+import { storage } from '../firebase/firebase-app';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const GameStart = () => {

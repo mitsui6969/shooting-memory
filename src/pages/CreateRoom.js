@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import "../styles/CreateRoom.css";
 import Button from '../components/Button_orange/Button_orange'
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
-import db from "../firebase/firebase-db";
+import { db } from '../firebase/firebase-app';
 import { collection, addDoc } from "firebase/firestore";
 
 const CreateRoom = () => {
@@ -27,7 +27,7 @@ const CreateRoom = () => {
     event.preventDefault(); // ここでデフォルトのフォーム送信動作を防ぐ
 
     try {
-      const postData = collection(db, "detail");
+      const postData = collection(db, "create_room");
       await addDoc(postData, {
         title: title,
         content: selectedValue,

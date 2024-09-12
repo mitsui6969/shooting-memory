@@ -1,7 +1,7 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-
+import { getStorage } from "firebase/storage";
 
 // Firebaseの設定情報
 const firebaseConfig = {
@@ -12,7 +12,7 @@ const firebaseConfig = {
   storageBucket: "shooting-memory.appspot.com",
   messagingSenderId: "1060901624376",
   appId: "1:1060901624376:web:102972d4b1e928184ea4cd",
-  measurementId: "G-FD5L6GZSS9"
+	measurementId: "G-FD5L6GZSS9"
 };
 
 // Firebaseアプリを初期化
@@ -20,7 +20,6 @@ const app = initializeApp(firebaseConfig);
 
 // FirestoreとStorageのインスタンスを取得
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-
-
-export default db;
+export { db, storage };
