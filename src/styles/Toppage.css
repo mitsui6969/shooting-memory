@@ -22,6 +22,8 @@
   top: 160px;
   left: 50%;
   transform: translateX(-50%);
+  white-space: nowrap; /* 1行に強制的に収める */
+  max-width: 100%; /* 必要に応じてタイトルの幅を制限 */
 }
 
 .link-input {

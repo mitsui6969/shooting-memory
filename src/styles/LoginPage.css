@@ -1,0 +1,48 @@
+.loginpage {
+  background-image: url("/src/assets/image/toppage-background.jpeg");
+  height: 100vh;
+  width: 414px;
+  margin: 0 auto;
+  background-color: #87ceeb;
+  background-size: cover;
+}
+
+.title {
+  font-size: 42px;
+  font-weight: bold;
+  text-shadow: 21px 1px 2px #020031;
+  background: linear-gradient(to bottom, #000000, #808080);
+  text-shadow: 0 0 10px #ffffff, 0 0 1px #ffffff, 0 0 2px #04173b,
+    0 0 4px #03112d, 0 0 4px #719df6, 0 0 5px #719df6, 0 0 6px #719df6;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-weight: 800;
+  position: absolute;
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap; /* 1行に強制的に収める */
+  max-width: 100%; /* 必要に応じてタイトルの幅を制限 */
+}
+
+.login {
+  display: flex;
+  justify-content: center; /* 水平方向の中央揃え */
+  align-items: center; /* 垂直方向の中央揃え */
+  position: absolute;
+  top: 350px; /* 上から500pxの位置 */
+  left: 50%; /* 水平方向の中央揃え */
+  transform: translateX(-50%); /* 中央に移動 */
+}
+
+.no-login {
+  display: flex;
+  justify-content: center; /* 水平方向の中央揃え */
+  align-items: center; /* 垂直方向の中央揃え */
+  position: absolute;
+	width: 300px;
+  top: 450px; /* 上から500pxの位置 */
+  left: 50%; /* 水平方向の中央揃え */
+  transform: translateX(-50%); /* 中央に移動 */
+}
