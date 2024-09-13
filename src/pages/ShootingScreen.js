@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/ShootingScreen.css";
 import bearImage from "../assets/image/bear.png";
 import usagiImage from "../assets/image/usagi.png";
@@ -31,14 +31,13 @@ const ShootingScreen = () => {
               console.log("photos:", photosData.photos);
               console.log("members:", photosData.members);
 
-              localStorage.setItem("roomId", "test");
-              localStorage.setItem("photos", JSON.stringify(photosData.photos));
-              localStorage.setItem(
-                "members",
-                JSON.stringify(photosData.members)
-              );
+              const roomData = {
+                roomId: "test",
+                photos: photosData.photos,
+                members: photosData.members,
+              };
 
-              setPhotos(photosData.photos || []);
+              localStorage.setItem("roomData", JSON.stringify(roomData));
             } else {
               console.log("photosまたはmembersが存在しません");
             }
@@ -51,16 +50,17 @@ const ShootingScreen = () => {
       }
     };
 
-    const storedRoomId = localStorage.getItem("roomId");
-    const storedPhotos = localStorage.getItem("photos");
-    const storedMembers = localStorage.getItem("members");
+    const storedRoomData = localStorage.getItem("roomData");
 
-    // 現在のroomIdが"test"の場合のみlocalStorageのデータを利用
-    if (storedRoomId === "test" && storedPhotos && storedMembers) {
-      setPhotos(JSON.parse(storedPhotos));
-      setMembers(JSON.parse(storedMembers));
-      console.log("localStorage photos:", JSON.parse(storedPhotos));
-      console.log("localStorage members:", JSON.parse(storedMembers));
+    if (storedRoomData) {
+      const parsedRoomData = JSON.parse(storedRoomData);
+
+      if (parsedRoomData.roomId === "test") {
+        setPhotos(parsedRoomData.photos);
+        setMembers(parsedRoomData.members);
+        console.log("localStorageから取得したphotos:", parsedRoomData.photos);
+        console.log("localStorageから取得したmembers:", parsedRoomData.members);
+      }
     } else {
       fetchData();
     }
