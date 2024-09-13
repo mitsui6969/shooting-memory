@@ -1,43 +1,89 @@
 .frame-selection {
-    height: 700px;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+	background-image: url("/src/assets/image/toppage-background.jpeg");
+	height: 100vh;
+	width: 414px;
+	margin: 0 auto;
+	background-size: cover;
+	position: relative;
 }
 
-.frame-selection h2 {
-    font-size: larger;
-    text-align: center;
-    margin: 20px;
+.centered-image {
+	width: 180px;
+	height: auto;
+	position: absolute;
+	left: 50px;
+	top: 260px;
+	object-fit: contain;
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 5px;
 }
 
-.selection-area {
-    justify-content: center;
-    align-items: center;
-    overflow: scroll;
-    background-color: rgba(240, 248, 255, 0.689);
-    height: 65%;
-    width: 50%;
-    margin: 0 auto;
-    margin-top: 25px;
-    border-radius: 15px;
-    border: solid 20px rgba(240, 248, 255, 0);
+.checkbox-label {
+	margin-left: 10px;
 }
 
-.frames {
-    margin: 0;
+.checkbox-frame, .checkbox-title {
+	position: absolute;
+	width: 24px; /* チェックボックスの幅を実際に小さく設定 */
+	height: 24px; /* チェックボックスの高さを実際に小さく設定 */
+	cursor: pointer;
 }
 
-.frame{
-    height: 200px;
-    aspect-ratio: 3 / 4;
-    margin: 20px auto;
+.select-box{
+	position: absolute;
+	width: 60px;
+	height: 40px;
+	font-size: 13px;
+	color: #090909;
+	top: 385px;
+	left: 270px;
 }
 
-.layout-sanple {
-    width: 150px;
-    aspect-ratio: 3 / 4;
-    object-fit: fill;
-    border-radius: 5px;
+.checkbox-frame {
+	top: 280px;
+	left: 270px;
+}
+
+.checkbox-title {
+	top: 330px;
+	left: 270px;
+}
+
+.positioned-text {
+	font-size: 18px;
+	line-height: 1;
+	text-align: center;
+	position: absolute;
+	top: 150px;
+	left: 50%;
+	transform: translateX(-50%);
+	white-space: nowrap;
+}
+
+.text-base {
+	text-align: center;
+	color: #ffffff;
+	padding-top: 50px;
+	text-shadow: 2px 2px 4px #020031;
+}
+
+.text-frame {
+	font-size: 24px;
+	line-height: 1;
+	position: absolute;
+	top: 280px;
+	left: 90px;
+	white-space: nowrap;
+	text-align: left; /* 左揃えに変更 */
+}
+
+.text-title {
+	font-size: 24px;
+	line-height: 1;
+	position: absolute;
+	top: 330px;
+	left: 90px;
+	white-space: nowrap;
+	text-align: left; /* 左揃えに変更 */
 }
