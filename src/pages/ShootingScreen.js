@@ -5,7 +5,16 @@ import usagiImage from "../assets/image/usagi.png";
 import weddingbearImage from "../assets/image/wedding_bear.png";
 // import { useParams } from "react-router-dom";
 import { db } from "../firebase/firebase-app";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 
 const ShootingScreen = () => {
   const [showSquare, setShowSquare] = useState(false);
@@ -66,33 +75,36 @@ const ShootingScreen = () => {
     }
   }, []);
 
-  // メンバーを取得
-  // useEffect(() => {
-  //   const fetchMembers = async () => {
-  //     try {
-  //       const querySnapshot = await getDocs(collection(db, "rooms"));
-  //       querySnapshot.forEach((doc) => {
-  //         // console.log(doc.id, " => ", doc.data().members);
-  //       });
-  //     } catch (error) {
-  //       // console.error("データの取得中にエラーが発生しました", error);
-  //     }
-  //   };
+  const saveSelectedImage = async (image) => {
+    try {
+      const roomDocRef = doc(db, "selected_images", "test");
 
-  //   fetchMembers();
-  // } , []);
+      await setDoc(roomDocRef, {}, { merge: true });
+
+      await updateDoc(roomDocRef, {
+        photos: arrayUnion(image),
+      });
+
+      console.log("選ばれた画像がFirestoreに追加されました:", image);
+    } catch (error) {
+      console.error("選ばれた画像の保存中にエラーが発生しました:", error);
+    }
+  };
 
   // 画像クリック時に発火
   const handleClick = () => {
-    const randomIndex = Math.floor(Math.random() * photos.length);
-    setRandumImage(photos[randomIndex]);
-    console.log("randomIndex", randomIndex);
-    console.log("rondumImage", randomImage);
+    const randomPhotoIndex = Math.floor(Math.random() * photos.length);
+    const selectedImage = photos[randomPhotoIndex];
+    saveSelectedImage(selectedImage);
+
+    setRandumImage(photos[randomPhotoIndex]);
+    console.log("randomIndex", randomPhotoIndex);
     setShowSquare(true);
     setIsClosing(false);
   };
 
   const handleNext = () => {
+    const randomMemberIndex = Math.floor(Math.random() * members.length);
     setIsClosing(true);
     setTimeout(() => {
       setShowSquare(false);
