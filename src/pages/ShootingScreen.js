@@ -3,7 +3,7 @@ import "../styles/ShootingScreen.css";
 import bearImage from "../assets/image/bear.png";
 import usagiImage from "../assets/image/usagi.png";
 import weddingbearImage from "../assets/image/wedding_bear.png";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { db } from "../firebase/firebase-app";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
@@ -11,12 +11,12 @@ const ShootingScreen = () => {
   const [showSquare, setShowSquare] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [photos, setPhotos] = useState([]);
+  const [members, setMembers] = useState([]);
   const [randomImage, setRandumImage] = useState(null);
-  const hasFetchedRef = useRef(false);
 
   // 画像取得
   useEffect(() => {
-    const fetchPhotosFromDB = async () => {
+    const fetchData = async () => {
       try {
         const roomsRef = collection(db, "rooms");
         const q = query(roomsRef, where("roomId", "==", "test"));
@@ -25,12 +25,23 @@ const ShootingScreen = () => {
 
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
-            const photosData = doc.data().photos;
-            console.log("photosData", photosData.photos);
+            const photosData = doc.data();
 
-            localStorage.setItem("photos", JSON.stringify(photosData));
+            if (photosData.photos && photosData.members) {
+              console.log("photos:", photosData.photos);
+              console.log("members:", photosData.members);
 
-            setPhotos(photosData || []);
+              localStorage.setItem("roomId", "test");
+              localStorage.setItem("photos", JSON.stringify(photosData.photos));
+              localStorage.setItem(
+                "members",
+                JSON.stringify(photosData.members)
+              );
+
+              setPhotos(photosData.photos || []);
+            } else {
+              console.log("photosまたはmembersが存在しません");
+            }
           });
         } else {
           console.log("指定されたroomIdのドキュメントは存在しません");
@@ -40,16 +51,22 @@ const ShootingScreen = () => {
       }
     };
 
+    const storedRoomId = localStorage.getItem("roomId");
     const storedPhotos = localStorage.getItem("photos");
-    if (storedPhotos) {
+    const storedMembers = localStorage.getItem("members");
+
+    // 現在のroomIdが"test"の場合のみlocalStorageのデータを利用
+    if (storedRoomId === "test" && storedPhotos && storedMembers) {
       setPhotos(JSON.parse(storedPhotos));
-    } else if (!hasFetchedRef.current) {
-      fetchPhotosFromDB();
-      hasFetchedRef.current = true;
+      setMembers(JSON.parse(storedMembers));
+      console.log("localStorage photos:", JSON.parse(storedPhotos));
+      console.log("localStorage members:", JSON.parse(storedMembers));
+    } else {
+      fetchData();
     }
   }, []);
 
-  // データベースからメンバーを取得
+  // メンバーを取得
   // useEffect(() => {
   //   const fetchMembers = async () => {
   //     try {
