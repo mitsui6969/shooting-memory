@@ -1,44 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../styles/ShootingScreen.css";
 import bearImage from "../assets/image/bear.png";
 import usagiImage from "../assets/image/usagi.png";
 import weddingbearImage from "../assets/image/wedding_bear.png";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase/firebase-app";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const ShootingScreen = () => {
   const [showSquare, setShowSquare] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [randomImage, setRandumImage] = useState(null);
+  const hasFetchedRef = useRef(false);
 
+  // 画像取得
   useEffect(() => {
-    // データがすでに存在している場合は、fetchをスキップ
-    if (photos.length > 0) {
-      return;
-    }
-
-    const fetchPhotos = async () => {
+    const fetchPhotosFromDB = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "selected_images"));
-        const fetchedPhotos = [];
+        const roomsRef = collection(db, "rooms");
+        const q = query(roomsRef, where("roomId", "==", "test"));
 
-        querySnapshot.forEach((doc) => {
-          if (doc.exists()) {
-            fetchedPhotos.push(...doc.data().photos);
-            console.log("fetchedPhotos", fetchedPhotos);
-          }
-        });
+        const querySnapshot = await getDocs(q);
 
-        setPhotos(fetchedPhotos);
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            const photosData = doc.data().photos;
+            console.log("photosData", photosData.photos);
+
+            localStorage.setItem("photos", JSON.stringify(photosData));
+
+            setPhotos(photosData || []);
+          });
+        } else {
+          console.log("指定されたroomIdのドキュメントは存在しません");
+        }
       } catch (error) {
         console.error("データの取得中にエラーが発生しました", error);
       }
     };
 
-    fetchPhotos();
-  }, [photos]);
+    const storedPhotos = localStorage.getItem("photos");
+    if (storedPhotos) {
+      setPhotos(JSON.parse(storedPhotos));
+    } else if (!hasFetchedRef.current) {
+      fetchPhotosFromDB();
+      hasFetchedRef.current = true;
+    }
+  }, []);
+
+  // データベースからメンバーを取得
+  // useEffect(() => {
+  //   const fetchMembers = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(collection(db, "rooms"));
+  //       querySnapshot.forEach((doc) => {
+  //         // console.log(doc.id, " => ", doc.data().members);
+  //       });
+  //     } catch (error) {
+  //       // console.error("データの取得中にエラーが発生しました", error);
+  //     }
+  //   };
+
+  //   fetchMembers();
+  // } , []);
 
   // 画像クリック時に発火
   const handleClick = () => {
