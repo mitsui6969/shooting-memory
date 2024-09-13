@@ -1,6 +1,6 @@
 /* ボタンの共通スタイル */
 .button-orange {
-    width: 100%; /* 親要素（.createroom）の幅に合わせてボタンを広げる */
+    
     background: linear-gradient(to bottom, #ffa438, #ffd39f); /* 上から下へのグラデーション */
     color: black; /* 文字色を黒にする */
     padding: 15px 30px;

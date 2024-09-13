@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import "../App.css";
 import "../styles/GameStart.css";
 import Button from '../components/Button_orange/Button_orange';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Images from "../assets/images.png"; 
 import { storage, db } from '../firebase/firebase-app'; // FirestoreとStorageをインポート
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore"; // Firestore用の関数をインポート
+import { doc, updateDoc, arrayUnion, getDoc, setDoc, increment } from "firebase/firestore"; // Firestore用の関数をインポート
 
 const GameStart = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // useLocationを使ってroomIdを取得
   const [name, setName] = useState("");
   const [selectedImages, setSelectedImages] = useState([]); // 複数の画像を管理
+  const { roomId } = location.state || {}; // roomIdを受け取る
 
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
@@ -28,11 +30,24 @@ const GameStart = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!roomId) {
+      alert("Room ID が見つかりません");
+      return;
+    }
+
+    const docRef = doc(db, "selected_images", roomId); // roomIdに基づいて"rooms"コレクション内のドキュメントを参照
+
+    // Firestoreで指定されたroomIdのドキュメントが存在するか確認
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      // ドキュメントが存在しない場合は新しいドキュメントを作成
+      console.log("新しいドキュメントを作成します。");
+      await setDoc(docRef, { photos: [] });
+    }
+
     if (selectedImages.length > 0) {
       const imageUrls = [];
-
-      // Firestoreのドキュメント参照を定義
-      const docRef = doc(db, "selected_images", "kjfhBVrsYC8BOg8R298c"); // "selected_images"コレクションのドキュメントにアクセス
 
       // 画像をアップロードし、そのURLを取得
       for (let i = 0; i < selectedImages.length; i++) {
@@ -55,7 +70,7 @@ const GameStart = () => {
 
               // FirestoreにアップロードされたURLを保存
               await updateDoc(docRef, {
-                photos: arrayUnion(downloadURL), // photos配列にURLを追加
+                photos: arrayUnion(downloadURL), // roomIdを使用してphotos配列にURLを追加
               });
 
               resolve();
@@ -63,15 +78,21 @@ const GameStart = () => {
           );
         });
       }
-
-      // すべての画像がアップロード完了したら次のページへ遷移
-      navigate('/wait-room', { state: { from:"game-start" } });
-
-    } else {
-      // 画像が選択されていない場合でも名前だけで遷移する
-      console.log("名前が送信されました: ", name);
-      navigate('/wait-room', { state: { from: 'game-start' } });
     }
+
+    // roomsコレクションのcountを1増やす処理
+    const roomDocRef = doc(db, "rooms", roomId);
+    try {
+      await updateDoc(roomDocRef, {
+        count: increment(1) // countフィールドを1増やす
+      });
+      console.log("roomsコレクションのcountが1増えました");
+    } catch (error) {
+      console.error("roomsコレクションのcountの更新に失敗しました:", error);
+    }
+
+    // すべての画像がアップロード完了したら次のページへ遷移
+    navigate('/wait-room', { state: { roomId, from: 'game-start' } });
   };
 
   return (
