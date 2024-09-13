@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Frame.module.css';
-import defaultBackImage from"../../assets/plus-icon.png"
+// import defaultBackImage from"../../assets/plus-icon.png"
 import DropImageZone from '../DropImageZone/DropImageZone';
 
 export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
