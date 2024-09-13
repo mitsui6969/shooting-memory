@@ -34,7 +34,7 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   );
 };
 
-const CollagePage = (images) => {
+const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=0, selectBorder=true}) => {
   images = [testImage, testImage2, testImage3];
   const [draggedImages, setDraggedImages] = useState([]);
 
@@ -51,7 +51,13 @@ const CollagePage = (images) => {
     <div className="collagePage">
     <DndProvider backend={HTML5Backend}>
       <div className="frameArea">
-        <Frame imageCount={images.length}/>
+        <Frame
+          imageCount={images.length}
+          title={title}
+          date={date}
+          selectColor={selectColor}
+          selectBorder={selectBorder}
+        />
       </div>
 
       <div className="imagesArea">

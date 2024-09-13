@@ -4,14 +4,13 @@ import DropImageZone from '../DropImageZone/DropImageZone';
 // import { DndProvider } from 'react-dnd';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 
-export default function Frame({ imageCount, title, date, selectColor, selectBorder, selectTitle }) {
+export default function Frame({ imageCount, title, date, selectColor, selectBorder }) {
 
-    // imageCount = 2
-    title = "タイトル" // 20文字まで
-    date = "yyyy/mm/dd"
-    selectColor = 4 // 0.white/1.black/2.blue/3.white2p/4.black2p //
-    selectBorder = 1 // 1(on)/0(of) //
-    selectTitle = 1 // 1(on)/0(of) //
+    // title = "タイトル" // 20文字まで
+    // date = "yyyy/mm/dd"
+    // selectColor = 4 // 0.white/1.black/2.blue/3.white2p/4.black2p //
+    // selectBorder = 1 // 1(on)/0(of) //
+
     const [imageList, setImageList] = useState(Array.from({ length: imageCount }, () => null));
 
     // 画像ドロップしたとき
@@ -65,13 +64,11 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
     }
 
     // 枠ありなし
-    const getBorder = () => selectBorder===1 ? styles.frameBorder : '';
+    const getBorder = () => selectBorder ? styles.frameBorder : '';
 
     // タイトル日付ありなし
-    const getOverlay = () => {
-        if (selectTitle===0) {
-            return styles.hiddenTitle
-        }
+    const getOverlay = (title, date) => {
+        return title || date ?  '' : styles.hiddenTitle
     }
 
     return (
@@ -87,7 +84,7 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
                 </div>
             ))}
 
-            <div className={`${styles.overlay} ${getBackgroundColor()} ${getOverlay()}`}>
+            <div className={`${styles.overlay} ${getBackgroundColor()} ${getOverlay(title, date)}`}>
                 <div className={styles.texts}>
                     <p className={styles.title}>{title}</p>
                     <p className={styles.date}>{date}</p>
