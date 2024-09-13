@@ -62,7 +62,7 @@ const DropImageZone = ({ image, onDrop, swapImage, index }) => {
     return (
         <div ref={drop} className="upload-container">
             <div {...getRootProps()} className={`drop-area ${dropAreaBackground}`}>
-                <input {...getInputProps()} />
+                <input {...getInputProps()} className='input-area' />
                 {filePreview}
             </div>
         </div>

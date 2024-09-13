@@ -1,4 +1,4 @@
-.image-upload-container {
+.upload-container {
     height: 100%;
     width: 100%;
     background-color: rgb(209, 209, 209);
@@ -15,9 +15,11 @@
     mix-blend-mode: screen;
 }
 
-input{
+.input-area{
     height: 100%;
     width: 100%;
+    margin: 0;
+    background-color: aqua;
 }
 
 .plus-icon {
