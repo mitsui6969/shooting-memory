@@ -1,19 +1,130 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/ShootingScreen.css";
 import bearImage from "../assets/image/bear.png";
 import usagiImage from "../assets/image/usagi.png";
 import weddingbearImage from "../assets/image/wedding_bear.png";
+// import { useParams } from "react-router-dom";
+import { db } from "../firebase/firebase-app";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 
 const ShootingScreen = () => {
+  const navigate = useNavigate();
+
   const [showSquare, setShowSquare] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [photos, setPhotos] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [randomImage, setRandomImage] = useState(null);
+  const [playMember, setPlayMember] = useState(null);
 
+  // 画像取得
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const roomsRef = collection(db, "rooms");
+        const q = query(roomsRef, where("roomId", "==", "test"));
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            const photosData = doc.data();
+
+            if (photosData.photos && photosData.members) {
+              console.log("photos:", photosData.photos);
+              console.log("members:", photosData.members);
+
+              const roomData = {
+                roomId: "test",
+                photos: photosData.photos,
+                members: photosData.members,
+              };
+
+              localStorage.setItem("roomData", JSON.stringify(roomData));
+            } else {
+              console.log("photosまたはmembersが存在しません");
+            }
+          });
+        } else {
+          console.log("指定されたroomIdのドキュメントは存在しません");
+        }
+      } catch (error) {
+        console.error("データの取得中にエラーが発生しました", error);
+      }
+    };
+
+    const storedRoomData = localStorage.getItem("roomData");
+
+    if (storedRoomData) {
+      const parsedRoomData = JSON.parse(storedRoomData);
+
+      if (parsedRoomData.roomId === "test") {
+        setPhotos(parsedRoomData.photos);
+        setMembers(parsedRoomData.members);
+        console.log("localStorageから取得したphotos:", parsedRoomData.photos);
+        console.log("localStorageから取得したmembers:", parsedRoomData.members);
+      }
+    } else {
+      fetchData();
+    }
+  }, []);
+
+  const saveSelectedImage = async (image) => {
+    try {
+      // TODO: roomIdをパラメータから取得する
+      const roomDocRef = doc(db, "selected_images", "test");
+
+      await setDoc(roomDocRef, {}, { merge: true });
+
+      await updateDoc(roomDocRef, {
+        photos: arrayUnion(image),
+      });
+
+      console.log("選ばれた画像がFirestoreに追加されました:", image);
+    } catch (error) {
+      console.error("選ばれた画像の保存中にエラーが発生しました:", error);
+    }
+  };
+
+  // 画像クリック時に発火
   const handleClick = () => {
+    const randomPhotoIndex = Math.floor(Math.random() * photos.length);
+    const selectedImage = photos[randomPhotoIndex];
+    saveSelectedImage(selectedImage);
+
+    setRandomImage(photos[randomPhotoIndex]);
+    console.log("randomIndex", randomPhotoIndex);
     setShowSquare(true);
     setIsClosing(false);
+
+    const updatedPhotos = photos.filter(
+      (_, index) => index !== randomPhotoIndex
+    );
+    setPhotos(updatedPhotos);
   };
 
   const handleNext = () => {
+    const nextMemberIndex = members.indexOf(playMember) + 1;
+    setPlayMember(members[nextMemberIndex]);
+
+    console.log("次の人:", members[nextMemberIndex]);
+
+    if (nextMemberIndex === members.length - 1) {
+      // TODO: 全員が終了したら出揃い画面に遷移
+      navigate("/");
+      console.log("全員が終了しました");
+      return;
+    }
     setIsClosing(true);
     setTimeout(() => {
       setShowSquare(false);
@@ -37,7 +148,7 @@ const ShootingScreen = () => {
 
       {showSquare && (
         <div className={`click-target ${isClosing ? "closing" : ""}`}>
-          <img src={bearImage} alt="sample" />
+          <img src={randomImage} alt="sample" />
           <button onClick={handleNext}>次の人へ</button>
         </div>
       )}
