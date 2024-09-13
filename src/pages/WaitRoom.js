@@ -4,48 +4,112 @@ import "../styles/WaitRoom.css";
 import { useLocation } from "react-router-dom";
 import Spinner from "../components/Spinner/Spinner";
 import Button from "../components/Button_orange/Button_orange";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  // useParams
+} from "react-router-dom";
+import { db } from "../firebase/firebase-app";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+  onSnapshot,
+} from "firebase/firestore";
 
 const WaitRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  // const params = useParams();
   const [message, setMessage] = useState("");
 
-  // データのロードが終わった後にローディングを解除
+  //　どの画面から遷移してきたかを判定
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000); // 3秒後にロード完了
-
-    // どのページから来たかを確認し、メッセージを変える
     if (location.state && location.state.from === "game-start") {
       setMessage("GameStart");
     } else if (location.state && location.state.from === "Toppage") {
       setMessage("Toppage");
-    } else {
+    } else if (location.state && location.state.from === "create-room") {
       setMessage("CreateRoom");
     }
-
-    return () => clearTimeout(timer);
   }, [location.state]);
 
-  // ロードが終了し、かつmessageがGameStartの場合、gamestartに移動する
-  useEffect(() => {
-    if (!loading && message === "GameStart") {
-      navigate('/shooting-screen');
+  // ホストがはじめるボタンをクリックしたときの処理
+  const handleStartClick = async () => {
+    const roomsRef = collection(db, "rooms");
+    const q = query(roomsRef, where("roomId", "==", "test"));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (roomDoc) => {
+        const roomDocRef = doc(db, "rooms", roomDoc.id);
+        await updateDoc(roomDocRef, {
+          isActive: true,
+        });
+        console.log(`Room ${roomDoc.id} updated successfully`);
+      });
+    } catch (error) {
+      console.error("Error updating room: ", error);
     }
-  }, [loading, message, navigate]);
+  };
+
+  // isAciveの変更を監視
+  useEffect(() => {
+    const roomsRef = collection(db, "rooms");
+    const q = query(roomsRef, where("roomId", "==", "test"));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const roomData = doc.data();
+        if (roomData.isActive) {
+          navigate("/shooting-screen");
+        }
+      });
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
+
+  // isReadyの変更を監視
+  useEffect(() => {
+    if (message === "GameStart") {
+      const roomsRef = collection(db, "rooms");
+      const q = query(roomsRef, where("roomId", "==", "test"));
+
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+        querySnapshot.forEach(async (doc) => {
+          const roomDocRef = doc.ref;
+
+          const membersRef = collection(roomDocRef, "participants");
+          const membersUnsubscribe = onSnapshot(
+            membersRef,
+            (membersSnapshot) => {
+              const membersData = membersSnapshot.docs.map((memberDoc) =>
+                memberDoc.data()
+              );
+
+              // メンバー全員の isReady が true か確認
+              if (membersData.every((member) => member.isReady)) {
+                navigate("/shooting-screen");
+              }
+            }
+          );
+
+          return () => membersUnsubscribe();
+        });
+      });
+
+      return () => unsubscribe();
+    }
+  }, [message, navigate]);
 
   return (
     <div className="waitroom">
-      {loading ? (
-        <div className="spinner-container">
-          <Spinner /> {/* ローディング中はスピナーを表示 */}
-        </div>
-      ) : (
-        <h1>コンテンツが読み込まれました！</h1>
-      )}
+      <div className="spinner-container">
+        <Spinner />
+      </div>
 
       {message === "Toppage" && (
         <div className="text">ホストが開始するまでしばらくお待ちください</div>
@@ -55,15 +119,13 @@ const WaitRoom = () => {
         <>
           <div className="text-host">参加人数〇人</div>
           <div className="start-button">
-            <Button onClick={() => navigate("/game-start")}>はじめる</Button>
+            <Button onClick={handleStartClick}>はじめる</Button>
           </div>
         </>
       )}
 
       {message === "GameStart" && (
-        <>
-          <div className="text">画像が出揃うまで少々お待ちください</div>
-        </>
+        <div className="text">画像が出揃うまで少々お待ちください</div>
       )}
     </div>
   );
