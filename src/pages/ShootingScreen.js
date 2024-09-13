@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/ShootingScreen.css";
 import bearImage from "../assets/image/bear.png";
 import usagiImage from "../assets/image/usagi.png";
@@ -17,11 +18,14 @@ import {
 } from "firebase/firestore";
 
 const ShootingScreen = () => {
+  const navigate = useNavigate();
+
   const [showSquare, setShowSquare] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [members, setMembers] = useState([]);
   const [randomImage, setRandumImage] = useState(null);
+  const [playMember, setPlayMember] = useState(null);
 
   // 画像取得
   useEffect(() => {
@@ -101,10 +105,24 @@ const ShootingScreen = () => {
     console.log("randomIndex", randomPhotoIndex);
     setShowSquare(true);
     setIsClosing(false);
+
+    const updatedPhotos = photos.filter(
+      (_, index) => index !== randomPhotoIndex
+    );
+    setPhotos(updatedPhotos);
   };
 
   const handleNext = () => {
-    const randomMemberIndex = Math.floor(Math.random() * members.length);
+    const nextMemberIndex = members.indexOf(playMember) + 1;
+    setPlayMember(members[nextMemberIndex]);
+
+    console.log("次の人:", members[nextMemberIndex]);
+
+    if (nextMemberIndex === members.length - 1) {
+      navigate("/toppage");
+      console.log("全員が終了しました");
+      return;
+    }
     setIsClosing(true);
     setTimeout(() => {
       setShowSquare(false);
