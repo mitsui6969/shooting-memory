@@ -24,7 +24,7 @@ const ShootingScreen = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [members, setMembers] = useState([]);
-  const [randomImage, setRandumImage] = useState(null);
+  const [randomImage, setRandomImage] = useState(null);
   const [playMember, setPlayMember] = useState(null);
 
   // 画像取得
@@ -81,6 +81,7 @@ const ShootingScreen = () => {
 
   const saveSelectedImage = async (image) => {
     try {
+      // TODO: roomIdをパラメータから取得する
       const roomDocRef = doc(db, "selected_images", "test");
 
       await setDoc(roomDocRef, {}, { merge: true });
@@ -101,7 +102,7 @@ const ShootingScreen = () => {
     const selectedImage = photos[randomPhotoIndex];
     saveSelectedImage(selectedImage);
 
-    setRandumImage(photos[randomPhotoIndex]);
+    setRandomImage(photos[randomPhotoIndex]);
     console.log("randomIndex", randomPhotoIndex);
     setShowSquare(true);
     setIsClosing(false);
@@ -119,7 +120,8 @@ const ShootingScreen = () => {
     console.log("次の人:", members[nextMemberIndex]);
 
     if (nextMemberIndex === members.length - 1) {
-      navigate("/toppage");
+      // TODO: 全員が終了したら出揃い画面に遷移
+      navigate("/");
       console.log("全員が終了しました");
       return;
     }
