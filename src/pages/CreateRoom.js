@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import "../styles/CreateRoom.css";
-import Button from '../components/Button_orange/Button_orange'
-import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
+import Button from '../components/Button_orange/Button_orange';
+import { useNavigate, useLocation } from 'react-router-dom'; // useNavigate, useLocationをインポート
 import { db } from '../firebase/firebase-app';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore"; // collectionとaddDocをインポート
 
 const CreateRoom = () => {
-
   const [selectedValue, setSelectedValue] = useState('');
   const [title, setTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの表示状態を管理
   const navigate = useNavigate(); // navigateを使用してページ遷移を管理
+  const location = useLocation(); // useLocationを使用してToppageからのデータを受け取る
+  const { id } = location.state || {}; // Toppageから渡されたidを取得
 
   // タイトルの入力を管理するハンドラー
   const handleTitleChange = (event) => {
@@ -27,19 +28,27 @@ const CreateRoom = () => {
     event.preventDefault(); // ここでデフォルトのフォーム送信動作を防ぐ
 
     try {
-      const postData = collection(db, "create_room");
-      await addDoc(postData, {
-        title: title,
-        content: selectedValue,
+      if (!id) {
+        console.error("IDが見つかりません。Toppageから正しく受け取れていません。");
+        return;
+      }
+
+      // roomsコレクションに新しいドキュメントを作成
+      const roomsCollectionRef = collection(db, "rooms");
+      
+      // addDocを使用して新しいドキュメントを作成し、roomNameとphotoLimit、createdByを設定
+      const newRoomDocRef = await addDoc(roomsCollectionRef, {
+        roomName: title,
+        photoLimit: selectedValue,
+        createdBy: id, // Toppageから受け取ったidを追加
       });
-      console.log("タイトル:", title);
-      console.log("選択された写真枚数:", selectedValue);
+
+      console.log("新しい部屋が作成されました。ドキュメントID:", newRoomDocRef.id);
       setIsModalOpen(true); // フォーム送信後にモーダルを表示
     } catch (error) {
       console.error("エラーが発生しました: ", error);
     }
   };
-
 
   // モーダルを閉じる処理とページ遷移
   const handleCloseModal = () => {
@@ -64,16 +73,16 @@ const CreateRoom = () => {
           <div className='selectbox'>
             <select value={selectedValue} onChange={handleChange}>
               <option value="">選択してください</option>
-              <option value="5枚">5枚</option>
-              <option value="6枚">6枚</option>
-              <option value="7枚">7枚</option>
-              <option value="8枚">8枚</option>
+              <option value="5">5枚</option>
+              <option value="6">6枚</option>
+              <option value="7">7枚</option>
+              <option value="8">8枚</option>
             </select>
           </div>
         </div>
 
         <div className='create'>
-          <Button type="submit" >作成</Button>
+          <Button type="submit">作成</Button>
         </div>
       </form>
 

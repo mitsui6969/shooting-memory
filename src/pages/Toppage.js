@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigateをインポート
+import { useNavigate, useLocation } from "react-router-dom"; // useNavigate, useLocationをインポート
 import "../styles/Toppage.css"; // CSSファイルをインポート
 import Modal from "../components/Modal/Modal";
 import Button from "../components/Button_white/Button_white";
@@ -9,12 +9,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Toppage = () => {
   const [showUsage, setShowUsage] = useState(false);
   const navigate = useNavigate(); // navigate関数を定義
+  const location = useLocation(); // useLocationで渡されたstateを取得
+  const { userId, guestId } = location.state || {}; // userIdまたはguestIdを取得
 
   const [link, setLink] = useState(""); // 入力フォームの状態管理
+
   const handleLinkSubmit = (e) => {
     e.preventDefault();
-    console.log("入力されたリンク：", link);
-    navigate("/wait-room"); // →ボタンが押されたら待機ページに遷移
+    const id = userId || guestId; // ログインIDか仮IDを使用
+
+    if (id) {
+      // 次のページにIDを渡しながら遷移
+      navigate("/wait-room", { state: { from: "Toppage", id } });
+    } else {
+      console.error("ユーザーIDがありません。次のページに遷移できません。");
+    }
+  };
+
+  // 「部屋を作成」ボタンが押されたときの処理
+  const handleCreateRoom = () => {
+    const id = userId || guestId; // ログインIDか仮IDを使用
+    if (id) {
+      // CreateRoomにIDを渡しながらページ遷移
+      navigate("/create-room", { state: { id } });
+    } else {
+      console.error("ユーザーIDがありません。部屋作成に遷移できません。");
+    }
   };
 
   const ModalContent = () => {
@@ -35,9 +55,10 @@ const Toppage = () => {
   return (
     <div className="toppage">
       <div className="title">思い出射撃</div>
+
       <div className="main-container">
         <div className="createroom">
-          <Button onClick={() => navigate("/create-room")}>部屋を作成</Button>
+          <Button onClick={handleCreateRoom}>部屋を作成</Button> {/* CreateRoomに遷移 */}
         </div>
         <form onSubmit={handleLinkSubmit} className="toppage-form">
           <input
@@ -47,13 +68,7 @@ const Toppage = () => {
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />
-          <button
-            type="submit"
-            className="submit-link"
-            onClick={() =>
-              navigate("/wait-room", { state: { from: "Toppage" } })
-            }
-          >
+          <button type="submit" className="submit-link">
             <FontAwesomeIcon icon={faCircleRight} size="2xl" />
           </button>
         </form>
