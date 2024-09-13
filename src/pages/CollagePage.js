@@ -7,7 +7,6 @@ import testImage3 from "../assets/image/usagi.png"
 import { DndProvider, useDrag } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Button from "../components/Button_orange/Button_orange";
-import { useNavigate } from "react-router-dom";
 
 const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -30,7 +29,7 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
       className={`imageContainer ${isDragging || isDragged ? "dragging" : ""}`}
       style={{ opacity: isDragging || isDragged ? 0.5 : 1 }}
     >
-      <img src={src} alt={`Collage image ${index + 1}`} className="image" />
+      <img src={src} alt={`Collage ${index + 1}`} className="image" />
     </li>
   );
 };
@@ -38,14 +37,13 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
 const CollagePage = (images) => {
   images = [testImage, testImage2, testImage3];
   const [draggedImages, setDraggedImages] = useState([]);
-  const navigate = useNavigate()
 
   const removeImage = (index) => {
     setDraggedImages((prevDraggedImages) => [...prevDraggedImages, index])
   };
 
   const handleCompletion = () => {
-    navigate('/');
+    // navigate('/');
   }
 
 

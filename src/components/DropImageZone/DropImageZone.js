@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useDrop, useDrag, DndProvider } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import './DropImagezone.css';
 import plusIcon from '../../assets/image/plus-icon.png';
 
@@ -60,7 +60,7 @@ const DropImageZone = ({ image, onDrop, swapImage, index }) => {
     }, [file]);
 
     return (
-        <div ref={drop} className="image-upload-container">
+        <div ref={drop} className="upload-container">
             <div {...getRootProps()} className={`drop-area ${dropAreaBackground}`}>
                 <input {...getInputProps()} />
                 {filePreview}
