@@ -81,7 +81,6 @@ const CreateRoom = () => {
   return (
     <div className="CreateRoom">
       <div className="titleName">タイトル</div>
-
       <form className="inputform" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -92,7 +91,6 @@ const CreateRoom = () => {
         />
         <div className="upload-image-num-select">
           <span className="nanigaiikana">アップロード写真枚数</span>
-
           <div className="selectbox">
             <select value={selectedValue} onChange={handleChange}>
               <option value="">選択してください</option>
@@ -108,13 +106,12 @@ const CreateRoom = () => {
           <Button type="submit">作成</Button>
         </div>
       </form>
-
       <div className="attention">
         ※注意
         <br />
-        参加人数上限は4人です。
+        参加人数上限は4人です
         <br />
-        写真アップロード上限は8枚です。
+        写真アップロード上限は8枚です
       </div>
 
       {/* モーダル表示部分 */}

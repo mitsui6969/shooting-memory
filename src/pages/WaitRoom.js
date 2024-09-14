@@ -213,23 +213,28 @@ const WaitRoom = () => {
 
   return (
     <div className="waitroom">
+      <div className="room-title">
+        <h2 className="roomName">
+          ルーム名
+          <br />
+          {roomTitle}
+        </h2>
+      </div>
       <div className="spinner-container">
         <Spinner />
       </div>
 
-      {/* Room Titleの表示 */}
-      <div className="room-title">
-        <h2 className="roomName">{roomTitle}</h2>{" "}
-        {/* ここでFirestoreから取得したタイトルを表示 */}
-      </div>
-
       {message === "Toppage" && (
-        <div className="text">ホストが開始するまでしばらくお待ちください</div>
+        <h3>
+          ホストが開始するまで
+          <br />
+          しばらくお待ちください
+        </h3>
       )}
 
       {message === "CreateRoom" && (
         <>
-          <div className="text-host">参加人数: {memberCount}人</div>
+          <h3>参加人数: {memberCount}人</h3>
           <div className="start-button">
             <Button onClick={handleStartClick}>はじめる</Button>
           </div>
