@@ -41,7 +41,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 6vh;
+  margin-top: 5vh;
   width: 100%;
 }
 
@@ -78,7 +78,7 @@ h2 {
 .indicators {
   display: flex;
   justify-content: center;
-  margin-top: 0;
+  margin-top: 5px;
   font-size: 18px;
 }
 

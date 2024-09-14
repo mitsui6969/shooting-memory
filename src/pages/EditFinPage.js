@@ -11,13 +11,13 @@ import Image3 from "../assets/image/sample3.png";
 import LeftArrowIcon from "../assets/image/leftarrow.png";
 import RightArrowIcon from "../assets/image/rightarrow.png";
 
-const imageList = [
-  Image1,
-  Image2,
-  Image3,
-];
-
 const EditFinPage = () => {
+  const [imageList, setImageList] = useState([
+    {user:"user1", image:Image1},
+    {user:"user2", image:Image2},
+    {user:"user3", image:Image3}
+  ])
+  
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlers = useSwipeable({
@@ -45,7 +45,7 @@ const EditFinPage = () => {
 
   return (
       <div className="all-contain">
-        <h2>{userName}</h2>
+        <h2>{imageList[currentIndex].user}</h2>
         
         <div className="view-items-container">
           <div className="back-image-box" {...handlers}>
@@ -56,7 +56,7 @@ const EditFinPage = () => {
 
             {/* 画像表示 */}
             <img
-              src={imageList[currentIndex]}
+              src={imageList[currentIndex].image}
               alt="swipeable content"
               draggable="false"
               onDragStart={(e) => e.preventDefault()}
