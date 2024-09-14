@@ -13,7 +13,9 @@ import {
   doc,
   updateDoc,
   onSnapshot,
+  arrayUnion,
 } from "firebase/firestore";
+import { auth } from "../firebase/firebase-app";
 
 const WaitRoom = () => {
   const location = useLocation();
@@ -21,16 +23,6 @@ const WaitRoom = () => {
   const [message, setMessage] = useState("");
   const [roomId, setRoomId] = useState(null);
   const [memberCount, setMemberCount] = useState(0);
-
-  // roomIdを取得
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const roomIdFromQuery = params.get("roomId");
-
-    if (roomIdFromQuery) {
-      setRoomId(roomIdFromQuery);
-    }
-  }, [location.search]);
 
   // 画面遷移元に応じてメッセージを設定
   useEffect(() => {
@@ -44,6 +36,64 @@ const WaitRoom = () => {
       setMessage("Toppage");
     }
   }, [location.state]);
+
+  // roomIdを取得
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const roomIdFromQuery = params.get("roomId");
+
+    if (roomIdFromQuery) {
+      setRoomId(roomIdFromQuery);
+    }
+  }, [location.search]);
+
+  // メンバーのIDをroomsコレクションに追加
+  useEffect(() => {
+    if (roomId) {
+      const userId =
+        auth.currentUser?.uid ||
+        `guest_${Math.random().toString(36).substr(2, 9)}`;
+
+      const roomDocRef = doc(db, "rooms", roomId);
+
+      const addUserToRoom = async () => {
+        try {
+          await updateDoc(roomDocRef, {
+            members: arrayUnion(userId),
+          });
+          console.log("User added to room members");
+        } catch (error) {
+          console.error("Error adding user to room members: ", error);
+        }
+      };
+
+      addUserToRoom();
+    }
+  }, [roomId]);
+
+  console.log("roomId: ", roomId);
+  console.log("message: ", message);
+
+  // メンバーの人数をリアルタイムで監視
+  useEffect(() => {
+    if (message === "CreateRoom" && roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+
+      const unsubscribe = onSnapshot(roomDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const roomData = docSnapshot.data();
+          console.log("Room data: ", roomData);
+          const memberCount = Array.isArray(roomData.members)
+            ? roomData.members.length
+            : 0;
+          setMemberCount(memberCount);
+          console.log("Member count updated: ", memberCount);
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [roomId, message]);
 
   // ホストが「はじめる」ボタンを押したときの処理
   const handleStartClick = async () => {
@@ -120,14 +170,13 @@ const WaitRoom = () => {
 
       return () => unsubscribe();
     }
-  }, [message, navigate]);
+  }, [message, navigate, roomId]);
   return (
     <div className="waitroom">
       <div className="spinner-container">
         <Spinner />
       </div>
 
-      {/* メッセージに応じた表示 */}
       {message === "Toppage" && (
         <div className="text">ホストが開始するまでしばらくお待ちください</div>
       )}

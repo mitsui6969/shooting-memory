@@ -35,7 +35,7 @@ const CreateRoom = () => {
         roomName: title,
         photoLimit: selectedValue,
         createdBy: id,
-        isActive: true,
+        isActive: false,
         createdAt: new Date(), // 現在の日時を保存
         count: 0,
       });
@@ -76,7 +76,13 @@ const CreateRoom = () => {
 
   // 待機画面へ移動するときにroomIdを渡す
   const handleCloseModal = () => {
-    navigate(`/wait-room`, { state: { from: "create-room", roomId } });
+    if (roomId) {
+      navigate(`/wait-room?roomId=${roomId}`, {
+        state: { from: "create-room", roomId },
+      });
+    } else {
+      console.error("roomId が存在しません。");
+    }
   };
 
   return (
