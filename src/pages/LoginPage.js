@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigateをインポート
 import Button from "../components/Button_white/Button_white";
 import "../styles/LoginPage.css"; // CSSファイルをインポート
-import { auth, provider } from '../firebase/firebase-app'; // Firebase authとproviderをインポート
 import { signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, provider } from "../firebase/firebase-app"; // Firebase関連のインポート
 
 const LoginPage = () => {
   const navigate = useNavigate(); // navigate関数を定義

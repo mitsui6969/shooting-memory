@@ -3,10 +3,12 @@ import "../App.css";
 import "../styles/GameStart.css";
 import Button from '../components/Button_orange/Button_orange';
 import { useNavigate } from 'react-router-dom';
-import Images from "../assets/images.png";
+import Images from "../assets/image/images.png";
 import { storage } from '../firebase/firebase-app';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc, arrayUnion, getDoc, setDoc, increment } from "firebase/firestore"; // Firestore用の関数をインポート
+import { db } from '../firebase/firebase-app';
+import { useLocation } from 'react-router-dom';
 
 const GameStart = () => {
   const navigate = useNavigate();
