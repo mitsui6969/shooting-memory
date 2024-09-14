@@ -113,7 +113,7 @@
     width: auto; /* 幅の自動調整 */
     height: auto; /* 高さの自動調整 */
     object-fit: cover; /* ボックス内に収める際、画像のアスペクト比を維持してクロップする */
-  
+
 }
 
 /* プレビュー画像コンテナのスタイル */
@@ -155,7 +155,6 @@
   display: block;
   margin: 0 auto; /* 中央に配置 */
   border-radius: 10px; /* 角を丸くする */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影をつける */
 }
 
 /* 左側に表示される画像のスタイル */
@@ -222,7 +221,7 @@
   position: absolute;
   top: 600px;
   left: 50%;
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
   width: 300px;
 }
 
