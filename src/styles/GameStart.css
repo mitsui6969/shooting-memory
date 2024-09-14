@@ -107,8 +107,13 @@
 }
 
 .upload-image {
-  max-width: 100%; /* 画像の幅をボックス内にフィットさせる */
-  max-height: 100%; /* 画像の高さをボックス内にフィットさせる */
+
+    max-width: 100%; /* ボックス内で画像の幅をフィットさせる */
+    max-height: 100%; /* ボックス内で画像の高さをフィットさせる */
+    width: auto; /* 幅の自動調整 */
+    height: auto; /* 高さの自動調整 */
+    object-fit: cover; /* ボックス内に収める際、画像のアスペクト比を維持してクロップする */
+  
 }
 
 /* プレビュー画像コンテナのスタイル */
@@ -130,4 +135,124 @@
   text-align: center;  /* 中央揃えにする場合 */
   width: 100%;         /* 幅を調整する */
   font-size: 20px;
+}
+
+.error-message {
+  color: red; /* テキストカラーを赤にして注意喚起 */
+  font-size: 1rem; /* 適切なサイズ */
+  margin-bottom: 1rem; /* メッセージの下に余白を追加 */
+  padding: 0.5rem; /* メッセージ周囲に余白を追加 */
+  border: 1px solid red; /* 赤い枠線で囲む */
+  background-color: #ffe6e6; /* 背景を薄い赤に設定 */
+  border-radius: 4px; /* ボーダーに角丸をつける */
+  text-align: center; /* テキストを中央揃えにする */
+}
+
+/* 画像コンテナを左右に分ける */
+.image-default {
+  width: 150px; /* デフォルト画像の幅を指定 */
+  height: auto; /* 高さは画像の比率に応じて自動調整 */
+  display: block;
+  margin: 0 auto; /* 中央に配置 */
+  border-radius: 10px; /* 角を丸くする */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影をつける */
+}
+
+/* 左側に表示される画像のスタイル */
+.image-left {
+  width: 40%; /* 幅を40%に制限 */
+  max-width: 150px; /* 画像の最大幅 */
+  max-height: 150px; /* 画像の最大高さを制限 */
+  object-fit: cover; /* アスペクト比を維持しながら、ボックス内に収める */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 10px; /* 左右の画像の間に余白を追加 */
+}
+
+/* 右側に表示される画像のスタイル */
+.image-right {
+  width: 40%; /* 幅を40%に制限 */
+  max-width: 150px; /* 画像の最大幅 */
+  max-height: 150px; /* 画像の最大高さを制限 */
+  object-fit: cover; /* アスペクト比を維持しながら、ボックス内に収める */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: 10px; /* 左右の画像の間に余白を追加 */
+}
+
+/* 画像を2つ並べるコンテナ */
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 左右の画像間にスペースを追加 */
+}
+
+
+
+/* メモリバー */
+
+.progress-container {
+  margin: 10px 0;
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.progress-bar {
+  height: 20px;
+  background-color: #75a8f5;
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+
+.progress-text {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.upload-bar {
+  position: absolute;
+  top: 600px;
+  left: 50%;
+  transform: translateX(-50%); 
+  width: 300px;
+}
+
+
+/* 削除ボタン */
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgb(14, 12, 12);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-left, .image-right {
+  width: 150px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
 }
