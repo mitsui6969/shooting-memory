@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/CreateRoom.css";
 import Button from "../components/Button_orange/Button_orange";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -12,9 +12,20 @@ const CreateRoom = () => {
   const [roomLink, setRoomLink] = useState("");
   const [copySuccess, setCopySuccess] = useState(""); // コピー成功メッセージの状態
   const [roomId, setRoomId] = useState(""); // roomIdを保持
+  const [isFormValid, setIsFormValid] = useState(false); // フォームが有効かどうか
+  const [isLinkCopied, setIsLinkCopied] = useState(false); // リンクがコピーされたかどうか
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = location.state || {}; // 自分のidを保持
+
+  // タイトルと写真枚数の選択を監視してフォームのバリデーションを行う
+  useEffect(() => {
+    if (title.trim() !== "" && ["5", "6", "7", "8"].includes(selectedValue)) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [title, selectedValue]);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -26,6 +37,10 @@ const CreateRoom = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!isFormValid) {
+      return; // フォームが無効な場合、送信を中断
+    }
 
     try {
       const roomsCollectionRef = collection(db, "rooms");
@@ -66,22 +81,27 @@ const CreateRoom = () => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(roomLink).then(
       () => {
-        setCopySuccess("");
+        setCopySuccess("リンクをコピーしました");
+        setIsLinkCopied(true); // コピー成功時にリンクコピー済みフラグを立てる
       },
       () => {
-        setCopySuccess("");
+        setCopySuccess("コピーに失敗しました");
       }
     );
   };
 
   // 待機画面へ移動するときにroomIdを渡す
   const handleCloseModal = () => {
-    if (roomId) {
-      navigate(`/wait-room?roomId=${roomId}`, {
-        state: { from: "create-room", roomId },
-      });
+    if (isLinkCopied) { // リンクがコピーされている場合のみ遷移を許可
+      if (roomId) {
+        navigate(`/wait-room?roomId=${roomId}`, {
+          state: { from: "create-room", roomId },
+        });
+      } else {
+        console.error("roomId が存在しません。");
+      }
     } else {
-      console.error("roomId が存在しません。");
+      alert("リンクをコピーしてください。");
     }
   };
 
@@ -112,7 +132,9 @@ const CreateRoom = () => {
         </div>
 
         <div className="create">
-          <Button type="submit">作成</Button>
+          <Button type="submit" disabled={!isFormValid}>
+            作成
+          </Button>
         </div>
       </form>
 
@@ -134,7 +156,9 @@ const CreateRoom = () => {
             </p>
             <Button onClick={copyToClipboard}>リンクをコピー</Button>
             <p>{copySuccess}</p> {/* コピー成功メッセージ */}
-            <Button onClick={handleCloseModal}>待機画面へ</Button>
+            <Button onClick={handleCloseModal} disabled={!isLinkCopied}>
+              待機画面へ
+            </Button>
           </div>
         </div>
       )}
