@@ -54,7 +54,14 @@ const FrameSelection = () => {
 
     // コラージュ画面にGO
     const handleToCollage = () => {
-        navigate('/collage-page');
+        navigate('/collage-page',
+            {state:{
+                title:frameTitle,
+                date:frameDate,
+                selectColor:selectColor,
+                selectBorder:isFrameChecked,
+            }
+        });
     }
 
     // db処理
