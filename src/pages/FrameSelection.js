@@ -6,6 +6,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'; // DndProviderのインポート
 import { collection, getDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/firebase-app';
+import { useNavigate } from 'react-router-dom';
 
 
 const FrameSelection = () => {
@@ -17,6 +18,7 @@ const FrameSelection = () => {
     const [selectColor, setSelectColor] = useState(0);
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
+    const navigate = useNavigate();
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
@@ -49,6 +51,11 @@ const FrameSelection = () => {
     const frameTitle = isTitleChecked ? title : ""; // タイトルチェックボックスの状態により内容を切り替え
     // 日付の中身を動的に切り替える
     const frameDate = isDayChecked ? date : ""; // 日付チェックボックスの状態により内容を切り替え
+
+    // コラージュ画面にGO
+    const handleToCollage = () => {
+        navigate('/collage-page');
+    }
 
     // db処理
     useEffect(() => {
@@ -85,74 +92,75 @@ const FrameSelection = () => {
     return (
         <div className='frame-selection'>
             <div className='positioned-text'>
-                <h2>フレームを選択してください</h2>
-            </div>
-            <div className='text-base'>
-                <div className='text-frame'>枠</div>
-                <div className='text-title'>タイトル</div>
-                <div className='text-day'>日付</div>
-            </div>
-            
-            <div className='next-button'>
-                <Button>次へ</Button>
+                <h2 className='frameSelection-h2'>フレームを選択してください</h2>
             </div>
 
-            {/* DndProviderを使用してFrameをラップ */}
-            <DndProvider backend={HTML5Backend}>
-                <div className='frame-change'>
-                    <Frame
-                        imageCount={2} 
-                        title={frameTitle}  // チェックボックスによってタイトルを動的に変更
-                        date={frameDate}    // チェックボックスによって日付を動的に変更
-                        selectColor={selectColor}  // 動的に変更される selectColor
-                        selectBorder={isFrameChecked} // チェックボックスの状態で selectBorder を切り替え
-                    />
+            <div className='select-item-all'>
+                <DndProvider backend={HTML5Backend}>
+                <div className="gray-square">
+                    <div className='frame-change'>
+                        <Frame
+                            imageCount={2} 
+                            title={frameTitle}
+                            date={frameDate}
+                            selectColor={selectColor}
+                            selectBorder={isFrameChecked}
+                        />
+                    </div>
                 </div>
-            </DndProvider>
+                </DndProvider>
 
-            <div className="image-checkbox-container">
-                {/* チェックボックスを個別に表示 */}
-                <label className="checkbox-label">
-                    <input 
-                        type="checkbox" 
-                        checked={isFrameChecked} 
-                        onChange={() => setIsFrameChecked(!isFrameChecked)}  // チェック時にステートを更新
-                        className="checkbox-frame"
-                    />
-                    <input 
-                        type="checkbox" 
-                        checked={isTitleChecked} 
-                        onChange={() => setIsTitleChecked(!isTitleChecked)}  // タイトルのチェックボックスでタイトルの表示を切り替える
-                        className="checkbox-title"
-                    />
-                    <input 
-                        type="checkbox" 
-                        checked={isDayChecked} 
-                        onChange={() => setIsDayChecked(!isDayChecked)}  // 日付のチェックボックスで日付の表示を切り替える
-                        className="checkbox-day"
-                    />
-                </label>
+                <div className='selectBoxs-container'>
+                    <div className="image-checkbox-container">
+                        {/* チェックボックスを個別に表示 */}
+                        <label className="checkbox-label">
+                            <input 
+                                type="checkbox" 
+                                checked={isFrameChecked} 
+                                onChange={() => setIsFrameChecked(!isFrameChecked)}  // チェック時にステートを更新
+                                className="checkbox-frame"
+                            />枠
+                        </label>
+                        <label className='checkbox-label'>
+                            <input 
+                                type="checkbox" 
+                                checked={isTitleChecked} 
+                                onChange={() => setIsTitleChecked(!isTitleChecked)}  // タイトルのチェックボックスでタイトルの表示を切り替える
+                                className="checkbox-title"
+                            />タイトル
+                        </label>
+                        <label className='checkbox-label'>
+                            <input 
+                                type="checkbox" 
+                                checked={isDayChecked} 
+                                onChange={() => setIsDayChecked(!isDayChecked)}  // 日付のチェックボックスで日付の表示を切り替える
+                                className="checkbox-day"
+                            />日付
+                        </label>
+                    </div>
+
+                    {/* セレクトボックスを追加 */}
+                    <div className="select-box-container">
+                        <label className="image-options">フレームの色
+                        <select 
+                            value={selectedOption} 
+                            onChange={handleSelectChange}
+                            className="select-box"
+                        >
+                            <option value="option1">白(ノーマル)</option>
+                            <option value="option2">黒(ノーマル)</option>
+                            <option value="option3">Blue</option>
+                            <option value="option4">White</option>
+                            <option value="option5">Black</option>
+                        </select>
+                        </label>
+                    </div>
+                </div>
             </div>
 
-            {/* セレクトボックスを追加 */}
-            <div className="select-box-container">
-                <label htmlFor="image-options">フレームの色を選択してください：</label>
-                <select 
-                    id="image-options" 
-                    value={selectedOption} 
-                    onChange={handleSelectChange} // セレクトボックスの変更時に handleSelectChange を呼ぶ
-                    className="select-box"
-                >
-                    <option value="option1">白(ノーマル)</option>
-                    <option value="option2">黒(ノーマル)</option>
-                    <option value="option3">Blue</option>
-                    <option value="option4">White</option>
-                    <option value="option5">Black</option>
-                </select>
+            <div className='next-button-frameSelection'>
+                <Button onClick={handleToCollage}>次へ</Button>
             </div>
-
-            {/* 灰色の四角形を追加 */}
-            <div className="gray-square"></div>
         </div>
     );
 };
