@@ -15,8 +15,8 @@
 
 .checkbox-frame, .checkbox-title ,.checkbox-day{
 	position: absolute;
-	width: 24px; /* チェックボックスの幅を実際に小さく設定 */
-	height: 24px; /* チェックボックスの高さを実際に小さく設定 */
+	width: 24px;
+	height: 24px;
 	cursor: pointer;
 	z-index: 2; 
 }
@@ -111,14 +111,14 @@
     top: 250px;
 	left: 40px;
 	z-index: 1; 
-	border-radius: 20px; /* 左上と右下を丸く */
+	border-radius: 20px;
 }
 
 .next-button {
     top: 600px;
     position: absolute;
-    left: 50%; /* 水平方向で中央寄せ */
-    transform: translateX(-50%); /* 中央に正確に位置合わせ */
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .frame-change{
