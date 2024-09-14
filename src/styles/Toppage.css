@@ -109,3 +109,20 @@
 .modal-button:focus {
   outline: none; /* focus:outline-none */
 }
+
+.error-message {
+  color: red; /* テキストカラーを赤にして注意喚起 */
+  font-size: 1rem; /* 適切なサイズ */
+  padding: 0.5rem; /* メッセージ周囲に余白を追加 */
+  border: 1px solid red; /* 赤い枠線で囲む */
+  background-color: #ffe6e6; /* 背景を薄い赤に設定 */
+  border-radius: 4px; /* ボーダーに角丸をつける */
+  text-align: center; /* テキストを中央揃えにする */
+  position: fixed; /* 固定位置に配置 */
+  top: -550px; /* 画面上部に配置 */
+  left: 50%; /* 左右中央揃え */
+  transform: translateX(-50%); /* 中央に正確に配置 */
+  max-width: 600px; /* 幅を指定して二行にならないように */
+  white-space: nowrap; /* テキストの折り返しを防ぐ */
+  z-index: 1000; /* 他の要素の上に表示 */
+}
