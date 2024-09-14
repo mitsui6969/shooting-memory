@@ -14,6 +14,7 @@ import {
   updateDoc,
   onSnapshot,
   arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 import { auth } from "../firebase/firebase-app";
 
@@ -148,35 +149,44 @@ const WaitRoom = () => {
 
   // 全メンバーのisReadyを監視
   useEffect(() => {
-    if (message === "GameStart") {
-      const roomsRef = collection(db, "rooms");
-      const q = query(roomsRef, where("roomId", "==", roomId));
+    if (message === "GameStart" && roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      let membersCount = 0;
 
-      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
-        querySnapshot.forEach(async (doc) => {
-          const roomDocRef = doc.ref;
+      const getMembersCount = async () => {
+        const roomSnapshot = await getDoc(roomDocRef);
+        if (roomSnapshot.exists()) {
+          const roomData = roomSnapshot.data();
+          membersCount = roomData.members.length;
+          console.log("Members count:", membersCount);
+        }
+      };
 
-          const membersRef = collection(roomDocRef, "participants");
-          const membersUnsubscribe = onSnapshot(
-            membersRef,
-            (membersSnapshot) => {
-              const membersData = membersSnapshot.docs.map((memberDoc) =>
-                memberDoc.data()
-              );
+      getMembersCount();
 
-              if (membersData.every((member) => member.isReady)) {
-                navigate(`/shooting-screen?roomId=${roomId}`);
-              }
-            }
+      const membersRef = collection(roomDocRef, "participants");
+      const unsubscribeParticipants = onSnapshot(
+        membersRef,
+        (participantsSnapshot) => {
+          const participantsData = participantsSnapshot.docs.map((doc) =>
+            doc.data()
           );
 
-          return () => membersUnsubscribe();
-        });
-      });
+          const readyCount = participantsData.filter(
+            (participant) => participant.isReady
+          ).length;
+          console.log("Ready count:", readyCount);
 
-      return () => unsubscribe();
+          if (readyCount === membersCount && membersCount > 0) {
+            navigate(`/shooting-screen?roomId=${roomId}`);
+          }
+        }
+      );
+
+      return () => unsubscribeParticipants();
     }
   }, [message, navigate, roomId]);
+
   return (
     <div className="waitroom">
       <div className="spinner-container">

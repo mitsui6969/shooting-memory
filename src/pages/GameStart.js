@@ -10,7 +10,7 @@ import {
   doc,
   updateDoc,
   arrayUnion,
-  getDoc,
+  collection,
   setDoc,
   increment,
 } from "firebase/firestore";
@@ -23,6 +23,7 @@ const GameStart = () => {
   const [name, setName] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [roomId, setRoomId] = useState(null);
+  const { userId } = location.state;
 
   // roomIdを取得
   useEffect(() => {
@@ -51,30 +52,16 @@ const GameStart = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!roomId) {
-      alert("Room ID が見つかりません");
-      return;
-    }
-
-    const docRef = doc(db, "selected_images", roomId);
-
-    const docSnap = await getDoc(docRef);
-
-    if (!docSnap.exists()) {
-      console.log("新しいドキュメントを作成します。");
-      await setDoc(docRef, { photos: [] });
-    }
+    const roomDocRef = doc(db, "rooms", roomId);
 
     if (selectedImages.length > 0) {
       const imageUrls = [];
 
-      // 画像をアップロードし、そのURLを取得
       for (let i = 0; i < selectedImages.length; i++) {
         const image = selectedImages[i];
         const storageRef = ref(storage, `images/${image.name}`);
         const uploadTask = uploadBytesResumable(storageRef, image);
 
-        // 画像アップロード
         await new Promise((resolve, reject) => {
           uploadTask.on(
             "state_changed",
@@ -88,7 +75,7 @@ const GameStart = () => {
               console.log(`画像 ${i + 1} のダウンロードURL:`, downloadURL);
               imageUrls.push(downloadURL);
 
-              await updateDoc(docRef, {
+              await updateDoc(roomDocRef, {
                 photos: arrayUnion(downloadURL),
               });
 
@@ -99,11 +86,22 @@ const GameStart = () => {
       }
     }
 
-    // roomsコレクションのcountを1増やす処理
-    const roomDocRef = doc(db, "rooms", roomId);
+    const participantsRef = collection(roomDocRef, "participants");
+    const participantDocRef = doc(participantsRef, userId);
+
+    try {
+      await setDoc(participantDocRef, {
+        name: name,
+        isReady: true,
+      });
+      console.log("participantsコレクションにデータを追加しました");
+    } catch (error) {
+      console.error("participantsコレクションの更新に失敗しました:", error);
+    }
+
     try {
       await updateDoc(roomDocRef, {
-        count: increment(1), // countフィールドを1増やす
+        count: increment(1),
       });
       console.log("roomsコレクションのcountが1増えました");
     } catch (error) {
@@ -111,7 +109,9 @@ const GameStart = () => {
     }
 
     // すべての画像がアップロード完了したら次のページへ遷移
-    navigate("/wait-room", { state: { roomId, from: "game-start" } });
+    navigate(`/wait-room?roomId=${roomId}`, {
+      state: { userId, from: "game-start" },
+    });
   };
 
   return (
