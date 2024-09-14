@@ -4,6 +4,7 @@ import titleBorder1 from '../assets/layoutSample/none-border.png'; // 表示し�
 import titleBorder2 from '../assets/layoutSample/none-none.png';   // 表示したい画像をインポート
 import titleBorder3 from '../assets/layoutSample/title-border.png'; // 3枚目の画像をインポート
 import titleBorder4 from "../assets/layoutSample/title-none.png";
+import Button from "../components/Button_orange/Button_orange"
 
 const FrameSelection = () => {
     // チェックボックスの状態を個別に管理
@@ -37,9 +38,12 @@ const FrameSelection = () => {
                 <h2>フレームを選択してください</h2>
             </div>
             <div className='text-base'>
-              <div className='text-frame'>枠</div>
+        	    <div className='text-frame'>枠</div>
               <div className='text-title'>タイトル</div>
             </div>
+						<div className='next-button'>
+							<Button>次へ</Button>
+						</div>
 
             <div className="image-checkbox-container">
                 {/* 画像の表示 */}
@@ -71,7 +75,7 @@ const FrameSelection = () => {
 
             {/* セレクトボックスを追加 */}
             <div className="select-box-container">
-                <label htmlFor="image-options">画像の色：</label>
+                <label htmlFor="image-options"></label>
                 <select 
                     id="image-options" 
                     value={selectedOption} 
@@ -83,6 +87,9 @@ const FrameSelection = () => {
                     <option value="option3">白</option>
                 </select>
             </div>
+
+						{/* 灰色の四角形を追加 */}
+            <div className="gray-square"></div>
         </div>
     );
 };

@@ -5,6 +5,7 @@
 	margin: 0 auto;
 	background-size: cover;
 	position: relative;
+	z-index: 2; 
 }
 
 .centered-image {
@@ -17,10 +18,12 @@
 	max-width: 100%;
 	max-height: 100%;
 	border-radius: 5px;
+	z-index: 2; 
 }
 
 .checkbox-label {
 	margin-left: 10px;
+	z-index: 2; 
 }
 
 .checkbox-frame, .checkbox-title {
@@ -28,6 +31,7 @@
 	width: 24px; /* チェックボックスの幅を実際に小さく設定 */
 	height: 24px; /* チェックボックスの高さを実際に小さく設定 */
 	cursor: pointer;
+	z-index: 2; 
 }
 
 .select-box{
@@ -38,16 +42,19 @@
 	color: #090909;
 	top: 385px;
 	left: 270px;
+	z-index: 2; 
 }
 
 .checkbox-frame {
 	top: 280px;
 	left: 270px;
+	z-index: 2; 
 }
 
 .checkbox-title {
 	top: 330px;
 	left: 270px;
+	z-index: 2; 
 }
 
 .positioned-text {
@@ -59,6 +66,7 @@
 	left: 50%;
 	transform: translateX(-50%);
 	white-space: nowrap;
+	z-index: 2; 
 }
 
 .text-base {
@@ -66,6 +74,7 @@
 	color: #ffffff;
 	padding-top: 50px;
 	text-shadow: 2px 2px 4px #020031;
+	z-index: 2; 
 }
 
 .text-frame {
@@ -75,7 +84,8 @@
 	top: 280px;
 	left: 90px;
 	white-space: nowrap;
-	text-align: left; /* 左揃えに変更 */
+	text-align: left; 
+	z-index: 2; 
 }
 
 .text-title {
@@ -85,5 +95,24 @@
 	top: 330px;
 	left: 90px;
 	white-space: nowrap;
-	text-align: left; /* 左揃えに変更 */
+	text-align: left;
+	z-index: 2; 
+}
+
+.gray-square {
+	position: absolute;
+    width: 200px;
+    height: 260px;
+    background-color: gray;
+    top: 250px;
+	left: 40px;
+	z-index: 1; 
+	border-radius: 20px; /* 左上と右下を丸く */
+}
+
+.next-button {
+    top: 600px;
+    position: absolute;
+    left: 50%; /* 水平方向で中央寄せ */
+    transform: translateX(-50%); /* 中央に正確に位置合わせ */
 }
