@@ -15,8 +15,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Loginpage />} />
-        <Route path="/toppage" element={<Toppage />} />
+        <Route path="/login-page" element={<Loginpage />} />
+        <Route path="/" element={<Toppage />} />
         <Route path="/create-room" element={<CreateRoom />} />
         <Route path="/wait-room" element={<WaitRoom />} />
         <Route path="/shooting-screen" element={<ShootingScreen />} />

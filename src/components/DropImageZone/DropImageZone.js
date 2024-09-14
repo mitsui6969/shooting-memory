@@ -27,8 +27,19 @@ const DropImageZone = ({ image, onDrop, swapImage, index }) => {
     const handleDrop = useCallback((files) => {
         if (file || files.length === 1) {
             const newFile = files[0];
-            setFile(newFile);
-            onDrop(newFile);
+            if (newFile instanceof File) {
+                // FileオブジェクトならURLを生成
+                const newFileUrl = URL.createObjectURL(newFile);
+                setFile(newFileUrl);
+                onDrop(newFileUrl); // URLをonDropで渡す
+            } else {
+                // すでにURLの場合はそのままセット
+                setFile(newFile);
+                onDrop(newFile);
+            }
+            // const newFileURL = URL.createObjectURL(newFile);
+            // setFile(newFileURL);
+            // onDrop(newFileURL);
         } else {
             console.error("No file だよ")
         }

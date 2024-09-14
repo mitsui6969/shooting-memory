@@ -47,3 +47,13 @@
   align-items: center;
 	text-align: center;
 }
+
+.roomName {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%); /* 水平に完全に中央揃え */
+  white-space: nowrap; /* テキストを一行にする */
+  font-size: 2rem; /* フォントサイズを大きく設定 */
+  font-weight: bold; /* フォントを太くする */
+}
