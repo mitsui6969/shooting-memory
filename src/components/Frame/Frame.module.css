@@ -3,16 +3,20 @@
     position: relative;
     z-index: 1;
     display: grid;
-    gap: 8px;
+    gap: 1.4vh;
     overflow: hidden;
     aspect-ratio: 3 / 4;
     padding: 0;
-    border-radius: 8px;
+    border-radius: 1vh;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .frameBorder {
-    padding: 8px;
+    padding: 1.4vh;
 }
 
 
@@ -26,7 +30,17 @@
 }
 
 .blue {
-    background-color: #0c59c4;
+    /* background-color: #0c59c4; */
+    background-image: url('../../assets/image/frameColor/blue.jpeg');
+    color: #fefefe;
+}
+
+.white2p {
+    background-image: url('../../assets/image/frameColor/white.jpeg');
+}
+
+.black2p {
+    background-image: url('../../assets/image/frameColor/black.jpeg');
     color: #fefefe;
 }
 
@@ -109,7 +123,7 @@
 
 .texts {
     height: 60%;
-    width: 70%;
+    width: 60%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -120,15 +134,14 @@
 
 .title, .date {
     width: auto; 
-    font-size: 2vw;
     margin: 0;
 }
 
 .title {
-    font-size: 2vh;
+    font-size: 1.5vh;
     margin-bottom: 1px;
 }
 
 .date {
-    font-size: 1.5vh;
-} 
+    font-size: 1.3vh;
+}

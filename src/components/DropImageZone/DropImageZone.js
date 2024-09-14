@@ -1,57 +1,70 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
-import './DropImagezone.css'
-import plusIcon from '../../assets/plus-icon.png'
+import { useDrop } from 'react-dnd';
+import './DropImagezone.css';
+import plusIcon from '../../assets/image/plus-icon.png';
 
-const DropImageZone = () => {
+const DropImageZone = ({ image, onDrop, swapImage, index }) => {
     const [file, setFile] = useState(null);
 
-    const onDrop = useCallback((files) => {
-        if (files.length === 1) {
-            const newFile = files[0];
-            setFile(newFile); // 新しいファイルで既存のファイルを置き換える
-        }
-    }, []);
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept: {
-            'image/png': ['.png', '.jpg', '.jpeg'], // 許可されるファイルタイプ
+    // ドロップ機能
+    const [{ isOver }, drop] = useDrop(() => ({
+        accept: "image",
+        drop: (item) => {
+            if (item.index !== undefined) {
+                swapImage(item.index, index);
+            } else {
+                handleDrop([item.src]); 
+            }
         },
-        noClick: true, // クリックでのファイル選択を無効にする
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver(),
+            canDrop: monitor.canDrop()
+        }),
+    }), [index, swapImage]);
+
+    // ドロップされた画像保持
+    const handleDrop = useCallback((files) => {
+        if (file || files.length === 1) {
+            const newFile = files[0];
+            setFile(newFile);
+            onDrop(newFile);
+        } else {
+            console.error("No file だよ")
+        }
+    }, [file,onDrop]);
+
+    // 許可するファイル指定
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+        onDrop: handleDrop,
+        accept: {
+            'image/png': ['.png', '.jpg', '.jpeg'],
+        },
+        noClick: true,
         multiple: false,
     });
 
-    const dropAreaBackground = isDragActive ? 'gray' : '';
+    // ドロップ可能エリア上にある時
+    const dropAreaBackground = isDragActive || isOver ? 'gray' : '';  
 
+    // 画像表示
     const filePreview = useMemo(() => {
-        if (!file) {
-            return null;
+        if (file) {
+            return (
+                <img src={file} alt='collage' className='frameInImage' />
+            );
         }
-
-        const url = URL.createObjectURL(file);
-
-        return <img src={url} alt="Preview" className="file-preview" />;
+        return (
+            <img src={plusIcon} className='plus-icon' alt="Upload" />
+        );
     }, [file]);
 
     return (
-        <div className="image-upload-container">
-            {file ? (
-                <div className="file-preview-container">
-                    {filePreview}
-                    <div {...getRootProps()} className={`drop-area ${dropAreaBackground}`}>
-                        <input {...getInputProps()} />
-                    </div>
-                </div>
-            ) : (
-                <div className="file_plus">
-                    <div {...getRootProps()} className={`drop-area ${dropAreaBackground}`}>
-                        {/* ドラッグ＆ドロップのみでアップロード */}
-                        <input {...getInputProps()} />
-                        <img src={plusIcon} className='plus-icon' />
-                    </div>
-                </div>
-            )}
+        <div ref={drop} className="upload-container">
+            <div {...getRootProps()} className={`drop-area ${dropAreaBackground}`}>
+                <input {...getInputProps()} className='input-area' />
+                {filePreview}
+            </div>
         </div>
     );
 };
