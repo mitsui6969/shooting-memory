@@ -65,7 +65,7 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
     };
 
     return (
-        <div className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()} ${getBorder()}`}>
+        <div id='target-to-image' className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()} ${getBorder()}`}>
             {imageList.map((src, index) => (
                 <div key={index} className={styles.imageContainer}>
                     <DropImageZone

@@ -4,7 +4,6 @@
     z-index: 1;
     display: grid;
     gap: 1.4vh;
-    overflow: hidden;
     aspect-ratio: 3 / 4;
     padding: 0;
     border-radius: 1vh;
@@ -79,8 +78,9 @@
 
 .image {
     transition: transform 0.3s ease;
-    height: 3em;
-    width: 3em;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
     aspect-ratio: 1;
     display: flex;
     align-items: center;
@@ -109,7 +109,7 @@
     right: 0;
     margin: auto;
     padding: 0;
-    border-radius: 80px;
+    border-radius: 100px;
     display: flex;
     justify-items: center;
     text-align: center;

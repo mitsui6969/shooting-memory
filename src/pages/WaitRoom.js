@@ -14,6 +14,7 @@ import {
   updateDoc,
   onSnapshot,
   arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 import { auth } from "../firebase/firebase-app";
 
@@ -23,6 +24,16 @@ const WaitRoom = () => {
   const [message, setMessage] = useState("");
   const [roomId, setRoomId] = useState(null);
   const [memberCount, setMemberCount] = useState(0);
+  const [roomTitle, setRoomTitle] = useState(""); // title用のステート
+  const [userId, setUserId] = useState("");
+
+  // userIdを取得
+  useEffect(() => {
+    const currentUserId =
+      auth.currentUser?.uid ||
+      `guest_${Math.random().toString(36).substr(2, 9)}`;
+    setUserId(currentUserId);
+  }, []);
 
   // 画面遷移元に応じてメッセージを設定
   useEffect(() => {
@@ -47,13 +58,32 @@ const WaitRoom = () => {
     }
   }, [location.search]);
 
-  // メンバーのIDをroomsコレクションに追加
+  // Firestoreからroomのtitleを取得
   useEffect(() => {
     if (roomId) {
-      const userId =
-        auth.currentUser?.uid ||
-        `guest_${Math.random().toString(36).substr(2, 9)}`;
+      const roomDocRef = doc(db, "rooms", roomId);
 
+      const fetchRoomTitle = async () => {
+        try {
+          const docSnap = await getDoc(roomDocRef);
+          if (docSnap.exists()) {
+            const roomData = docSnap.data();
+            setRoomTitle(roomData.roomName || "No Title"); // titleフィールドを取得してセット
+          } else {
+            console.error("No such document!");
+          }
+        } catch (error) {
+          console.error("Error fetching room title: ", error);
+        }
+      };
+
+      fetchRoomTitle();
+    }
+  }, [roomId]);
+
+  // メンバーのIDをroomsコレクションに追加
+  useEffect(() => {
+    if (roomId && userId) {
       const roomDocRef = doc(db, "rooms", roomId);
 
       const addUserToRoom = async () => {
@@ -69,10 +99,7 @@ const WaitRoom = () => {
 
       addUserToRoom();
     }
-  }, [roomId]);
-
-  console.log("roomId: ", roomId);
-  console.log("message: ", message);
+  }, [roomId, userId]);
 
   // メンバーの人数をリアルタイムで監視
   useEffect(() => {
@@ -112,6 +139,7 @@ const WaitRoom = () => {
         });
         await Promise.all(updatePromises);
         console.log("Room updated successfully");
+        navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
       } catch (error) {
         console.error("Error updating room: ", error);
       }
@@ -131,50 +159,64 @@ const WaitRoom = () => {
         if (roomDoc) {
           const roomData = roomDoc.data();
           if (roomData.isActive) {
-            navigate("/game-start", { state: { roomId } });
+            navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
           }
         }
       });
 
       return () => unsubscribe();
     }
-  }, [roomId, navigate, message]);
+  }, [roomId, navigate, message, userId]);
 
   // 全メンバーのisReadyを監視
   useEffect(() => {
-    if (message === "GameStart") {
-      const roomsRef = collection(db, "rooms");
-      const q = query(roomsRef, where("roomId", "==", roomId));
+    if (message === "GameStart" && roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      let membersCount = 0;
 
-      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
-        querySnapshot.forEach(async (doc) => {
-          const roomDocRef = doc.ref;
+      const getMembersCount = async () => {
+        const roomSnapshot = await getDoc(roomDocRef);
+        if (roomSnapshot.exists()) {
+          const roomData = roomSnapshot.data();
+          membersCount = roomData.members.length;
+          console.log("Members count:", membersCount);
+        }
+      };
 
-          const membersRef = collection(roomDocRef, "participants");
-          const membersUnsubscribe = onSnapshot(
-            membersRef,
-            (membersSnapshot) => {
-              const membersData = membersSnapshot.docs.map((memberDoc) =>
-                memberDoc.data()
-              );
+      getMembersCount();
 
-              if (membersData.every((member) => member.isReady)) {
-                navigate("/shooting-screen");
-              }
-            }
+      const membersRef = collection(roomDocRef, "participants");
+      const unsubscribeParticipants = onSnapshot(
+        membersRef,
+        (participantsSnapshot) => {
+          const participantsData = participantsSnapshot.docs.map((doc) =>
+            doc.data()
           );
 
-          return () => membersUnsubscribe();
-        });
-      });
+          const readyCount = participantsData.filter(
+            (participant) => participant.isReady
+          ).length;
+          console.log("Ready count:", readyCount);
 
-      return () => unsubscribe();
+          if (readyCount === membersCount && membersCount > 0) {
+            navigate(`/shooting-screen?roomId=${roomId}`);
+          }
+        }
+      );
+
+      return () => unsubscribeParticipants();
     }
   }, [message, navigate, roomId]);
+
   return (
     <div className="waitroom">
       <div className="spinner-container">
         <Spinner />
+      </div>
+
+      {/* Room Titleの表示 */}
+      <div className="room-title">
+        <h2 className="roomName">{roomTitle}</h2> {/* ここでFirestoreから取得したタイトルを表示 */}
       </div>
 
       {message === "Toppage" && (
