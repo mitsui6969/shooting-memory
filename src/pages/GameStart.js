@@ -34,6 +34,13 @@ const GameStart = () => {
     setUploadProgress(Array(files.length).fill(0)); // アップロード進捗を初期化
   };
 
+  // 選択された画像を削除
+  const handleRemoveImage = (index) => {
+    const updatedImages = [...selectedImages];
+    updatedImages.splice(index, 1); // 指定された画像を削除
+    setSelectedImages(updatedImages);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -164,15 +171,23 @@ const GameStart = () => {
           <label htmlFor="file-input" className="file-label">
             {/* 選択した画像がある場合はそれを表示、なければデフォルト画像 */}
             <div className="image-container">
-              {selectedImages[0] ? (
-                <img src={URL.createObjectURL(selectedImages[0])} alt="Selected 1" className="image-left" />
+              {selectedImages.length === 0 ? (
+                <img src={Images} alt="Upload" className="image-default" style={{ margin: 'auto', display: 'block' }} />
               ) : (
-                <img src={Images} alt="Upload" className="image-left" />
-              )}
-              {selectedImages[1] ? (
-                <img src={URL.createObjectURL(selectedImages[1])} alt="Selected 2" className="image-right" />
-              ) : (
-                <img src={Images} alt="Upload" className="image-right" />
+                <>
+                  {selectedImages[0] && (
+                    <div className="image-wrapper">
+                      <img src={URL.createObjectURL(selectedImages[0])} alt="Selected 1" className="image-left" />
+                      <button type="button" className="remove-button" onClick={() => handleRemoveImage(0)}>×</button>
+                    </div>
+                  )}
+                  {selectedImages[1] && (
+                    <div className="image-wrapper">
+                      <img src={URL.createObjectURL(selectedImages[1])} alt="Selected 2" className="image-right" />
+                      <button type="button" className="remove-button" onClick={() => handleRemoveImage(1)}>×</button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </label>
@@ -199,4 +214,4 @@ const GameStart = () => {
   );
 };
 
-export default GameStart;
+export default GameStart

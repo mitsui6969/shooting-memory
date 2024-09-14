@@ -149,37 +149,43 @@
 }
 
 /* 画像コンテナを左右に分ける */
+.image-default {
+  width: 150px; /* デフォルト画像の幅を指定 */
+  height: auto; /* 高さは画像の比率に応じて自動調整 */
+  display: block;
+  margin: 0 auto; /* 中央に配置 */
+  border-radius: 10px; /* 角を丸くする */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影をつける */
+}
+
+/* 左側に表示される画像のスタイル */
+.image-left {
+  width: 40%; /* 幅を40%に制限 */
+  max-width: 150px; /* 画像の最大幅 */
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-right: 10px; /* 左右の画像の間に余白を追加 */
+}
+
+/* 右側に表示される画像のスタイル */
+.image-right {
+  width: 40%; /* 幅を40%に制限 */
+  max-width: 150px; /* 画像の最大幅 */
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: 10px; /* 左右の画像の間に余白を追加 */
+}
+
+/* 画像を2つ並べるコンテナ */
 .image-container {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 400px; /* 画像の合計幅を制限 */
-  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 左右の画像間にスペースを追加 */
 }
 
-/* 左側の画像 */
-.image-left {
-  width: 40%; /* コンテナ内で40%の幅を使用 */
-  height: auto;
-  display: flex;
-  max-width: 40%; /* 最大幅を40%に制限 */
-  max-height: 40%; /* 最大高さを40%に制限 */
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* 右側の画像 */
-.image-right {
-  width: 40%; /* コンテナ内で40%の幅を使用 */
-  height: auto;
-  display: flex;
-  max-width: 40%; /* 最大幅を40%に制限 */
-  max-height: 40%; /* 最大高さを40%に制限 */
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 
 
 /* メモリバー */
@@ -216,4 +222,35 @@
   left: 50%;
   transform: translateX(-50%); 
   width: 300px;
+}
+
+
+/* 削除ボタン */
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgb(14, 12, 12);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-left, .image-right {
+  width: 150px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
 }
