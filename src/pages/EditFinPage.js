@@ -46,7 +46,7 @@ const EditFinPage = () => {
       const updatedImageList = snapshot.docs.map(doc => {
         const data = doc.data();
         return {
-          user: data.userName,
+          user: data.name,
           image: data.collageImage
         };
       });
@@ -102,7 +102,7 @@ const EditFinPage = () => {
 
           {/* 次へボタン */}
           <div className="image-button-container">
-            <Button>終了</Button>
+            <Button>退出する</Button>
           </div>
         </>
       ) : (
