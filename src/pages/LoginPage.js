@@ -15,15 +15,11 @@ const LoginPage = () => {
     signInWithPopup(auth, provider);
   };
 
-  // ユーザーがログインしたら3秒後にToppageに遷移し、ユーザーIDを渡す
+  // ユーザーがログインしたら即座にToppageに遷移し、ユーザーIDを渡す
   useEffect(() => {
     if (user) {
-      const timer = setTimeout(() => {
-        const userId = auth.currentUser?.uid; // FirebaseでログインしているユーザーのUIDを取得
-        navigate("/toppage", { state: { userId } }); // UIDを渡してToppageに遷移
-      }, 3000); // 3秒待つ
-
-      return () => clearTimeout(timer); // クリーンアップ
+      const userId = auth.currentUser?.uid; // FirebaseでログインしているユーザーのUIDを取得
+      navigate("/toppage", { state: { userId } }); // UIDを渡してToppageに遷移
     }
   }, [user, navigate]); // ユーザーがログインしたかどうかで実行
 
@@ -37,15 +33,10 @@ const LoginPage = () => {
     <div className="loginpage">
       <div className="title">思い出射撃</div>
 
-      {/* Googleログインボタンとサインアウトボタンの表示切り替え */}
+      {/* Googleログインボタン */}
       <div className="login">
         {user ? (
-          <>
-            <UserInfo />
-            <Button onClick={() => auth.signOut()}>
-              <p>サインアウト</p>
-            </Button>
-          </>
+          <UserInfo />
         ) : (
           <Button onClick={signInWithGoogle}>
             <p>ログイン</p>
