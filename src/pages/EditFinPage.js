@@ -46,7 +46,7 @@ const EditFinPage = () => {
       const updatedImageList = snapshot.docs.map(doc => {
         const data = doc.data();
         return {
-          user: data.name,
+          user: data.name || '匿名さん',
           image: data.collageImage
         };
       });
