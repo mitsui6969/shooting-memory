@@ -72,7 +72,6 @@ const GameStart = () => {
             },
             async () => {
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              console.log(`画像 ${i + 1} のダウンロードURL:`, downloadURL);
               imageUrls.push(downloadURL);
 
               await updateDoc(roomDocRef, {
@@ -94,19 +93,13 @@ const GameStart = () => {
         name: name,
         isReady: true,
       });
-      console.log("participantsコレクションにデータを追加しました");
-    } catch (error) {
-      console.error("participantsコレクションの更新に失敗しました:", error);
-    }
+    } catch (error) {}
 
     try {
       await updateDoc(roomDocRef, {
         count: increment(1),
       });
-      console.log("roomsコレクションのcountが1増えました");
-    } catch (error) {
-      console.error("roomsコレクションのcountの更新に失敗しました:", error);
-    }
+    } catch (error) {}
 
     // すべての画像がアップロード完了したら次のページへ遷移
     navigate(`/wait-room?roomId=${roomId}`, {

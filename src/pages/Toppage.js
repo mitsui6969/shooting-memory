@@ -35,10 +35,10 @@ const Toppage = () => {
 
   // 「部屋を作成」ボタンが押されたときの処理
   const handleCreateRoom = () => {
-    const id = userId || guestId; // ログインIDか仮IDを使用
+    const id = userId || guestId;
     if (id) {
       // CreateRoomにIDを渡しながらページ遷移
-      navigate("/create-room", { state: { id } });
+      navigate("/create-room", { state: { from: "CreateRoom", id } });
     } else {
       console.error("ユーザーIDがありません。部屋作成に遷移できません。");
     }
@@ -65,7 +65,8 @@ const Toppage = () => {
 
       <div className="main-container">
         <div className="createroom">
-          <Button onClick={handleCreateRoom}>部屋を作成</Button> {/* CreateRoomに遷移 */}
+          <Button onClick={handleCreateRoom}>部屋を作成</Button>{" "}
+          {/* CreateRoomに遷移 */}
         </div>
         <form onSubmit={handleLinkSubmit} className="toppage-form">
           <input

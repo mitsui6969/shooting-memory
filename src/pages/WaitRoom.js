@@ -16,24 +16,35 @@ import {
   arrayUnion,
   getDoc,
 } from "firebase/firestore";
-import { auth } from "../firebase/firebase-app";
 
 const WaitRoom = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [roomId, setRoomId] = useState(null);
   const [memberCount, setMemberCount] = useState(0);
-  const [roomTitle, setRoomTitle] = useState(""); // title用のステート
+  const [roomTitle, setRoomTitle] = useState("");
   const [userId, setUserId] = useState("");
 
   // userIdを取得
+  const location = useLocation();
+  const locationUserId = location.state?.userId;
+
+  // 初回マウント時にuserIdを設定
   useEffect(() => {
-    const currentUserId =
-      auth.currentUser?.uid ||
-      `guest_${Math.random().toString(36).substr(2, 9)}`;
-    setUserId(currentUserId);
-  }, []);
+    if (locationUserId) {
+      setUserId(locationUserId);
+    }
+  }, [locationUserId]);
+
+  // userIdが存在しない場合はランダムなIDを生成
+  useEffect(() => {
+    if (message === "Toppage" && !userId) {
+      const generatedUserId = `guest_${Math.random()
+        .toString(36)
+        .substr(2, 9)}`;
+      setUserId(generatedUserId);
+    }
+  }, [message, userId]);
 
   // 画面遷移元に応じてメッセージを設定
   useEffect(() => {
@@ -68,7 +79,7 @@ const WaitRoom = () => {
           const docSnap = await getDoc(roomDocRef);
           if (docSnap.exists()) {
             const roomData = docSnap.data();
-            setRoomTitle(roomData.roomName || "No Title"); // titleフィールドを取得してセット
+            setRoomTitle(roomData.roomName || "No Title");
           } else {
             console.error("No such document!");
           }
@@ -91,9 +102,7 @@ const WaitRoom = () => {
           await updateDoc(roomDocRef, {
             members: arrayUnion(userId),
           });
-          console.log("User added to room members");
         } catch (error) {
-          console.error("Error adding user to room members: ", error);
         }
       };
 
@@ -109,12 +118,10 @@ const WaitRoom = () => {
       const unsubscribe = onSnapshot(roomDocRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
           const roomData = docSnapshot.data();
-          console.log("Room data: ", roomData);
           const memberCount = Array.isArray(roomData.members)
             ? roomData.members.length
             : 0;
           setMemberCount(memberCount);
-          console.log("Member count updated: ", memberCount);
         }
       });
 
@@ -138,10 +145,8 @@ const WaitRoom = () => {
           });
         });
         await Promise.all(updatePromises);
-        console.log("Room updated successfully");
         navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
       } catch (error) {
-        console.error("Error updating room: ", error);
       }
     }
   };
@@ -179,7 +184,6 @@ const WaitRoom = () => {
         if (roomSnapshot.exists()) {
           const roomData = roomSnapshot.data();
           membersCount = roomData.members.length;
-          console.log("Members count:", membersCount);
         }
       };
 
@@ -196,10 +200,11 @@ const WaitRoom = () => {
           const readyCount = participantsData.filter(
             (participant) => participant.isReady
           ).length;
-          console.log("Ready count:", readyCount);
 
           if (readyCount === membersCount && membersCount > 0) {
-            navigate(`/shooting-screen?roomId=${roomId}`);
+            navigate(`/shooting-screen?roomId=${roomId}`, {
+              state: { userId },
+            });
           }
         }
       );
@@ -216,7 +221,8 @@ const WaitRoom = () => {
 
       {/* Room Titleの表示 */}
       <div className="room-title">
-        <h2 className="roomName">{roomTitle}</h2> {/* ここでFirestoreから取得したタイトルを表示 */}
+        <h2 className="roomName">{roomTitle}</h2>{" "}
+        {/* ここでFirestoreから取得したタイトルを表示 */}
       </div>
 
       {message === "Toppage" && (
