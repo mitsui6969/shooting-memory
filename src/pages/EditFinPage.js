@@ -55,7 +55,10 @@ const EditFinPage = () => {
 
   // Firebase
   useEffect(() => {
+
+    // 今だけ手動で設定
     const roomID = "testRoom";
+    
     const participantsRef = collection(db, "rooms", roomID, "participants");
 
     const unsubscribe = onSnapshot(participantsRef, (snapshot) => {

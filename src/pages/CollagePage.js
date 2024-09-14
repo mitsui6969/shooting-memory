@@ -64,8 +64,10 @@ const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=2, s
 
   // 出揃い画面にgo
   const handletoEditFinPage = async () => {
+    // 今だけ手動で設定
     const roomID = "testRoom"
     const userID = "user2"
+    
     navigate('/edit-fin')
     await DBtoCollageImage(roomID, userID, imageSrc)
   }
