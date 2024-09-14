@@ -46,3 +46,14 @@
   left: 50%; /* 水平方向の中央揃え */
   transform: translateX(-50%); /* 中央に移動 */
 }
+
+.error-message {
+  color: red;
+  background-color: #fdd;
+  border: 1px solid red;
+  padding: 10px;
+  margin: 10px 0;
+  text-align: center;
+  border-radius: 5px;
+  font-weight: bold;
+}

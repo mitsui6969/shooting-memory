@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigateをインポート
 import Button from "../components/Button_white/Button_white";
 import "../styles/LoginPage.css"; // CSSファイルをインポート
@@ -9,23 +9,17 @@ import { auth, provider } from "../firebase/firebase-app"; // Firebase関連の�
 const LoginPage = () => {
   const navigate = useNavigate(); // navigate関数を定義
   const [user] = useAuthState(auth); // 認証状態を取得
+  const [error, setError] = useState(""); // エラーメッセージの状態管理
 
   // Googleサインイン関数
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, provider);
-  };
-
-  // ユーザーがログインしたら3秒後にToppageに遷移し、ユーザーIDを渡す
-  useEffect(() => {
-    if (user) {
-      const timer = setTimeout(() => {
-        const userId = auth.currentUser?.uid; // FirebaseでログインしているユーザーのUIDを取得
-        navigate("/toppage", { state: { userId } }); // UIDを渡してToppageに遷移
-      }, 3000); // 3秒待つ
-
-      return () => clearTimeout(timer); // クリーンアップ
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, provider); // 成功したらそのまま続行
+    } catch (err) {
+      console.error("ログイン失敗:", err.message);
+      setError("ログインに失敗しました。もう一度お試しください。"); // エラーメッセージを設定
     }
-  }, [user, navigate]); // ユーザーがログインしたかどうかで実行
+  };
 
   // 仮IDを発行してToppageに遷移する関数
   const handleGuestStart = () => {
@@ -36,6 +30,9 @@ const LoginPage = () => {
   return (
     <div className="loginpage">
       <div className="title">思い出射撃</div>
+
+      {/* エラーメッセージがある場合に表示 */}
+      {error && <div className="error-message">{error}</div>}
 
       {/* Googleログインボタンとサインアウトボタンの表示切り替え */}
       <div className="login">
@@ -65,7 +62,6 @@ const LoginPage = () => {
 function UserInfo() {
   return (
     <div>
-      {/* ここにユーザー情報を表示 */}
       <p>ユーザーがログインしています</p>
     </div>
   );
