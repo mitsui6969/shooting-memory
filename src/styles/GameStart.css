@@ -131,3 +131,14 @@
   width: 100%;         /* 幅を調整する */
   font-size: 20px;
 }
+
+.error-message {
+  color: red; /* テキストカラーを赤にして注意喚起 */
+  font-size: 1rem; /* 適切なサイズ */
+  margin-bottom: 1rem; /* メッセージの下に余白を追加 */
+  padding: 0.5rem; /* メッセージ周囲に余白を追加 */
+  border: 1px solid red; /* 赤い枠線で囲む */
+  background-color: #ffe6e6; /* 背景を薄い赤に設定 */
+  border-radius: 4px; /* ボーダーに角丸をつける */
+  text-align: center; /* テキストを中央揃えにする */
+}

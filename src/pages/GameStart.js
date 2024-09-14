@@ -15,27 +15,43 @@ const GameStart = () => {
   const location = useLocation(); // useLocationを使ってroomIdを取得
   const [name, setName] = useState("");
   const [selectedImages, setSelectedImages] = useState([]); // 複数の画像を管理
+  const [error, setError] = useState(""); // エラーメッセージのステートを追加
   const { roomId } = location.state || {}; // roomIdを受け取る
 
+  // 画像選択時のエラーチェック
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
 
     // 画像の数を2枚までに制限
     if (files.length + selectedImages.length > 2) {
-      alert("画像は2枚まで選択できます。");
+      setError("画像は2枚まで選択できます。");
       return;
     }
 
+    setError(""); // エラーをリセット
     setSelectedImages(prevImages => [...prevImages, ...files].slice(0, 2)); // 最大2枚まで
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!roomId) {
-      alert("Room ID が見つかりません");
+    // 名前が入力されているかのチェック
+    if (!name.trim()) {
+      setError("名前を入力してください。");
       return;
     }
+
+    if (!roomId) {
+      setError("Room ID が見つかりません");
+      return;
+    }
+
+    if (selectedImages.length === 0) {
+      setError("画像を最低1枚アップロードしてください。");
+      return;
+    }
+
+    setError(""); // エラーメッセージをリセット
 
     const docRef = doc(db, "selected_images", roomId); // roomIdに基づいて"rooms"コレクション内のドキュメントを参照
 
@@ -58,27 +74,38 @@ const GameStart = () => {
         const uploadTask = uploadBytesResumable(storageRef, image);
 
         // 画像アップロード
-        await new Promise((resolve, reject) => {
-          uploadTask.on('state_changed',
-            null,
-            (error) => {
-              console.error("エラー:", error);
-              reject(error);
-            },
-            async () => {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              console.log(`画像 ${i + 1} のダウンロードURL:`, downloadURL);
-              imageUrls.push(downloadURL); // URLを配列に追加
+        try {
+          await new Promise((resolve, reject) => {
+            uploadTask.on('state_changed',
+              null,
+              (error) => {
+                console.error("アップロード中のエラー:", error);
+                setError(`画像 ${i + 1} のアップロードに失敗しました。`);
+                reject(error);
+              },
+              async () => {
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                console.log(`画像 ${i + 1} のダウンロードURL:`, downloadURL);
+                imageUrls.push(downloadURL); // URLを配列に追加
 
-              // FirestoreにアップロードされたURLを保存
-              await updateDoc(docRef, {
-                photos: arrayUnion(downloadURL), // roomIdを使用してphotos配列にURLを追加
-              });
-
-              resolve();
-            }
-          );
-        });
+                // FirestoreにアップロードされたURLを保存
+                try {
+                  await updateDoc(docRef, {
+                    photos: arrayUnion(downloadURL), // roomIdを使用してphotos配列にURLを追加
+                  });
+                  resolve();
+                } catch (error) {
+                  console.error("Firestoreへの更新中にエラーが発生しました:", error);
+                  setError("画像のURLの保存に失敗しました。");
+                  reject(error);
+                }
+              }
+            );
+          });
+        } catch (error) {
+          console.error("画像のアップロード中にエラーが発生しました:", error);
+          return;
+        }
       }
     }
 
@@ -91,6 +118,7 @@ const GameStart = () => {
       console.log("roomsコレクションのcountが1増えました");
     } catch (error) {
       console.error("roomsコレクションのcountの更新に失敗しました:", error);
+      setError("ルーム情報の更新に失敗しました。");
     }
 
     // すべての画像がアップロード完了したら次のページへ遷移
@@ -101,6 +129,8 @@ const GameStart = () => {
     <div className='gamestart'>
       <div className='text-base name'>名前</div>
       <div className='text-base select'>最大2枚の画像を選択してください</div>
+
+      {error && <div className="error-message">{error}</div>} {/* エラーメッセージ表示 */}
 
       <form onSubmit={handleSubmit}>
         <input
