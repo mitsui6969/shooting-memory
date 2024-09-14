@@ -54,13 +54,14 @@ const WaitRoom = () => {
       );
       try {
         const querySnapshot = await getDocs(roomRef);
-        querySnapshot.forEach(async (roomDoc) => {
+        const updatePromises = querySnapshot.docs.map((roomDoc) => {
           const roomDocRef = doc(db, "rooms", roomDoc.id);
-          await updateDoc(roomDocRef, {
+          return updateDoc(roomDocRef, {
             isActive: true,
           });
-          console.log(`Room ${roomDoc.id} updated successfully`);
         });
+        await Promise.all(updatePromises);
+        console.log("Room updated successfully");
       } catch (error) {
         console.error("Error updating room: ", error);
       }
@@ -76,12 +77,13 @@ const WaitRoom = () => {
       );
 
       const unsubscribe = onSnapshot(roomQuery, (querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          const roomData = doc.data();
+        const roomDoc = querySnapshot.docs[0];
+        if (roomDoc) {
+          const roomData = roomDoc.data();
           if (roomData.isActive) {
             navigate("/game-start", { state: { roomId } });
           }
-        });
+        }
       });
 
       return () => unsubscribe();
