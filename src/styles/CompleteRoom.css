@@ -2,11 +2,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 13%;
+    padding-top: 2%;
   }
   
   h2 {
-    font-size: 32px;
+    font-size: 30px;
     text-align: center;
     color: #fff;
     margin: 8%;
