@@ -107,11 +107,11 @@
 	position: absolute;
     width: 200px;
     height: 260px;
-    background-color: gray;
+    background-color: rgba(222, 222, 222, 0.68);
     top: 250px;
 	left: 40px;
 	z-index: 1; 
-	border-radius: 20px;
+	border-radius: 1vh;
 }
 
 .next-button {

@@ -1,23 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/FrameSelection.css';
 import Button from "../components/Button_orange/Button_orange";
 import Frame from "../components/Frame/Frame";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'; // DndProviderのインポート
+import { collection, getDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase/firebase-app';
+
 
 const FrameSelection = () => {
     // チェックボックスの状態を個別に管理
     const [isFrameChecked, setIsFrameChecked] = useState(false);
     const [isTitleChecked, setIsTitleChecked] = useState(false);
-    const [isDayChecked, setIsDayChecked] = useState(true); // 日付のチェックボックスを管理
-    const [selectedOption, setSelectedOption] = useState('option1'); // セレクトボックスの選択値を管理
-    const [selectColor, setSelectColor] = useState(0); // Frame の selectColor を管理
+    const [isDayChecked, setIsDayChecked] = useState(true);
+    const [selectedOption, setSelectedOption] = useState('option1');
+    const [selectColor, setSelectColor] = useState(0);
+    const [title, setTitle] = useState('');
+    const [date, setDate] = useState('');
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
         setSelectedOption(e.target.value);
 
-        // セレクトボックスの値に基づいて selectColor を設定
+        // 色選択
         switch (e.target.value) {
             case 'option1':
                 setSelectColor(0); // 白1
@@ -41,9 +46,41 @@ const FrameSelection = () => {
     };
 
     // タイトルの中身を動的に切り替える
-    const frameTitle = isTitleChecked ? "タイトル" : ""; // タイトルチェックボックスの状態により内容を切り替え
+    const frameTitle = isTitleChecked ? title : ""; // タイトルチェックボックスの状態により内容を切り替え
     // 日付の中身を動的に切り替える
-    const frameDate = isDayChecked ? "2024/09/14" : ""; // 日付チェックボックスの状態により内容を切り替え
+    const frameDate = isDayChecked ? date : ""; // 日付チェックボックスの状態により内容を切り替え
+
+    // db処理
+    useEffect(() => {
+        const fetchRoomData = async () => {
+            try {
+                const roomID = "testRoom";
+                const roomDocRef = doc(db, "rooms", roomID);
+                const roomDoc = await getDoc(roomDocRef);
+                
+                if (roomDoc.exists()) {
+                const data = roomDoc.data();
+                setTitle(data.roomName || '');
+
+                
+                if (data.createdAt && data.createdAt.toDate) {
+                    setDate(data.createdAt.toDate().toLocaleDateString());
+                } else {
+                    setDate(data.createdAt || '');
+                }
+                
+                
+                } else {
+                console.log("ドキュメントが存在しません！");
+                }
+            } catch (error) {
+                console.error("ルームデータの取得中にエラーが発生しました: ", error);
+            }
+        };
+    
+        fetchRoomData();
+    }, []);
+
 
     return (
         <div className='frame-selection'>
@@ -99,18 +136,18 @@ const FrameSelection = () => {
 
             {/* セレクトボックスを追加 */}
             <div className="select-box-container">
-                <label htmlFor="image-options">背景の色を選択してください：</label>
+                <label htmlFor="image-options">フレームの色を選択してください：</label>
                 <select 
                     id="image-options" 
                     value={selectedOption} 
                     onChange={handleSelectChange} // セレクトボックスの変更時に handleSelectChange を呼ぶ
                     className="select-box"
                 >
-                    <option value="option1">白1</option>
-                    <option value="option2">黒1</option>
-                    <option value="option3">青</option>
-                    <option value="option4">白2</option>
-                    <option value="option5">黒2</option>
+                    <option value="option1">白(ノーマル)</option>
+                    <option value="option2">黒(ノーマル)</option>
+                    <option value="option3">Blue</option>
+                    <option value="option4">White</option>
+                    <option value="option5">Black</option>
                 </select>
             </div>
 
