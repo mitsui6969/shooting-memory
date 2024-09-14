@@ -1,51 +1,197 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 import "../styles/WaitRoom.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner/Spinner";
 import Button from "../components/Button_orange/Button_orange";
-import { useNavigate } from "react-router-dom";
+import { db } from "../firebase/firebase-app";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+  onSnapshot,
+  arrayUnion,
+  getDoc,
+} from "firebase/firestore";
+import { auth } from "../firebase/firebase-app";
 
 const WaitRoom = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [roomId, setRoomId] = useState(null);
+  const [memberCount, setMemberCount] = useState(0);
+  const [userId, setUserId] = useState("");
 
-  // データのロードが終わった後にローディングを解除
+  // userIdを取得
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000); // 3秒後にロード完了
+    const currentUserId =
+      auth.currentUser?.uid ||
+      `guest_${Math.random().toString(36).substr(2, 9)}`;
+    setUserId(currentUserId);
+  }, []);
 
-    // どのページから来たかを確認し、メッセージを変える
-    if (location.state && location.state.from === "game-start") {
-      setMessage("GameStart");
-    } else if (location.state && location.state.from === "Toppage") {
-      setMessage("Toppage");
-    } else {
+  // 画面遷移元に応じてメッセージを設定
+  useEffect(() => {
+    const from = location.state?.from;
+
+    if (from === "create-room") {
       setMessage("CreateRoom");
+    } else if (from === "game-start") {
+      setMessage("GameStart");
+    } else {
+      setMessage("Toppage");
     }
-
-    return () => clearTimeout(timer);
   }, [location.state]);
 
-  // ロードが終了し、かつmessageがGameStartの場合、gamestartに移動する
+  // roomIdを取得
   useEffect(() => {
-    if (!loading && message === "GameStart") {
-      navigate('/shooting-screen');
+    const params = new URLSearchParams(location.search);
+    const roomIdFromQuery = params.get("roomId");
+
+    if (roomIdFromQuery) {
+      setRoomId(roomIdFromQuery);
     }
-  }, [loading, message, navigate]);
+  }, [location.search]);
+
+  // メンバーのIDをroomsコレクションに追加
+  useEffect(() => {
+    if (roomId && userId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+
+      const addUserToRoom = async () => {
+        try {
+          await updateDoc(roomDocRef, {
+            members: arrayUnion(userId),
+          });
+          console.log("User added to room members");
+        } catch (error) {
+          console.error("Error adding user to room members: ", error);
+        }
+      };
+
+      addUserToRoom();
+    }
+  }, [roomId, userId]);
+
+  console.log("roomId: ", roomId);
+  console.log("message: ", message);
+
+  // メンバーの人数をリアルタイムで監視
+  useEffect(() => {
+    if (message === "CreateRoom" && roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+
+      const unsubscribe = onSnapshot(roomDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const roomData = docSnapshot.data();
+          console.log("Room data: ", roomData);
+          const memberCount = Array.isArray(roomData.members)
+            ? roomData.members.length
+            : 0;
+          setMemberCount(memberCount);
+          console.log("Member count updated: ", memberCount);
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [roomId, message]);
+
+  // ホストが「はじめる」ボタンを押したときの処理
+  const handleStartClick = async () => {
+    if (roomId) {
+      const roomRef = query(
+        collection(db, "rooms"),
+        where("roomId", "==", roomId)
+      );
+      try {
+        const querySnapshot = await getDocs(roomRef);
+        const updatePromises = querySnapshot.docs.map((roomDoc) => {
+          const roomDocRef = doc(db, "rooms", roomDoc.id);
+          return updateDoc(roomDocRef, {
+            isActive: true,
+          });
+        });
+        await Promise.all(updatePromises);
+        console.log("Room updated successfully");
+        navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
+      } catch (error) {
+        console.error("Error updating room: ", error);
+      }
+    }
+  };
+
+  // ホスト以外のメンバーのisActive監視
+  useEffect(() => {
+    if (message === "Toppage" && roomId) {
+      const roomQuery = query(
+        collection(db, "rooms"),
+        where("roomId", "==", roomId)
+      );
+
+      const unsubscribe = onSnapshot(roomQuery, (querySnapshot) => {
+        const roomDoc = querySnapshot.docs[0];
+        if (roomDoc) {
+          const roomData = roomDoc.data();
+          if (roomData.isActive) {
+            navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
+          }
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [roomId, navigate, message, userId]);
+
+  // 全メンバーのisReadyを監視
+  useEffect(() => {
+    if (message === "GameStart" && roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      let membersCount = 0;
+
+      const getMembersCount = async () => {
+        const roomSnapshot = await getDoc(roomDocRef);
+        if (roomSnapshot.exists()) {
+          const roomData = roomSnapshot.data();
+          membersCount = roomData.members.length;
+          console.log("Members count:", membersCount);
+        }
+      };
+
+      getMembersCount();
+
+      const membersRef = collection(roomDocRef, "participants");
+      const unsubscribeParticipants = onSnapshot(
+        membersRef,
+        (participantsSnapshot) => {
+          const participantsData = participantsSnapshot.docs.map((doc) =>
+            doc.data()
+          );
+
+          const readyCount = participantsData.filter(
+            (participant) => participant.isReady
+          ).length;
+          console.log("Ready count:", readyCount);
+
+          if (readyCount === membersCount && membersCount > 0) {
+            navigate(`/shooting-screen?roomId=${roomId}`);
+          }
+        }
+      );
+
+      return () => unsubscribeParticipants();
+    }
+  }, [message, navigate, roomId]);
 
   return (
     <div className="waitroom">
-      {loading ? (
-        <div className="spinner-container">
-          <Spinner /> {/* ローディング中はスピナーを表示 */}
-        </div>
-      ) : (
-        <h1>コンテンツが読み込まれました！</h1>
-      )}
+      <div className="spinner-container">
+        <Spinner />
+      </div>
 
       {message === "Toppage" && (
         <div className="text">ホストが開始するまでしばらくお待ちください</div>
@@ -53,17 +199,15 @@ const WaitRoom = () => {
 
       {message === "CreateRoom" && (
         <>
-          <div className="text-host">参加人数〇人</div>
+          <div className="text-host">参加人数: {memberCount}人</div>
           <div className="start-button">
-            <Button onClick={() => navigate("/game-start")}>はじめる</Button>
+            <Button onClick={handleStartClick}>はじめる</Button>
           </div>
         </>
       )}
 
       {message === "GameStart" && (
-        <>
-          <div className="text">画像が出揃うまで少々お待ちください</div>
-        </>
+        <div className="text">画像が出揃うまで少々お待ちください</div>
       )}
     </div>
   );
