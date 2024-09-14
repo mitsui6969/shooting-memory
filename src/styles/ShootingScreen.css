@@ -4,6 +4,19 @@
   align-items: center;
 }
 
+.shooting-container h2 {
+  padding-top: 15px;
+  padding-bottom: 5px;
+}
+
+.shooting-container p {
+  color: #fff;
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: #82b4ff;
+  text-shadow: 0 0 10px #ffffff, 0 0 1px #ffffff, 0 0 2px #04173b,
+    0 0 4px #03112d, 0 0 4px #719df6, 0 0 5px #719df6, 0 0 6px #719df6;
+}
+
 .target-container {
   background-color: #fff;
   height: 570px;
@@ -51,6 +64,7 @@
   margin: 20px auto;
   box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
   width: 90%;
+  height: 50%;
 }
 
 @keyframes expand {

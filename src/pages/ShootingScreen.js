@@ -138,6 +138,10 @@ const ShootingScreen = () => {
   return (
     <div className="shooting-container">
       <h2>一つ的を選んでください</h2>
+      <p>
+        現在のターン {playMember} さん
+        <br />
+      </p>
       <div className="target-container">
         <img src={bearImage} alt="target" onClick={handleClick} />
         <img src={usagiImage} alt="target" onClick={handleClick} />
@@ -154,11 +158,6 @@ const ShootingScreen = () => {
           <img src={randomImage} alt="sample" />
           <button onClick={handleNext}>次の人へ</button>
         </div>
-      )}
-      {playMember !== userId && (
-        <p>
-          現在のターンは {playMember} さんです。次のターンまでお待ちください。
-        </p>
       )}
     </div>
   );
