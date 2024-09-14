@@ -77,3 +77,23 @@
     width: 30%;
     margin: 0 auto;
 }
+
+#target-to-image {
+    border-radius: 1vh;
+}
+
+.complet-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(103, 103, 103, 0.678);
+}
+
+.collage-image {
+    width: 70%;
+    aspect-ratio: 3/4;
+    border-radius: 1.7vh;
+}
