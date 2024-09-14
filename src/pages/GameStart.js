@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import "../App.css";
 import "../styles/GameStart.css";
-import Button from '../components/Button_orange/Button_orange';
-import { useNavigate } from 'react-router-dom';
+import Button from "../components/Button_orange/Button_orange";
+import { useNavigate } from "react-router-dom";
 import Images from "../assets/image/images.png";
-import { storage } from '../firebase/firebase-app';
+import { storage } from "../firebase/firebase-app";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { doc, updateDoc, arrayUnion, getDoc, setDoc, increment } from "firebase/firestore"; // Firestore用の関数をインポート
-import { db } from '../firebase/firebase-app';
-import { useLocation } from 'react-router-dom';
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  getDoc,
+  setDoc,
+  increment,
+} from "firebase/firestore";
+import { db } from "../firebase/firebase-app";
+import { useLocation } from "react-router-dom";
 
 const GameStart = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // useLocationを使ってroomIdを取得
+  const location = useLocation();
   const [name, setName] = useState("");
-  const [selectedImages, setSelectedImages] = useState([]); // 複数の画像を管理
-  const { roomId } = location.state || {}; // roomIdを受け取る
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [roomId, setRoomId] = useState(null);
 
+  // roomIdを取得
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const roomIdFromQuery = params.get("roomId");
+
+    if (roomIdFromQuery) {
+      setRoomId(roomIdFromQuery);
+    }
+  }, [location.search]);
+
+  // 画像の選択
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
 
@@ -26,9 +44,10 @@ const GameStart = () => {
       return;
     }
 
-    setSelectedImages(prevImages => [...prevImages, ...files].slice(0, 2)); // 最大2枚まで
+    setSelectedImages((prevImages) => [...prevImages, ...files].slice(0, 2));
   };
 
+  // 完了ボタンをクリックしたときの処理
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,13 +56,11 @@ const GameStart = () => {
       return;
     }
 
-    const docRef = doc(db, "selected_images", roomId); // roomIdに基づいて"rooms"コレクション内のドキュメントを参照
+    const docRef = doc(db, "selected_images", roomId);
 
-    // Firestoreで指定されたroomIdのドキュメントが存在するか確認
     const docSnap = await getDoc(docRef);
 
     if (!docSnap.exists()) {
-      // ドキュメントが存在しない場合は新しいドキュメントを作成
       console.log("新しいドキュメントを作成します。");
       await setDoc(docRef, { photos: [] });
     }
@@ -59,7 +76,8 @@ const GameStart = () => {
 
         // 画像アップロード
         await new Promise((resolve, reject) => {
-          uploadTask.on('state_changed',
+          uploadTask.on(
+            "state_changed",
             null,
             (error) => {
               console.error("エラー:", error);
@@ -68,11 +86,10 @@ const GameStart = () => {
             async () => {
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
               console.log(`画像 ${i + 1} のダウンロードURL:`, downloadURL);
-              imageUrls.push(downloadURL); // URLを配列に追加
+              imageUrls.push(downloadURL);
 
-              // FirestoreにアップロードされたURLを保存
               await updateDoc(docRef, {
-                photos: arrayUnion(downloadURL), // roomIdを使用してphotos配列にURLを追加
+                photos: arrayUnion(downloadURL),
               });
 
               resolve();
@@ -86,7 +103,7 @@ const GameStart = () => {
     const roomDocRef = doc(db, "rooms", roomId);
     try {
       await updateDoc(roomDocRef, {
-        count: increment(1) // countフィールドを1増やす
+        count: increment(1), // countフィールドを1増やす
       });
       console.log("roomsコレクションのcountが1増えました");
     } catch (error) {
@@ -94,17 +111,17 @@ const GameStart = () => {
     }
 
     // すべての画像がアップロード完了したら次のページへ遷移
-    navigate('/wait-room', { state: { roomId, from: 'game-start' } });
+    navigate("/wait-room", { state: { roomId, from: "game-start" } });
   };
 
   return (
-    <div className='gamestart'>
-      <div className='text-base name'>名前</div>
-      <div className='text-base select'>最大2枚の画像を選択してください</div>
+    <div className="gamestart">
+      <div className="text-base name">名前</div>
+      <div className="text-base select">最大2枚の画像を選択してください</div>
 
       <form onSubmit={handleSubmit}>
         <input
-          className='input-name'
+          className="input-name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -124,7 +141,12 @@ const GameStart = () => {
             {/* 選択した画像がある場合はそれを表示、なければデフォルト画像 */}
             {selectedImages.length > 0 ? (
               selectedImages.map((image, index) => (
-                <img key={index} src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} className="upload-image" />
+                <img
+                  key={index}
+                  src={URL.createObjectURL(image)}
+                  alt={`Selected ${index + 1}`}
+                  className="upload-image"
+                />
               ))
             ) : (
               <img src={Images} alt="Upload" className="upload-image" />
@@ -132,7 +154,7 @@ const GameStart = () => {
           </label>
         </div>
 
-        <div className='start-button'>
+        <div className="start-button">
           <Button type="submit">完了</Button>
         </div>
       </form>

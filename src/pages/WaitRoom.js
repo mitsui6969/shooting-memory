@@ -23,6 +23,15 @@ const WaitRoom = () => {
   const [message, setMessage] = useState("");
   const [roomId, setRoomId] = useState(null);
   const [memberCount, setMemberCount] = useState(0);
+  const [userId, setUserId] = useState("");
+
+  // userIdを取得
+  useEffect(() => {
+    const currentUserId =
+      auth.currentUser?.uid ||
+      `guest_${Math.random().toString(36).substr(2, 9)}`;
+    setUserId(currentUserId);
+  }, []);
 
   // 画面遷移元に応じてメッセージを設定
   useEffect(() => {
@@ -49,11 +58,7 @@ const WaitRoom = () => {
 
   // メンバーのIDをroomsコレクションに追加
   useEffect(() => {
-    if (roomId) {
-      const userId =
-        auth.currentUser?.uid ||
-        `guest_${Math.random().toString(36).substr(2, 9)}`;
-
+    if (roomId && userId) {
       const roomDocRef = doc(db, "rooms", roomId);
 
       const addUserToRoom = async () => {
@@ -69,7 +74,7 @@ const WaitRoom = () => {
 
       addUserToRoom();
     }
-  }, [roomId]);
+  }, [roomId, userId]);
 
   console.log("roomId: ", roomId);
   console.log("message: ", message);
@@ -112,6 +117,7 @@ const WaitRoom = () => {
         });
         await Promise.all(updatePromises);
         console.log("Room updated successfully");
+        navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
       } catch (error) {
         console.error("Error updating room: ", error);
       }
@@ -131,14 +137,14 @@ const WaitRoom = () => {
         if (roomDoc) {
           const roomData = roomDoc.data();
           if (roomData.isActive) {
-            navigate("/game-start", { state: { roomId } });
+            navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
           }
         }
       });
 
       return () => unsubscribe();
     }
-  }, [roomId, navigate, message]);
+  }, [roomId, navigate, message, userId]);
 
   // 全メンバーのisReadyを監視
   useEffect(() => {
@@ -159,7 +165,7 @@ const WaitRoom = () => {
               );
 
               if (membersData.every((member) => member.isReady)) {
-                navigate("/shooting-screen");
+                navigate(`/shooting-screen?roomId=${roomId}`);
               }
             }
           );
