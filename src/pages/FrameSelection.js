@@ -11,8 +11,8 @@ import { useNavigate } from 'react-router-dom';
 
 const FrameSelection = () => {
     // チェックボックスの状態を個別に管理
-    const [isFrameChecked, setIsFrameChecked] = useState(false);
-    const [isTitleChecked, setIsTitleChecked] = useState(false);
+    const [isFrameChecked, setIsFrameChecked] = useState(true);
+    const [isTitleChecked, setIsTitleChecked] = useState(true);
     const [isDayChecked, setIsDayChecked] = useState(true);
     const [selectedOption, setSelectedOption] = useState('option1');
     const [selectColor, setSelectColor] = useState(0);
