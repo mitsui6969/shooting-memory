@@ -74,7 +74,7 @@ const EditFinPage = () => {
             {imageList.map((_, index) => (
               <span
                 key={index}
-                className={currentIndex === index ? "active" : ""}
+                className={`indicators-span ${currentIndex === index ? "active" : ""}`}
                 onClick={() => goToSlide(index)}
               >
                 ●
@@ -85,7 +85,7 @@ const EditFinPage = () => {
 
         {/* 次へボタン */}
         <div className="image-button-container">
-          <Button>次へ</Button>
+          <Button>終了</Button>
         </div>
       </div>
   );

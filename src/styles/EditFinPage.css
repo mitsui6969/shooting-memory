@@ -13,6 +13,11 @@ h2 {
   margin: 5%;
 }
 
+.view-items-container {
+  display: block;
+  height: auto;
+}
+
 .back-image-box {
   background-color: rgba(255, 255, 255, 0.433);
   border-radius: 10px;
@@ -36,22 +41,8 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  width: 100%; /* 親要素の幅を100%にしても問題ありません */
-}
-
-.image-button {
-  width: 150px; /* ボタンの横幅を150pxに固定 */
-  height: 50px; /* ボタンの高さを指定 */
-  background-color: #4CAF50;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  flex-shrink: 0; /* 幅が縮小しないように設定 */
-  flex-grow: 0; /* 幅が成長しないように設定 */
-  box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
+  margin-top: 6vh;
+  width: 100%;
 }
 
 /* 矢印ボタン */
@@ -87,14 +78,14 @@ h2 {
 .indicators {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 0;
+  font-size: 18px;
 }
 
-.indicators span {
-  font-size: 20px;
+.indicators-span {
   cursor: pointer;
-  margin: 0 5px;
-  color: #ccc;
+  margin: 0 0.8vw;
+  color: #d0d0d063;
 }
 
 .indicators .active {
