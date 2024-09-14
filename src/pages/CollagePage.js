@@ -40,7 +40,7 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   );
 };
 
-const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=0, selectBorder=true, userID}) => {
+const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=2, selectBorder=true, userID}) => {
   images = [testImage, testImage2, testImage3];
   const [draggedImages, setDraggedImages] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);

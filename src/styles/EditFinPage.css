@@ -97,3 +97,52 @@ h2 {
 .indicators .active {
   color: #ffffff;
 }
+
+/* こっからモーダル */
+.Exit-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(60, 58, 58, 0.772);
+  align-items: center;
+  justify-content: center;
+}
+
+.Exit-items-container {
+  width: 350px;
+  aspect-ratio: 4/3;
+  /* background-color: aqua; */
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+h3 {
+  margin: 3vh 0;
+}
+
+.Exit-stop-message {
+  height: 30vh;
+  width: 80%;
+  padding: 2vw;
+  margin: 0 auto;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #f7eeeedc;
+}
+
+.Exit-button-container {
+  display: flex;
+  justify-content: center;
+  width: 84%;
+  margin: 1vh auto 0;
+}
+
+.Exit-button-modal {
+  width: 40%;
+  margin: 0 0.5vh;
+}

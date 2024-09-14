@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import "../styles/EditFinPage.css";
 import "../App.css";
-import Button from '../components/Button_orange/Button_orange';
+import ButtonO from '../components/Button_orange/Button_orange';
+import ButtonW from "../components/Button_white/Button_white";
 import { doc, collection, onSnapshot } from "firebase/firestore"; // Firebase Firestore関連のimport
 import { db } from "../firebase/firebase-app"; // Firebase設定ファイルのimport
 import LeftArrowIcon from "../assets/image/leftarrow.png";
@@ -11,6 +13,8 @@ import RightArrowIcon from "../assets/image/rightarrow.png";
 const EditFinPage = () => {
   const [imageList, setImageList] = useState([{}]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isModal, setIsModal] = useState(false);
+  const navigate = useNavigate();
 
   // スワイプ操作の設定
   const handlers = useSwipeable({
@@ -37,6 +41,18 @@ const EditFinPage = () => {
     setCurrentIndex(index);
   };
 
+  const handleModalClose = () => {
+    setIsModal(false);
+  }
+
+  const handleModalOpen = () => {
+    setIsModal(true);
+  }
+
+  const handleExit = () => {
+    navigate('/');
+  }
+
   // Firebase
   useEffect(() => {
     const roomID = "testRoom";
@@ -54,7 +70,6 @@ const EditFinPage = () => {
       setImageList(updatedImageList);
     });
 
-    // コンポーネントがアンマウントされたときにリスナーを解除
     return () => unsubscribe();
   }, []);
 
@@ -102,11 +117,33 @@ const EditFinPage = () => {
 
           {/* 次へボタン */}
           <div className="image-button-container">
-            <Button>退出する</Button>
+            <ButtonO onClick={handleModalOpen}>退出する</ButtonO>
           </div>
         </>
       ) : (
         <p>画像を読み込み中...</p>
+      )}
+
+      {isModal && (
+        <div className="Exit-modal">
+          <div className="Exit-items-container">
+            <div className="Exit-stop-message">
+              <h3>本当に退出しますか？</h3>
+              
+              <p>「退出」を押すとトップページに戻ります</p>
+              <p>一度退出すると同じ部屋に入ることはできません</p>
+            </div>
+            <div className="Exit-button-container">
+              <div className="Exit-button-modal go-white-Exit">
+                <ButtonW onClick={handleModalClose}>戻る</ButtonW>
+              </div>
+
+              <div className="Exit-button-modal go-orange-Exit">
+                <ButtonO onClick={handleExit}>退出</ButtonO>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
