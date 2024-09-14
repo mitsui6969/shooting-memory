@@ -162,7 +162,8 @@
 .image-left {
   width: 40%; /* 幅を40%に制限 */
   max-width: 150px; /* 画像の最大幅 */
-  height: auto;
+  max-height: 150px; /* 画像の最大高さを制限 */
+  object-fit: cover; /* アスペクト比を維持しながら、ボックス内に収める */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-right: 10px; /* 左右の画像の間に余白を追加 */
@@ -172,7 +173,8 @@
 .image-right {
   width: 40%; /* 幅を40%に制限 */
   max-width: 150px; /* 画像の最大幅 */
-  height: auto;
+  max-height: 150px; /* 画像の最大高さを制限 */
+  object-fit: cover; /* アスペクト比を維持しながら、ボックス内に収める */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-left: 10px; /* 左右の画像の間に余白を追加 */
