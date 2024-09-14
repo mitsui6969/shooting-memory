@@ -92,7 +92,7 @@ const ShootingScreen = () => {
     fetchData();
   }, [roomId]);
 
-  // Firestoreの現在のプレイヤーを監視
+  // Firestoreの現在のプレイヤーを監視し、isEndがtrueになったら画面遷移
   useEffect(() => {
     if (!roomId) return;
 
@@ -105,11 +105,16 @@ const ShootingScreen = () => {
           setPlayMember(roomData.currentPlayMember);
           console.log("現在のプレイヤー:", roomData.currentPlayMember);
         }
+        // isEndがtrueになったら画面遷移
+        if (roomData.isEnd === true) {
+          console.log("ゲーム終了: isEndがtrueになりました");
+          navigate(`/complete-room?roomId=${roomId}`);
+        }
       }
     });
 
     return () => unsubscribe();
-  }, [roomId]);
+  }, [roomId, navigate]);
 
   // playMemberの名前を取得
   useEffect(() => {
@@ -211,7 +216,6 @@ const ShootingScreen = () => {
       await updateDoc(roomDocRef, {
         isEnd: true,
       });
-      navigate("/");
       console.log("全員が終了しました");
       return;
     }
