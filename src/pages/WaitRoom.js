@@ -14,6 +14,7 @@ import {
   updateDoc,
   onSnapshot,
   arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 import { auth } from "../firebase/firebase-app";
 
@@ -23,6 +24,7 @@ const WaitRoom = () => {
   const [message, setMessage] = useState("");
   const [roomId, setRoomId] = useState(null);
   const [memberCount, setMemberCount] = useState(0);
+  const [roomTitle, setRoomTitle] = useState(""); // title用のステート
 
   // 画面遷移元に応じてメッセージを設定
   useEffect(() => {
@@ -47,6 +49,29 @@ const WaitRoom = () => {
     }
   }, [location.search]);
 
+  // Firestoreからroomのtitleを取得
+  useEffect(() => {
+    if (roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+
+      const fetchRoomTitle = async () => {
+        try {
+          const docSnap = await getDoc(roomDocRef);
+          if (docSnap.exists()) {
+            const roomData = docSnap.data();
+            setRoomTitle(roomData.roomName || "No Title"); // titleフィールドを取得してセット
+          } else {
+            console.error("No such document!");
+          }
+        } catch (error) {
+          console.error("Error fetching room title: ", error);
+        }
+      };
+
+      fetchRoomTitle();
+    }
+  }, [roomId]);
+
   // メンバーのIDをroomsコレクションに追加
   useEffect(() => {
     if (roomId) {
@@ -70,9 +95,6 @@ const WaitRoom = () => {
       addUserToRoom();
     }
   }, [roomId]);
-
-  console.log("roomId: ", roomId);
-  console.log("message: ", message);
 
   // メンバーの人数をリアルタイムで監視
   useEffect(() => {
@@ -171,10 +193,16 @@ const WaitRoom = () => {
       return () => unsubscribe();
     }
   }, [message, navigate, roomId]);
+
   return (
     <div className="waitroom">
       <div className="spinner-container">
         <Spinner />
+      </div>
+
+      {/* Room Titleの表示 */}
+      <div className="room-title">
+        <h2 className="roomName">{roomTitle}</h2> {/* ここでFirestoreから取得したタイトルを表示 */}
       </div>
 
       {message === "Toppage" && (
