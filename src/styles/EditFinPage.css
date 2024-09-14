@@ -21,7 +21,7 @@ h2 {
 .back-image-box {
   background-color: rgba(255, 255, 255, 0.433);
   border-radius: 10px;
-  height: 58vh;
+  height: 60vh;
   width: 100%;
   display: flex;
   align-items: center;
@@ -33,8 +33,11 @@ h2 {
 
 .collaged-image {
   width: 80%;
-  object-fit: contain;
+  aspect-ratio: 3/4;
+  border-radius: 1vh;
+  object-fit: cover;
   user-select: none;
+  overflow: hidden;
 }
 
 .image-button-container {
@@ -89,5 +92,5 @@ h2 {
 }
 
 .indicators .active {
-  color: #000;
+  color: #ffffff;
 }
