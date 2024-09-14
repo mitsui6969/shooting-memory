@@ -12,6 +12,7 @@ import ButtonW from "../components/Button_white/Button_white";
 import html2canvas from "html2canvas";
 import { doc, collection, addDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../firebase/firebase-app";
+import { getStorage, getDownloadURL, ref, uploadString } from "firebase/storage";
 
 const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -62,11 +63,11 @@ const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=0, s
   }
 
   // 出揃い画面にgo
-  const handletoEditFinPage = () => {
+  const handletoEditFinPage = async () => {
     const roomID = "testRoom"
-    const userID = "user1"
+    const userID = "user2"
     navigate('/edit-fin')
-    DBtoCollageImage(roomID, userID, imageSrc)
+    await DBtoCollageImage(roomID, userID, imageSrc)
   }
 
   const handleModalClose = () => {
@@ -74,17 +75,24 @@ const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=0, s
   }
 
   // db処理
-  const DBtoCollageImage = (roomID, userID, collageImageUrl) => {
+  const DBtoCollageImage = async (roomID, userID, collageImageUrl) => {
     try{
-      const participantDocRef = doc(db, "rooms", roomID, "participants", userID);
+      // storageに保存
+      const storage = getStorage();
+      const storageRef = ref(storage, `collages/${roomID}/${userID}.png`);
 
-      updateDoc(participantDocRef, {
-        collageImage: collageImageUrl
+      await uploadString(storageRef, collageImageUrl, 'data_url');
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // コレクション追加
+      const participantDocRef = doc(db, "rooms", roomID, "participants", userID);
+      await updateDoc(participantDocRef, {
+        collageImage: downloadURL
       });
 
       const roomDocRef = doc(db, "rooms", roomID);
-      updateDoc(roomDocRef, {
-        collagedImageList: arrayUnion(collageImageUrl)
+      await updateDoc(roomDocRef, {
+        collagedImageList: arrayUnion(downloadURL)
       });
 
       console.log("collageImage successfully added or updated!");
