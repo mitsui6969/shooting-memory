@@ -3,8 +3,12 @@
   height: 100vh;
   width: 414px;
   margin: 0 auto;
-  background-color: #87ceeb;
   background-size: cover;
+}
+
+.error-message {
+  color: #ffffff;
+  font-size: 18px;
 }
 
 .title {
@@ -22,27 +26,16 @@
   top: 160px;
   left: 50%;
   transform: translateX(-50%);
-  white-space: nowrap; /* 1行に強制的に収める */
-  max-width: 100%; /* 必要に応じてタイトルの幅を制限 */
 }
 
 .login {
   display: flex;
-  justify-content: center; /* 水平方向の中央揃え */
-  align-items: center; /* 垂直方向の中央揃え */
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  top: 350px; /* 上から500pxの位置 */
-  left: 50%; /* 水平方向の中央揃え */
-  transform: translateX(-50%); /* 中央に移動 */
-}
-
-.no-login {
-  display: flex;
-  justify-content: center; /* 水平方向の中央揃え */
-  align-items: center; /* 垂直方向の中央揃え */
-  position: absolute;
-	width: 300px;
-  top: 450px; /* 上から500pxの位置 */
-  left: 50%; /* 水平方向の中央揃え */
-  transform: translateX(-50%); /* 中央に移動 */
+  top: 350px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 20px;
 }
