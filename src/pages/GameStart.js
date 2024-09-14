@@ -178,19 +178,18 @@ const GameStart = () => {
           </label>
         </div>
 
-        {/* アップロード進捗の表示 */}
         <div className='upload-bar'>
+          {/* アップロード進捗の表示 */}
           {selectedImages.map((image, index) => (
             uploadProgress[index] >= 0 && (
               <div key={index} className="progress-container">
                 <div className="progress-bar" style={{ width: `${uploadProgress[index]}%` }}>
-                  <span className="progress-text"> {index + 1}: {Math.round(uploadProgress[index])}% </span>
+                  <span className="progress-text">画像 {index + 1}: {Math.round(uploadProgress[index])}% アップロード完了</span>
                 </div>
               </div>
             )
           ))}
         </div>
-        
 
         <div className='start-button'>
           <Button type="submit">完了</Button>
