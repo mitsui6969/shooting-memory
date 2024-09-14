@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import "../App.css";
 import "../styles/GameStart.css";
 import Button from '../components/Button_orange/Button_orange';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Images from "../assets/images.png"; 
-import { storage, db } from '../firebase/firebase-app'; // FirestoreとStorageをインポート
+import { useNavigate } from 'react-router-dom';
+import Images from "../assets/images.png";
+import { storage } from '../firebase/firebase-app';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc, arrayUnion, getDoc, setDoc, increment } from "firebase/firestore"; // Firestore用の関数をインポート
 
@@ -17,7 +17,7 @@ const GameStart = () => {
 
   const handleImageChange = (event) => {
     const files = Array.from(event.target.files);
-    
+
     // 画像の数を2枚までに制限
     if (files.length + selectedImages.length > 2) {
       alert("画像は2枚まで選択できます。");
@@ -57,12 +57,12 @@ const GameStart = () => {
 
         // 画像アップロード
         await new Promise((resolve, reject) => {
-          uploadTask.on('state_changed', 
-            null, 
+          uploadTask.on('state_changed',
+            null,
             (error) => {
               console.error("エラー:", error);
               reject(error);
-            }, 
+            },
             async () => {
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
               console.log(`画像 ${i + 1} のダウンロードURL:`, downloadURL);

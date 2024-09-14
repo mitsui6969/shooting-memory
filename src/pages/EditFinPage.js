@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../styles/EditFinPage.css";
-import Images1 from "../assets/sample.png";
-import Images2 from "../assets/sample2.png";
-import Images3 from "../assets/sample3.png";
-import Images4 from "../assets/sample2.png";  // 4つ目の画像をインポート
-import Button from '../components/Button_orange/Button_orange';
+import Images1 from "../assets/image/sample.png";
+import Images2 from "../assets/image/sample2.png";
+import Images3 from "../assets/image/sample3.png";
+import Images4 from "../assets/image/sample2.png";  // 4つ目の画像をインポート
+import Button from "../components/Button_orange/Button_orange";
 
 const EditFinPage = () => {
   // 任意の位置を指定して画像の座標を管理する
