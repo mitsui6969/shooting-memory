@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ShootingScreen.css";
 import bearImage from "../assets/image/bear.png";
@@ -41,23 +41,50 @@ const ShootingScreen = () => {
 
   console.log("roomIdFromQuery:", roomId);
 
+  // プレイヤーターンを保存
+  const saveCurrentPlayMember = useCallback(
+    async (nextMember) => {
+      try {
+        const roomDocRef = doc(db, "rooms", roomId);
+        await updateDoc(roomDocRef, {
+          currentPlayMember: nextMember,
+        });
+        console.log("現在のプレイヤーがFirestoreに保存されました:", nextMember);
+      } catch (error) {
+        console.error("現在のプレイヤーの保存中にエラーが発生しました:", error);
+      }
+    },
+    [roomId]
+  );
+
   // 最初のプレイヤーを設定
-  const setFirstPlayMember = async (members) => {
-    const firstMember = members[0];
-    await saveCurrentPlayMember(firstMember);
+  const setFirstPlayMember = useCallback(
+    async (members) => {
+      const firstMember = members[0];
+      await saveCurrentPlayMember(firstMember);
 
-    try {
-      const docRef = doc(db, "rooms", roomId);
-      await updateDoc(docRef, {
-        isEnd: false,
-      });
-    } catch (error) {
-      console.error("isEndの更新中にエラーが発生しました", error);
-    }
+      try {
+        const docRef = doc(db, "rooms", roomId);
+        await updateDoc(docRef, {
+          isEnd: false,
+        });
+      } catch (error) {
+        console.error("isEndの更新中にエラーが発生しました", error);
+      }
 
-    setPlayMember(firstMember);
-    console.log("最初のプレイヤーを設定:", firstMember);
-  };
+      setPlayMember(firstMember);
+      console.log("最初のプレイヤーを設定:", firstMember);
+    },
+    [roomId, saveCurrentPlayMember]
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // データ取得処理
+    };
+
+    fetchData();
+  }, [roomId, setFirstPlayMember]);
 
   // データを取得
   useEffect(() => {
@@ -90,7 +117,7 @@ const ShootingScreen = () => {
       }
     };
     fetchData();
-  }, [roomId]);
+  }, [roomId, setFirstPlayMember]);
 
   // Firestoreの現在のプレイヤーを監視し、isEndがtrueになったら画面遷移
   useEffect(() => {
@@ -109,6 +136,7 @@ const ShootingScreen = () => {
         if (roomData.isEnd === true) {
           console.log("ゲーム終了: isEndがtrueになりました");
           navigate(`/complete-room?roomId=${roomId}`);
+          return;
         }
       }
     });
@@ -143,19 +171,6 @@ const ShootingScreen = () => {
 
     fetchPlayMemberName();
   }, [roomId, playMember]);
-
-  // プレイヤーターンを保存
-  const saveCurrentPlayMember = async (nextMember) => {
-    try {
-      const roomDocRef = doc(db, "rooms", roomId);
-      await updateDoc(roomDocRef, {
-        currentPlayMember: nextMember,
-      });
-      console.log("現在のプレイヤーがFirestoreに保存されました:", nextMember);
-    } catch (error) {
-      console.error("現在のプレイヤーの保存中にエラーが発生しました:", error);
-    }
-  };
 
   const saveSelectedImage = async (image) => {
     try {

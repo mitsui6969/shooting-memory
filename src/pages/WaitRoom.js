@@ -102,8 +102,7 @@ const WaitRoom = () => {
           await updateDoc(roomDocRef, {
             members: arrayUnion(userId),
           });
-        } catch (error) {
-        }
+        } catch (error) {}
       };
 
       addUserToRoom();
@@ -146,8 +145,7 @@ const WaitRoom = () => {
         });
         await Promise.all(updatePromises);
         navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
-      } catch (error) {
-      }
+      } catch (error) {}
     }
   };
 
@@ -211,7 +209,7 @@ const WaitRoom = () => {
 
       return () => unsubscribeParticipants();
     }
-  }, [message, navigate, roomId]);
+  }, [message, navigate, roomId, userId]);
 
   return (
     <div className="waitroom">
