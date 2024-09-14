@@ -16,6 +16,7 @@ const GameStart = () => {
   const [name, setName] = useState("");
   const [selectedImages, setSelectedImages] = useState([]); // 複数の画像を管理
   const [error, setError] = useState(""); // エラーメッセージのステートを追加
+  const [uploadProgress, setUploadProgress] = useState([]); // 画像のアップロード進捗
   const { roomId } = location.state || {}; // roomIdを受け取る
 
   // 画像選択時のエラーチェック
@@ -30,6 +31,7 @@ const GameStart = () => {
 
     setError(""); // エラーをリセット
     setSelectedImages(prevImages => [...prevImages, ...files].slice(0, 2)); // 最大2枚まで
+    setUploadProgress(Array(files.length).fill(0)); // アップロード進捗を初期化
   };
 
   const handleSubmit = async (e) => {
@@ -77,7 +79,16 @@ const GameStart = () => {
         try {
           await new Promise((resolve, reject) => {
             uploadTask.on('state_changed',
-              null,
+              (snapshot) => {
+                // アップロード進捗を計算
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setUploadProgress(prevProgress => {
+                  const newProgress = [...prevProgress];
+                  newProgress[i] = progress;
+                  return newProgress;
+                });
+                console.log(`画像 ${i + 1} のアップロード進捗: ${progress}%`);
+              },
               (error) => {
                 console.error("アップロード中のエラー:", error);
                 setError(`画像 ${i + 1} のアップロードに失敗しました。`);
@@ -166,6 +177,20 @@ const GameStart = () => {
             </div>
           </label>
         </div>
+
+        {/* アップロード進捗の表示 */}
+        <div className='upload-bar'>
+          {selectedImages.map((image, index) => (
+            uploadProgress[index] >= 0 && (
+              <div key={index} className="progress-container">
+                <div className="progress-bar" style={{ width: `${uploadProgress[index]}%` }}>
+                  <span className="progress-text"> {index + 1}: {Math.round(uploadProgress[index])}% </span>
+                </div>
+              </div>
+            )
+          ))}
+        </div>
+        
 
         <div className='start-button'>
           <Button type="submit">完了</Button>

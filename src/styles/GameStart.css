@@ -159,8 +159,11 @@
 
 /* 左側の画像 */
 .image-left {
-  width: 48%; /* コンテナ内で半分の幅を使用 */
+  width: 40%; /* コンテナ内で40%の幅を使用 */
   height: auto;
+  display: flex;
+  max-width: 40%; /* 最大幅を40%に制限 */
+  max-height: 40%; /* 最大高さを40%に制限 */
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -168,9 +171,49 @@
 
 /* 右側の画像 */
 .image-right {
-  width: 48%; /* コンテナ内で半分の幅を使用 */
+  width: 40%; /* コンテナ内で40%の幅を使用 */
   height: auto;
+  display: flex;
+  max-width: 40%; /* 最大幅を40%に制限 */
+  max-height: 40%; /* 最大高さを40%に制限 */
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* メモリバー */
+
+.progress-container {
+  margin: 10px 0;
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.progress-bar {
+  height: 20px;
+  background-color: #75a8f5;
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+
+.progress-text {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.upload-bar {
+  position: absolute;
+  top: 600px;
+  left: 50%;
+  transform: translateX(-50%); 
+  width: 300px;
 }
