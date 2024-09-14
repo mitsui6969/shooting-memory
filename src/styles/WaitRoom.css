@@ -8,6 +8,8 @@
 }
 
 .waitroom h3 {
+  padding: 0;
+  padding-bottom: 10px;
   color: #fff;
   text-align: center;
 }
