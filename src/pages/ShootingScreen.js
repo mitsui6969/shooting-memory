@@ -78,14 +78,6 @@ const ShootingScreen = () => {
     [roomId, saveCurrentPlayMember]
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // データ取得処理
-    };
-
-    fetchData();
-  }, [roomId, setFirstPlayMember]);
-
   // データを取得
   useEffect(() => {
     const fetchData = async () => {
@@ -95,11 +87,17 @@ const ShootingScreen = () => {
         const roomDocRef = doc(db, "rooms", roomId);
         const docSnapshot = await getDoc(roomDocRef);
 
+        console.log("ドキュメントの存在:", docSnapshot.exists());
+
         if (docSnapshot.exists()) {
           const roomData = docSnapshot.data();
+          console.log("roomData:", roomData);
           if (roomData.photos && roomData.members) {
             setPhotos(roomData.photos);
             setMembers(roomData.members);
+
+            console.log("photos:", roomData.photos);
+            console.log("members:", roomData.members);
 
             if (roomData.currentPlayMember) {
               setPlayMember(roomData.currentPlayMember);
