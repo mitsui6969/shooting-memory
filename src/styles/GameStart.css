@@ -1,73 +1,23 @@
 .gamestart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 43px;
-  font-family: "Shippori Mincho", "Georgia", serif;
-  position: relative;
-}
-
-/* テキストの位置を任意に指定 */
-.text-base {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  color: white;
-}
-
-.name {
-  top: 190px;
-}
-
-.select {
-  top: 315px;
-}
-
-.input-name {
-  width: 300px;
+  height: 100vh;
   text-align: center;
+}
+
+.gamestart h2,
+h3 {
+  color: #fff;
+  padding-top: 75px;
+  padding-bottom: 20px;
+}
+
+.gamestart input {
+  margin: 0 auto;
   height: 40px;
-  border-radius: 0.375rem;
-  font-size: 19px;
-  position: absolute;
-  top: 225px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.input-name {
-  outline: none;
+  width: 300px;
+  border-radius: 6px;
   border: none;
-}
-
-.input-name:focus {
-  outline: none;
-}
-
-/* アップロードコンポーネント全体のスタイル */
-.gamestart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.start-button {
-  margin-bottom: 20px;
-}
-
-.text {
-  margin: 10px 0;
-  font-size: 18px;
-}
-
-.input-name {
-  width: 200px;
-  padding: 8px;
-  font-size: 16px;
-  margin-bottom: 20px;
+  padding: 5px 10px;
+  text-align: center;
 }
 
 /* アップロードコンポーネント全体のスタイル */
@@ -75,10 +25,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute;
-  top: 350px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-bottom: 60px;
 }
 
 /* input[type="file"] を非表示 */
@@ -107,13 +54,11 @@
 }
 
 .upload-image {
-
-    max-width: 100%; /* ボックス内で画像の幅をフィットさせる */
-    max-height: 100%; /* ボックス内で画像の高さをフィットさせる */
-    width: auto; /* 幅の自動調整 */
-    height: auto; /* 高さの自動調整 */
-    object-fit: cover; /* ボックス内に収める際、画像のアスペクト比を維持してクロップする */
-  
+  max-width: 100%; /* ボックス内で画像の幅をフィットさせる */
+  max-height: 100%; /* ボックス内で画像の高さをフィットさせる */
+  width: auto; /* 幅の自動調整 */
+  height: auto; /* 高さの自動調整 */
+  object-fit: cover; /* ボックス内に収める際、画像のアスペクト比を維持してクロップする */
 }
 
 /* プレビュー画像コンテナのスタイル */
@@ -131,9 +76,9 @@
 
 .text-base.select {
   white-space: nowrap; /* 改行を防ぐ */
-  display: block;      /* 必要に応じて、displayプロパティを調整 */
-  text-align: center;  /* 中央揃えにする場合 */
-  width: 100%;         /* 幅を調整する */
+  display: block; /* 必要に応じて、displayプロパティを調整 */
+  text-align: center; /* 中央揃えにする場合 */
+  width: 100%; /* 幅を調整する */
   font-size: 20px;
 }
 
@@ -188,8 +133,6 @@
   gap: 10px; /* 左右の画像間にスペースを追加 */
 }
 
-
-
 /* メモリバー */
 
 .progress-container {
@@ -199,60 +142,4 @@
   border-radius: 5px;
   overflow: hidden;
   position: relative;
-}
-
-
-.progress-bar {
-  height: 20px;
-  background-color: #75a8f5;
-  transition: width 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-
-.progress-text {
-  font-size: 12px;
-  line-height: 20px;
-}
-
-.upload-bar {
-  position: absolute;
-  top: 600px;
-  left: 50%;
-  transform: translateX(-50%); 
-  width: 300px;
-}
-
-
-/* 削除ボタン */
-.image-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.remove-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgb(14, 12, 12);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 16px;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-left, .image-right {
-  width: 150px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 8px;
 }
