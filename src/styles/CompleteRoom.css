@@ -9,14 +9,14 @@
     font-size: 30px;
     text-align: center;
     color: #fff;
-    margin: 8%;
+    margin: 5%;
   }
   
   .white-box {
     background-color: white;
     border-radius: 10px;
     width: 340px;
-    height: 480px;
+    height: 450px;
     display: flex;
     align-items: center;
     justify-content: center;
