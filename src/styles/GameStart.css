@@ -131,3 +131,14 @@
   width: 100%;         /* 幅を調整する */
   font-size: 20px;
 }
+
+.error-message {
+  color: red;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  background-color: #ffe6e6;
+  border: 1px solid red;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+}
