@@ -261,7 +261,7 @@ const ShootingScreen = () => {
       {showSquare && (
         <div className={`click-target ${isClosing ? "closing" : ""}`}>
           <img src={randomImage} alt="sample" />
-          <button onClick={handleNext}>次の人へ</button>
+          <button onClick={handleNext} className="next-button">次の人へ</button>
         </div>
       )}
     </div>
