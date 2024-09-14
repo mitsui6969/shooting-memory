@@ -3,9 +3,9 @@ import { useSwipeable } from "react-swipeable";
 import "../styles/CompleteRoom.css";
 import "../App.css";
 import Button from '../components/Button_orange/Button_orange';
-import Image1 from "../assets/sample.png";
-import Image2 from "../assets/sample2.png";
-import Image3 from "../assets/sample3.png";
+import Image1 from "../assets/image/sample.png";
+import Image2 from "../assets/image/sample2.png";
+import Image3 from "../assets/image/sample3.png";
 
 // アップロードされた矢印画像
 import LeftArrowIcon from "../assets/image/leftarrow.png";
