@@ -116,8 +116,8 @@ const EditFinPage = () => {
           </div>
 
           {/* 次へボタン */}
-          <div className="image-button-container">
-            <ButtonO onClick={handleModalOpen}>退出する</ButtonO>
+          <div className="Exit-button-first">
+            <ButtonW onClick={handleModalOpen}>退出する</ButtonW>
           </div>
         </>
       ) : (

@@ -43,12 +43,13 @@ h2 {
   overflow: hidden;
 }
 
-.image-button-container {
+.Exit-button-first {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5vh;
-  width: 100%;
+  width: 40%;
+  margin: 3vh auto 0;
+  background-color: rgba(63, 63, 63, 0.446);
 }
 
 /* 矢印ボタン */
@@ -145,4 +146,5 @@ h3 {
 .Exit-button-modal {
   width: 40%;
   margin: 0 0.5vh;
+  background-color: rgba(63, 63, 63, 0.446);
 }
