@@ -107,8 +107,13 @@
 }
 
 .upload-image {
-  max-width: 100%; /* 画像の幅をボックス内にフィットさせる */
-  max-height: 100%; /* 画像の高さをボックス内にフィットさせる */
+
+    max-width: 100%; /* ボックス内で画像の幅をフィットさせる */
+    max-height: 100%; /* ボックス内で画像の高さをフィットさせる */
+    width: auto; /* 幅の自動調整 */
+    height: auto; /* 高さの自動調整 */
+    object-fit: cover; /* ボックス内に収める際、画像のアスペクト比を維持してクロップする */
+  
 }
 
 /* プレビュー画像コンテナのスタイル */
@@ -141,4 +146,31 @@
   background-color: #ffe6e6; /* 背景を薄い赤に設定 */
   border-radius: 4px; /* ボーダーに角丸をつける */
   text-align: center; /* テキストを中央揃えにする */
+}
+
+/* 画像コンテナを左右に分ける */
+.image-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 400px; /* 画像の合計幅を制限 */
+  margin: 0 auto;
+}
+
+/* 左側の画像 */
+.image-left {
+  width: 48%; /* コンテナ内で半分の幅を使用 */
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 右側の画像 */
+.image-right {
+  width: 48%; /* コンテナ内で半分の幅を使用 */
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

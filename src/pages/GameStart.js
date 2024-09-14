@@ -152,13 +152,18 @@ const GameStart = () => {
           />
           <label htmlFor="file-input" className="file-label">
             {/* 選択した画像がある場合はそれを表示、なければデフォルト画像 */}
-            {selectedImages.length > 0 ? (
-              selectedImages.map((image, index) => (
-                <img key={index} src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} className="upload-image" />
-              ))
-            ) : (
-              <img src={Images} alt="Upload" className="upload-image" />
-            )}
+            <div className="image-container">
+              {selectedImages[0] ? (
+                <img src={URL.createObjectURL(selectedImages[0])} alt="Selected 1" className="image-left" />
+              ) : (
+                <img src={Images} alt="Upload" className="image-left" />
+              )}
+              {selectedImages[1] ? (
+                <img src={URL.createObjectURL(selectedImages[1])} alt="Selected 2" className="image-right" />
+              ) : (
+                <img src={Images} alt="Upload" className="image-right" />
+              )}
+            </div>
           </label>
         </div>
 
