@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom"; // useNavigate, useLocationをインポート
 import "../styles/Toppage.css"; // CSSファイルをインポート
 import Modal from "../components/Modal/Modal";
@@ -13,6 +13,13 @@ const Toppage = () => {
   const { userId, guestId } = location.state || {}; // userIdまたはguestIdを取得
 
   const [link, setLink] = useState(""); // 入力フォームの状態管理
+
+  // ページ遷移時にIDがない場合、ログインページにリダイレクト
+  useEffect(() => {
+    if (!userId && !guestId) {
+      navigate("/login-page"); // IDがない場合はログインページに遷移
+    }
+  }, [userId, guestId, navigate]);
 
   const handleLinkSubmit = (e) => {
     e.preventDefault();
