@@ -25,8 +25,8 @@ const ShootingScreen = () => {
   const [photos, setPhotos] = useState([]);
   const [members, setMembers] = useState([]);
   const [randomImage, setRandomImage] = useState(null);
-  const [playMember, setPlayMember] = useState(null); // 現在のプレイヤーID
-  const [playMemberName, setPlayMemberName] = useState(""); // 現在のプレイヤーの名前
+  const [playMember, setPlayMember] = useState(null);
+  const [playMemberName, setPlayMemberName] = useState("");
   const [roomId, setRoomId] = useState(null);
 
   // roomIdを取得
@@ -41,7 +41,25 @@ const ShootingScreen = () => {
 
   console.log("roomIdFromQuery:", roomId);
 
-  // Firestoreからデータを直接取得
+  // 最初のプレイヤーを設定
+  const setFirstPlayMember = async (members) => {
+    const firstMember = members[0];
+    await saveCurrentPlayMember(firstMember);
+
+    try {
+      const docRef = doc(db, "rooms", roomId);
+      await updateDoc(docRef, {
+        isEnd: false,
+      });
+    } catch (error) {
+      console.error("isEndの更新中にエラーが発生しました", error);
+    }
+
+    setPlayMember(firstMember);
+    console.log("最初のプレイヤーを設定:", firstMember);
+  };
+
+  // データを取得
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -52,26 +70,14 @@ const ShootingScreen = () => {
 
         if (docSnapshot.exists()) {
           const roomData = docSnapshot.data();
-
           if (roomData.photos && roomData.members) {
-            console.log("photos:", roomData.photos);
-            console.log("members:", roomData.members);
-
             setPhotos(roomData.photos);
             setMembers(roomData.members);
 
             if (roomData.currentPlayMember) {
-              setPlayMember(roomData.currentPlayMember); // 現在のプレイヤーIDを設定
-              console.log(
-                "現在のターンのプレイヤー:",
-                roomData.currentPlayMember
-              );
+              setPlayMember(roomData.currentPlayMember);
             } else {
-              // 初回の場合、最初のプレイヤーを設定して保存
-              const firstMember = roomData.members[0];
-              await saveCurrentPlayMember(firstMember);
-              setPlayMember(firstMember);
-              console.log("最初のプレイヤーを設定:", firstMember);
+              await setFirstPlayMember(roomData.members);
             }
           } else {
             console.log("photosまたはmembersが存在しません");
@@ -83,7 +89,6 @@ const ShootingScreen = () => {
         console.error("データの取得中にエラーが発生しました", error);
       }
     };
-
     fetchData();
   }, [roomId]);
 
@@ -97,7 +102,7 @@ const ShootingScreen = () => {
       if (docSnapshot.exists()) {
         const roomData = docSnapshot.data();
         if (roomData.currentPlayMember) {
-          setPlayMember(roomData.currentPlayMember); // リアルタイムでプレイヤーIDを設定
+          setPlayMember(roomData.currentPlayMember);
           console.log("現在のプレイヤー:", roomData.currentPlayMember);
         }
       }
@@ -121,7 +126,7 @@ const ShootingScreen = () => {
 
         if (playMemberDoc.exists()) {
           const playMemberData = playMemberDoc.data();
-          setPlayMemberName(playMemberData.name); // `name` フィールドの値を設定
+          setPlayMemberName(playMemberData.name);
           console.log("現在のプレイヤーの名前:", playMemberData.name);
         } else {
           console.log("指定されたプレイヤードキュメントは存在しません");
@@ -139,7 +144,7 @@ const ShootingScreen = () => {
     try {
       const roomDocRef = doc(db, "rooms", roomId);
       await updateDoc(roomDocRef, {
-        currentPlayMember: nextMember, // 次のプレイヤーを保存
+        currentPlayMember: nextMember,
       });
       console.log("現在のプレイヤーがFirestoreに保存されました:", nextMember);
     } catch (error) {
@@ -200,8 +205,12 @@ const ShootingScreen = () => {
       const nextMember = members[nextMemberIndex];
       setPlayMember(nextMember);
       console.log("次の人:", nextMember);
-      await saveCurrentPlayMember(nextMember); // 次のプレイヤーをFirestoreに保存
+      await saveCurrentPlayMember(nextMember);
     } else {
+      const roomDocRef = doc(db, "rooms", roomId);
+      await updateDoc(roomDocRef, {
+        isEnd: true,
+      });
       navigate("/");
       console.log("全員が終了しました");
       return;
