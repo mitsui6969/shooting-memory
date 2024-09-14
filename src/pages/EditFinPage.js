@@ -1,139 +1,93 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import "../styles/EditFinPage.css";
-import Images1 from "../assets/image/sample.png";
-import Images2 from "../assets/image/sample2.png";
-import Images3 from "../assets/image/sample3.png";
-import Images4 from "../assets/image/sample2.png";  // 4つ目の画像をインポート
-import Button from "../components/Button_orange/Button_orange";
+import "../App.css";
+import Button from '../components/Button_orange/Button_orange';
+import Image1 from "../assets/image/sample.png";
+import Image2 from "../assets/image/sample2.png";
+import Image3 from "../assets/image/sample3.png";
+
+// アップロードされた矢印画像
+import LeftArrowIcon from "../assets/image/leftarrow.png";
+import RightArrowIcon from "../assets/image/rightarrow.png";
+
+const imageList = [
+  Image1,
+  Image2,
+  Image3,
+];
 
 const EditFinPage = () => {
-  // 任意の位置を指定して画像の座標を管理する
-  const [positions, setPositions] = useState({
-    firstImage: { top: '130px', left: '30px', borderColor: 'blue', zIndex: 0 },  // 1つ目の画像の初期座標
-    secondImage: { top: '150px', left: '50px', borderColor: 'green', zIndex: 0 }, // 2つ目の画像の初期座標
-    thirdImage: { top: '170px', left: '70px', borderColor: 'red', zIndex: 0 },   // 3つ目の画像の初期座標
-    fourthImage: { top: '190px', left: '90px', borderColor: 'purple', zIndex: 0 } // 4つ目の画像の初期座標
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleNext(),
+    onSwipedRight: () => handlePrev(),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
   });
 
-  // 一番右下に来た画像を前面に出すために z-index を管理
-  const updateZIndex = () => {
-    setPositions((prevPositions) => {
-      // 4つの画像のtop, leftの値でソートして、一番右下の画像を前面にする
-      const images = [
-        { name: 'firstImage', ...prevPositions.firstImage },
-        { name: 'secondImage', ...prevPositions.secondImage },
-        { name: 'thirdImage', ...prevPositions.thirdImage },
-        { name: 'fourthImage', ...prevPositions.fourthImage }
-      ];
-
-      // top, leftの値でソートして、一番右下にある画像が前面になるようにする
-      images.sort((a, b) => {
-        if (parseInt(a.top) !== parseInt(b.top)) {
-          return parseInt(b.top) - parseInt(a.top); // topが大きい方を前面に
-        }
-        return parseInt(b.left) - parseInt(a.left); // 同じtopならleftが大きい方を前面に
-      });
-
-      // ソートされた順にz-indexを割り当てる（最も右下がzIndex: 3）
-      return {
-        firstImage: { ...prevPositions.firstImage, zIndex: images.findIndex(i => i.name === 'firstImage') },
-        secondImage: { ...prevPositions.secondImage, zIndex: images.findIndex(i => i.name === 'secondImage') },
-        thirdImage: { ...prevPositions.thirdImage, zIndex: images.findIndex(i => i.name === 'thirdImage') },
-        fourthImage: { ...prevPositions.fourthImage, zIndex: images.findIndex(i => i.name === 'fourthImage') }
-      };
-    });
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % imageList.length);
   };
 
-  // クリックするたびに画像の位置と色を逆順に入れ替える
-  const handleImageClick = () => {
-    setPositions((prevPositions) => ({
-      firstImage: prevPositions.fourthImage,
-      secondImage: prevPositions.firstImage,
-      thirdImage: prevPositions.secondImage,
-      fourthImage: prevPositions.thirdImage,
-    }));
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => 
+      (prevIndex - 1 + imageList.length) % imageList.length
+    );
   };
 
-  // 前面の画像に基づいて異なるテキストを表示する
-  const getDisplayedText = () => {
-    if (positions.firstImage.zIndex === 3) return "一人目";
-    if (positions.secondImage.zIndex === 3) return "二人目";
-    if (positions.thirdImage.zIndex === 3) return "三人目";
-    return "四人目さん";
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
   };
 
-  // 位置が変更されるたびに z-index を更新
-  useEffect(() => {
-    updateZIndex();
-  }, [positions]);
+  const userName = "usuerName"
 
   return (
-    <div className="EditFinPage">
-      {/* 前面に出ている画像に応じて表示するテキスト */}
-      <div className="displayed-text">
-        {getDisplayedText()}
+      <div className="all-contain">
+        <h2>{userName}</h2>
+        
+        <div className="view-items-container">
+          <div className="back-image-box" {...handlers}>
+            {/* 左矢印ボタン */}
+            <button className="left-arrow" onClick={handlePrev}>
+              <img src={LeftArrowIcon} alt="left arrow" />
+            </button>
+
+            {/* 画像表示 */}
+            <img
+              src={imageList[currentIndex]}
+              alt="swipeable content"
+              draggable="false"
+              onDragStart={(e) => e.preventDefault()}
+              className="collaged-image"
+            />
+
+            {/* 右矢印ボタン */}
+            <button className="right-arrow" onClick={handleNext}>
+              <img src={RightArrowIcon} alt="right arrow" />
+            </button>
+          </div>
+
+          {/* インジケーター */}
+          <div className="indicators">
+            {imageList.map((_, index) => (
+              <span
+                key={index}
+                className={currentIndex === index ? "active" : ""}
+                onClick={() => goToSlide(index)}
+              >
+                ●
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* 次へボタン */}
+        <div className="image-button-container">
+          <Button>次へ</Button>
+        </div>
       </div>
-
-      <div className='finish-button'>
-          <Button type="submit">終了</Button>
-      </div>
-
-      {/* 1つ目の画像（任意の位置に配置） */}
-      <img
-        src={Images1}
-        alt="moving"
-        className="moving-image"
-        style={{
-          top: positions.firstImage.top,
-          left: positions.firstImage.left,
-          borderColor: positions.firstImage.borderColor,
-          zIndex: positions.firstImage.zIndex,  // z-indexを適用
-        }}
-        onClick={handleImageClick}  // クリックで位置と色を入れ替え
-      />
-
-      {/* 2つ目の画像（任意の位置に配置） */}
-      <img
-        src={Images2}
-        alt="moving"
-        className="moving-image"
-        style={{
-          top: positions.secondImage.top,
-          left: positions.secondImage.left,
-          borderColor: positions.secondImage.borderColor,
-          zIndex: positions.secondImage.zIndex,  // z-indexを適用
-        }}
-        onClick={handleImageClick}  // クリックで位置と色を入れ替え
-      />
-
-      {/* 3つ目の画像（任意の位置に配置） */}
-      <img
-        src={Images3}
-        alt="moving"
-        className="moving-image"
-        style={{
-          top: positions.thirdImage.top,
-          left: positions.thirdImage.left,
-          borderColor: positions.thirdImage.borderColor,
-          zIndex: positions.thirdImage.zIndex,  // z-indexを適用
-        }}
-        onClick={handleImageClick}  // クリックで位置と色を入れ替え
-      />
-
-      {/* 4つ目の画像（任意の位置に配置） */}
-      <img
-        src={Images4}
-        alt="moving"
-        className="moving-image"
-        style={{
-          top: positions.fourthImage.top,
-          left: positions.fourthImage.left,
-          borderColor: positions.fourthImage.borderColor,
-          zIndex: positions.fourthImage.zIndex,  // z-indexを適用
-        }}
-        onClick={handleImageClick}  // クリックで位置と色を入れ替え
-      />
-    </div>
   );
 };
 
