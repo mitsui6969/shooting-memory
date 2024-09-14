@@ -1,6 +1,5 @@
 /* ボタンの共通スタイル */
 .button-white {
-    width: 100%; /* 親要素（.createroom）の幅に合わせてボタンを広げる */
     background-color: transparent;
     color: white;
     padding: 15px 30px;
