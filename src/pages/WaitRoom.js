@@ -139,7 +139,9 @@ const WaitRoom = () => {
         });
         await Promise.all(updatePromises);
         console.log("Room updated successfully");
-        navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
+
+        // Firebaseの更新が成功したら、/game-start へ遷移
+        navigate("/game-start", { state: { roomId } });
       } catch (error) {
         console.error("Error updating room: ", error);
       }
