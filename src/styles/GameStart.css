@@ -17,6 +17,18 @@
   color: white;
 }
 
+.gamestart h2 {
+  color: #fff;
+  padding-top: 75px;
+  padding-bottom: 20px;
+}
+
+.gamestart h3 {
+  color: #fff;
+  padding-top: 75px;
+  padding-bottom: 20px;
+}
+
 .name {
   top: 190px;
 }

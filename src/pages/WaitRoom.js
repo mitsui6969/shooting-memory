@@ -242,7 +242,7 @@ const WaitRoom = () => {
       )}
 
       {message === "GameStart" && (
-        <div className="text">画像が出揃うまで少々お待ちください</div>
+        <h3 className="text">画像が出揃うまで少々お待ちください</h3>
       )}
     </div>
   );
