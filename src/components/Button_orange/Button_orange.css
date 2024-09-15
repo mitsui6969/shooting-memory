@@ -10,13 +10,29 @@
 }
 
 /* ホバー時のスタイル */
-.button-orange:hover {
-    background: linear-gradient(to bottom, #ffa438, #ffd39f);; /* 背景色を白にする */
-    color: black; /* 文字色を黒にする */
-    border: none; /* ホバー時に黒いふちを追加 */
+.button-orange:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #ffa438, #ffd39f);
+    color: black;
+    border: none;
 }
 
 /* アクティブ時のスタイル */
-.button-orange:active {
-    transform: translateY(4px); /* ボタンを押したときに下に移動する */
+.button-orange:active:not(:disabled) {
+    transform: translateY(4px);
+}
+
+/* 非活性状態のスタイル */
+.button-orange:disabled {
+    background: linear-gradient(to bottom, #cccccc, #eeeeee); /* グレーのグラデーション */
+    color: #888888; /* テキストを薄いグレーに */
+    cursor: not-allowed; /* カーソルを変更 */
+    opacity: 0.7; /* 透明度を下げる */
+    transform: none; /* アクティブ時の変形をキャンセル */
+}
+
+/* 非活性状態でのホバー時のスタイル */
+.button-orange:disabled:hover {
+    background: linear-gradient(to bottom, #cccccc, #eeeeee);
+    color: #888888;
+    border: none;
 }
