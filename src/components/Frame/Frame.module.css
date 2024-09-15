@@ -1,4 +1,4 @@
-/* 枠 */
+
 .collage {
     position: relative;
     z-index: 1;
@@ -18,7 +18,7 @@
     padding: 1.4vh;
 }
 
-/* 背景色 */
+
 .white {
     background-color: #fefefe;
 }
@@ -43,7 +43,7 @@
     color: #fefefe;
 }
 
-/* 枚数別レイアウト */
+
 .twoImages {
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -66,7 +66,6 @@
     grid-template-rows: repeat(2, 1fr);
 }
 
-/* 画像エリア */
 .imageContainer {
     position: relative;
     overflow: hidden;
@@ -95,7 +94,11 @@
     z-index: 2;
 }
 
-/* タイトルエリア */
+.imageContainer:hover .image {
+    transform: scale(1.1);
+}
+
+
 .overlay {
     position: absolute;
     aspect-ratio: 1;

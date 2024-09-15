@@ -94,7 +94,7 @@ const goToSlide = (index) => {
     <div>
       <div className="coordinate">
         <div>
-          <h2>出揃いました</h2>
+          <h2 className="all-ban">出揃いました</h2>
           <div className="white-box" {...handlers}>
             {/* 左矢印ボタン */}
             <button className="left-arrow" onClick={handlePrev}>
