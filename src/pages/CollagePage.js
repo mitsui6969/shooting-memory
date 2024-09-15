@@ -39,7 +39,7 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
 
 const CollagePage = () => {
   const location = useLocation();
-  const { title, date, selectColor, selectBorder, userId } = location.state
+  const { title, date, selectColor, selectBorder, userId, numImage } = location.state
 
   // roomIdを取得
   const [roomId, setRoomId] = useState('')
@@ -155,7 +155,7 @@ const CollagePage = () => {
     <DndProvider backend={HTML5Backend}>
       <div className="frameArea">
         <Frame
-          imageCount={images.length}
+          imageCount={numImage}
           title={title}
           date={date}
           selectColor={selectColor}

@@ -21,18 +21,18 @@ const FrameSelection = () => {
     const navigate = useNavigate();
     const location = useLocation();
     // const roomId = location.state?.id;
-    const userId = location.state?.userID
+    const { roomId, userId, numImages } = location.state
 
-    // roomIdを取得
-    const [roomId, setRoomId] = useState('')
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const roomIdFromQuery = params.get("roomId");
+    // // roomIdを取得
+    // const [roomId, setRoomId] = useState('')
+    // useEffect(() => {
+    //     const params = new URLSearchParams(location.search);
+    //     const roomIdFromQuery = params.get("roomId");
 
-        if (roomIdFromQuery) {
-        setRoomId(roomIdFromQuery);
-        }
-    }, [location.search]);;
+    //     if (roomIdFromQuery) {
+    //     setRoomId(roomIdFromQuery);
+    //     }
+    // }, [location.search]);;
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
@@ -75,7 +75,8 @@ const FrameSelection = () => {
                     date:frameDate,
                     selectColor:selectColor,
                     selectBorder:isFrameChecked,
-                    userID:userId
+                    userID:userId,
+                    numImages:numImages
                 }
             });
         }
@@ -88,24 +89,19 @@ const FrameSelection = () => {
                 const roomDocRef = doc(db, "rooms", roomId);
                 const roomDoc = await getDoc(roomDocRef);
 
-                const imagesDocRef = doc(db, "selected_images", roomId);
-                const imagesDoc = getDoc(imagesDocRef);
-                
                 if (roomDoc.exists()) {
-                const data = roomDoc.data();
-                setTitle(data.roomName || '');
-
-                
-                if (data.createdAt && data.createdAt.toDate) {
-                    setDate(data.createdAt.toDate().toLocaleDateString());
-                } else {
-                    setDate(data.createdAt || '');
-                }
-                
-                
+                    const data = roomDoc.data();
+                    setTitle(data.roomName || '');
+                    
+                    if (data.createdAt && data.createdAt.toDate) {
+                        setDate(data.createdAt.toDate().toLocaleDateString());
+                    } else {
+                        setDate(data.createdAt || '');
+                    }
                 } else {
                 console.log("ドキュメントが存在しません！");
                 }
+
             } catch (error) {
                 console.error("ルームデータの取得中にエラーが発生しました: ", error);
             }
@@ -126,7 +122,7 @@ const FrameSelection = () => {
                 <div className="gray-square">
                     <div className='frame-change'>
                         <Frame
-                            imageCount={2} 
+                            imageCount={numImages} 
                             title={frameTitle}
                             date={frameDate}
                             selectColor={selectColor}

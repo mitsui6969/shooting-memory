@@ -81,9 +81,10 @@ const goToSlide = (index) => {
   };
 
   const handleNextTV = () => {
+    const numImages = photos.length;
     if (roomId) {
       navigate(`/frame-selection?roomId=${roomId}`, {
-        state: { from: "complete-room", roomId, userId },
+        state: { from: "complete-room", roomId, userId, numImages },
       });
     } else {
       console.error("roomId が存在しません。");
