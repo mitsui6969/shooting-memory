@@ -3,8 +3,13 @@
   text-align: center;
 }
 
-.gamestart h2,
-h3 {
+.gamestart h2 {
+  color: #fff;
+  padding-top: 75px;
+  padding-bottom: 20px;
+}
+
+.gamestart h3 {
   color: #fff;
   padding-top: 75px;
   padding-bottom: 20px;
