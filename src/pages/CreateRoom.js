@@ -91,7 +91,7 @@ const CreateRoom = () => {
     if (isLinkCopied) { // リンクがコピーされている場合のみ遷移を許可
       if (roomId) {
         navigate(`/wait-room?roomId=${roomId}`, {
-          state: { from: "create-room", roomId },
+          state: { from: "create-room", roomId,userId },
         });
       } else {
         console.error("roomId が存在しません。");
