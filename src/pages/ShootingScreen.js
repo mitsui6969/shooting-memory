@@ -14,6 +14,9 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
+import { ref, set } from "firebase/database";
+import { realtimeDb } from "../firebase/firebase-app";
+import { onValue } from "firebase/database";
 
 const ShootingScreen = () => {
   const navigate = useNavigate();
@@ -240,9 +243,68 @@ const ShootingScreen = () => {
     }, 1000);
   };
 
+  // カーソル位置を取得
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const { clientX, clientY } = event;
+      setCursorPosition({ x: clientX, y: clientY });
+
+      // Firebase Realtime Databaseにカーソル位置を保存
+      const cursorRef = ref(realtimeDb, `rooms/${roomId}/cursors/${userId}`);
+      set(cursorRef, {
+        x: clientX,
+        y: clientY,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [roomId, userId]);
+
+  // 他のユーザーのカーソル位置を取得
+  const [otherCursors, setOtherCursors] = useState({});
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const cursorsRef = ref(realtimeDb, `rooms/${roomId}/cursors`);
+
+    // Firebase Realtime Databaseのデータをリアルタイムで取得
+    const unsubscribe = onValue(cursorsRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setOtherCursors(snapshot.val());
+      }
+    });
+
+    return () => unsubscribe();
+  }, [roomId]);
+
   return (
     <div className="shooting-container">
       <h2>一つ的を選んでください</h2>
+      {Object.keys(otherCursors).map((id) => {
+        const { x, y } = otherCursors[id];
+        return (
+          <div
+            key={id}
+            className="cursor"
+            style={{
+              position: "absolute",
+              left: `${x}px`,
+              top: `${y}px`,
+              backgroundColor: "red",
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+            }}
+          />
+        );
+      })}
       <p>
         現在のターン: {playMemberName} さん
         <br />
@@ -261,7 +323,9 @@ const ShootingScreen = () => {
       {showSquare && (
         <div className={`click-target ${isClosing ? "closing" : ""}`}>
           <img src={randomImage} alt="sample" />
-          <button onClick={handleNext} className="next-button">次の人へ</button>
+          <button onClick={handleNext} className="next-button">
+            次の人へ
+          </button>
         </div>
       )}
     </div>
