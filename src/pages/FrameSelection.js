@@ -6,7 +6,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend'; // DndProviderのインポート
 import { collection, getDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/firebase-app';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 const FrameSelection = () => {
@@ -19,6 +19,20 @@ const FrameSelection = () => {
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
+    // const roomId = location.state?.id;
+    const userId = location.state?.userID
+
+    // roomIdを取得
+    const [roomId, setRoomId] = useState('')
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const roomIdFromQuery = params.get("roomId");
+
+        if (roomIdFromQuery) {
+        setRoomId(roomIdFromQuery);
+        }
+    }, [location.search]);;
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
@@ -54,23 +68,28 @@ const FrameSelection = () => {
 
     // コラージュ画面にGO
     const handleToCollage = () => {
-        navigate('/collage-page',
-            {state:{
-                title:frameTitle,
-                date:frameDate,
-                selectColor:selectColor,
-                selectBorder:isFrameChecked,
-            }
-        });
+        if (roomId) {
+            navigate(`/collage-page?roomId=${roomId}`,
+                {state:{
+                    title:frameTitle,
+                    date:frameDate,
+                    selectColor:selectColor,
+                    selectBorder:isFrameChecked,
+                    userID:userId
+                }
+            });
+        }
     }
 
     // db処理
     useEffect(() => {
         const fetchRoomData = async () => {
             try {
-                const roomID = "testRoom";
-                const roomDocRef = doc(db, "rooms", roomID);
+                const roomDocRef = doc(db, "rooms", roomId);
                 const roomDoc = await getDoc(roomDocRef);
+
+                const imagesDocRef = doc(db, "selected_images", roomId);
+                const imagesDoc = getDoc(imagesDocRef);
                 
                 if (roomDoc.exists()) {
                 const data = roomDoc.data();
@@ -93,7 +112,7 @@ const FrameSelection = () => {
         };
     
         fetchRoomData();
-    }, []);
+    }, [roomId]);
 
 
     return (
