@@ -24,7 +24,7 @@ const WaitRoom = () => {
   const [memberCount, setMemberCount] = useState(0);
   const [roomTitle, setRoomTitle] = useState("");
   const [userId, setUserId] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // エラーメッセージの状態
+  const [errorMessage, ] = useState(""); // エラーメッセージの状態
 
   // userIdを取得
   const location = useLocation();
@@ -131,12 +131,6 @@ const WaitRoom = () => {
 
   // ホストが「はじめる」ボタンを押したときの処理
   const handleStartClick = async () => {
-    if (memberCount <= 1) {
-      // 参加人数が1人以下の場合、エラーメッセージを表示
-      setErrorMessage("参加人数が1人のため、開始できません。");
-      return;
-    }
-
     if (roomId) {
       const roomRef = query(
         collection(db, "rooms"),
@@ -243,7 +237,8 @@ const WaitRoom = () => {
         <>
           <h3>参加人数: {memberCount}人</h3>
           <div className="start-button">
-            <Button onClick={handleStartClick}>
+            {/* 参加人数が1人以下の場合ボタンを無効化 */}
+            <Button onClick={handleStartClick} disabled={memberCount <= 1}>
               はじめる
             </Button>
             {/* エラーメッセージを表示 */}

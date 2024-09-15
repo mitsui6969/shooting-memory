@@ -2,8 +2,12 @@
   display: flex;
   justify-content: center;  /* 水平方向に中央揃え */
   align-items: center;      /* 垂直方向に中央揃え */
-  height: 300px;            /* 画面全体の高さ */
-  width: 300px;             /* 画面全体の幅 */
+  position: absolute;       /* 画面内での絶対配置 */
+  top: 41%;                 /* 画面の縦中央 */
+  left: 50%;                /* 画面の横中央 */
+  transform: translate(-50%, -50%); /* 正確に中央に配置 */
+  width: 100vw;             /* 画面全体の幅 */
+  height: 100vh;            /* 画面全体の高さ */
 }
 
 .spinner {

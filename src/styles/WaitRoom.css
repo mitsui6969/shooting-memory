@@ -11,7 +11,11 @@
   padding: 0;
   padding-bottom: 10px;
   color: #fff;
-  text-align: center;
+  position: absolute;
+  top: 500px;
+  left: 50%; /* 親要素の幅の50%に配置 */
+  transform: translateX(-50%); /* 自身の幅の50%分左に移動して中央揃え */
+  text-align: center; /* テキストを中央揃え */
 }
 
 .start-button {
