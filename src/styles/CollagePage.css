@@ -2,6 +2,7 @@
 .collagePage {
     position: relative;
     margin: 0;
+    padding-top: 4vh;
     align-items: center;
     text-align: center;
 }
@@ -89,10 +90,10 @@
     z-index: 5;
     height: 100vh;
     width: 100%;
-    background-color: rgba(55, 55, 56, 0.799);
+    background-color: rgba(46, 46, 48, 0.871);
 }
 
-.image-button-container {
+.modal-button-container {
     position: relative;
     top: 50%;
     left: 0;
@@ -112,10 +113,25 @@
 .button-container {
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
-.button-modal {
-    width: 48%;
+.go-orange {
+    width: 40%;
+}
+
+.button-orange {
+    width: 100%;
+}
+
+.go-white {
+    width: 58%;
+    margin: 0;
+    padding: 0;
+}
+
+.button-white {
+    width: 100%;
 }
 
 .edit-button {
