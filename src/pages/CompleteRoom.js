@@ -3,7 +3,7 @@ import { useSwipeable } from "react-swipeable";
 import "../styles/CompleteRoom.css";
 import "../App.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import Button from '../components/Button_orange/Button_orange';
+import Button from "../components/Button_orange/Button_orange";
 import { db } from "../firebase/firebase-app";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -19,7 +19,7 @@ const CompleteRoom = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userId = location.state?.id;
-  
+
   // Swipeable handler
   const handlers = useSwipeable({
     onSwipedLeft: () => handleNext(),
@@ -71,8 +71,8 @@ const CompleteRoom = () => {
   // 前の画像へ移動
   const handlePrev = () => {
     if (photos) {
-      setCurrentIndex((prevIndex) =>
-        (prevIndex - 1 + photos.length) % photos.length
+      setCurrentIndex(
+        (prevIndex) => (prevIndex - 1 + photos.length) % photos.length
       );
     }
   };
@@ -85,7 +85,9 @@ const CompleteRoom = () => {
   // 次のページに遷移
   const handleNextTV = () => {
     if (roomId) {
-      navigate(`/frame-selection?roomId=${roomId}`, {state: { from: "complete-room", roomId, userId },});
+      navigate(`/frame-selection?roomId=${roomId}`, {
+        state: { from: "complete-room", roomId, userId },
+      });
     } else {
       console.error("roomId が存在しません。");
     }
