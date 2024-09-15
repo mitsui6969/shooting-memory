@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getDatabase } from "firebase/database";
 
 // Firebaseの設定情報
 const firebaseConfig = {
@@ -27,4 +28,7 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-export { db, storage, auth, provider };
+// Firebase Realtime Databaseのインスタンスを取得
+const realtimeDb = getDatabase(app);
+
+export { db, storage, auth, provider, realtimeDb };
