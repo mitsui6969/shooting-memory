@@ -1,43 +1,146 @@
-/* WaitRoomのスタイル */
-.EditFinPage {
-	display: flex;
-	flex-direction: column; /* 縦に並べる */
-	align-items: center;    /* 水平方向の中央揃え */
-	justify-content: center;
-	font-size: 43px;
-	font-family: "Shippori Mincho", "Georgia", serif;
-	position: relative;
+.all-contain {
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding-top: 2%;
+  width: 80%;
 }
 
-.moving-image {
-  width: 300px; /* 画像のサイズ */
-  position: absolute; /* 画像の位置を絶対指定 */
-  cursor: pointer; /* クリックできることを示すポインタ */
-  transition: border-color 0.3s ease, top 0.3s ease, left 0.3s ease, z-index 0.3s ease; /* 色と位置の切り替えをスムーズに */
+h2 {
+  font-size: 30px;
+  text-align: center;
+  color: #fff;
+  margin: 0;
+  padding-top: 2vh;
 }
 
-/* テキストの位置を任意に指定 */
-.displayed-text{
-	position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  color: rgb(241, 234, 234);
-  top: 50px;
+.view-items-container {
+  display: block;
+  height: auto;
 }
 
-.finish-button{
-  font-weight: 600;
-	width: 150px;
-	margin-top: 600px;
+.back-image-box {
+  background-color: rgba(255, 255, 255, 0.433);
+  border-radius: 10px;
+  height: 53vh;
+  width: 100%;
+  padding: 4vh 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
 }
 
+.collaged-image {
+  max-height: 60vh;
+  max-width: 80%;
+  aspect-ratio: 3/4;
+  border-radius: 1vh;
+  object-fit: cover;
+  user-select: none;
+  overflow: hidden;
+}
 
-@keyframes moveImage {
-  0% {
-    transform: translateX(-100px);
-  }
-  100% {
-    transform: translateX(100px);
-  }
+.Exit-button-first {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  margin: 3vh auto 0;
+  background-color: rgba(63, 63, 63, 0.446);
+}
+
+/* 矢印ボタン */
+.left-arrow, .right-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.left-arrow {
+  left: -9px;
+}
+
+.right-arrow {
+  right: -9px;
+}
+
+.left-arrow img, .right-arrow img {
+  width: 30px;
+  height: 30px;
+}
+
+.left-arrow:hover img, .right-arrow:hover img {
+  opacity: 0.5;
+}
+
+/* インジケーター */
+.indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  font-size: 18px;
+}
+
+.indicators-span {
+  cursor: pointer;
+  margin: 0 0.8vw;
+  color: #d0d0d063;
+}
+
+.indicators .active {
+  color: #ffffff;
+}
+
+/* こっからモーダル */
+.Exit-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(60, 58, 58, 0.772);
+  align-items: center;
+  justify-content: center;
+}
+
+.Exit-items-container {
+  width: 350px;
+  aspect-ratio: 4/3;
+  /* background-color: aqua; */
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.Exit-stop-message {
+  height: 30vh;
+  width: 80%;
+  padding: 2vw;
+  margin: 0 auto;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #f7eeeedc;
+}
+
+.Exit-button-container {
+  display: flex;
+  justify-content: center;
+  width: 84%;
+  margin: 1vh auto 0;
+}
+
+.Exit-button-modal {
+  width: 40%;
+  margin: 0 0.5vh;
+  background-color: rgba(63, 63, 63, 0.446);
 }

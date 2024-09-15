@@ -116,8 +116,7 @@ const GameStart = () => {
 
   return (
     <div className="gamestart">
-      <div className="text-base name">名前</div>
-      <div className="text-base select">最大2枚の画像を選択してください</div>
+      <h3 className="text-base name">名前</h3>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -127,7 +126,7 @@ const GameStart = () => {
           onChange={(e) => setName(e.target.value)}
           placeholder="名前を入力"
         />
-
+        <h3 className="text-base select">最大2枚の画像を選択してください</h3>
         <div className="image-uploader">
           <input
             type="file"
