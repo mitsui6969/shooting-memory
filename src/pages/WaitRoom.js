@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import "../App.css";
 import "../styles/WaitRoom.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,6 +15,7 @@ import {
   onSnapshot,
   arrayUnion,
   getDoc,
+  increment,
 } from "firebase/firestore";
 
 const WaitRoom = () => {
@@ -24,6 +25,7 @@ const WaitRoom = () => {
   const [memberCount, setMemberCount] = useState(0);
   const [roomTitle, setRoomTitle] = useState("");
   const [userId, setUserId] = useState("");
+  const [, setCount] = useState(null); // Firestoreのcount値を保持
 
   // userIdを取得
   const location = useLocation();
@@ -54,6 +56,8 @@ const WaitRoom = () => {
       setMessage("CreateRoom");
     } else if (from === "game-start") {
       setMessage("GameStart");
+    } else if (from === "CollagePage") {
+      setMessage("CollagePage");
     } else {
       setMessage("Toppage");
     }
@@ -68,6 +72,42 @@ const WaitRoom = () => {
       setRoomId(roomIdFromQuery);
     }
   }, [location.search]);
+
+  const decrementCount = useCallback(async () => {
+    if (roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      try {
+        await updateDoc(roomDocRef, {
+          count: increment(-1), // countを1減らす
+        });
+      } catch (error) {
+        console.error("Error decrementing count: ", error);
+      }
+    }
+  }, [roomId]);
+
+  useEffect(() => {
+    if (message === "CollagePage" && roomId) {
+      decrementCount(); // countを1減らす
+
+      const roomDocRef = doc(db, "rooms", roomId);
+      const unsubscribe = onSnapshot(roomDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const roomData = docSnapshot.data();
+          const currentCount = roomData.count;
+          setCount(currentCount);
+
+          // countが0になったら次の処理に進む
+          if (currentCount === 0) {
+            navigate(`/edit-fin?roomId=${roomId}`, { state: { userId } });
+          }
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [message, roomId, decrementCount, navigate, userId]);
+
 
   // Firestoreからroomのtitleを取得
   useEffect(() => {
@@ -243,6 +283,10 @@ const WaitRoom = () => {
 
       {message === "GameStart" && (
         <h3 className="text">画像が出揃うまで少々お待ちください</h3>
+      )}
+
+      {message === "CollagePage" && (
+        <h3 className="text">少々お待ちください</h3>
       )}
     </div>
   );

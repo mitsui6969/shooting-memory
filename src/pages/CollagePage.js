@@ -43,16 +43,15 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   );
 };
 
-const CollagePage = ({images}) => {
-  const { title, date, selectColor, selectBorder } = location.state
+const CollagePage = ({ images }) => {
+  const navigate = useNavigate();
+  const location = useLocation(); // useLocationをここで呼び出す
+  const { title, date, selectColor, selectBorder } = location.state;
 
   images = [testImage, testImage2, testImage3];
   const [draggedImages, setDraggedImages] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);
   const [isModal, setIsModal] = useState(false);
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   // クエリパラメータからroomIdを取得
   const params = new URLSearchParams(location.search);
