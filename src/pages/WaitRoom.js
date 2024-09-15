@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
 import "../styles/WaitRoom.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,7 +15,6 @@ import {
   onSnapshot,
   arrayUnion,
   getDoc,
-  increment,
 } from "firebase/firestore";
 
 const WaitRoom = () => {
@@ -25,7 +24,6 @@ const WaitRoom = () => {
   const [memberCount, setMemberCount] = useState(0);
   const [roomTitle, setRoomTitle] = useState("");
   const [userId, setUserId] = useState("");
-  const [count, setCount] = useState(null); // Firestoreのcount値を保持
 
   // userIdを取得
   const location = useLocation();
@@ -41,47 +39,12 @@ const WaitRoom = () => {
   // userIdが存在しない場合はランダムなIDを生成
   useEffect(() => {
     if (message === "Toppage" && !userId) {
-      const generatedUserId = `guest_${Math.random().toString(36).substr(2, 9)}`;
+      const generatedUserId = `guest_${Math.random()
+        .toString(36)
+        .substr(2, 9)}`;
       setUserId(generatedUserId);
     }
   }, [message, userId]);
-
-  // Firestoreのcountを1減らす
-  const decrementCount = useCallback(async () => {
-    if (roomId) {
-      const roomDocRef = doc(db, "rooms", roomId);
-      try {
-        await updateDoc(roomDocRef, {
-          count: increment(-1), // countを1減らす
-        });
-      } catch (error) {
-        console.error("Error decrementing count: ", error);
-      }
-    }
-  }, [roomId]);
-
-  // CollagePageから来た場合にcountを減らし、countが0になるまで待つ
-  useEffect(() => {
-    if (message === "CollagePage" && roomId) {
-      decrementCount(); // countを1減らす
-
-      const roomDocRef = doc(db, "rooms", roomId);
-      const unsubscribe = onSnapshot(roomDocRef, (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const roomData = docSnapshot.data();
-          const currentCount = roomData.count;
-          setCount(currentCount);
-
-          // countが0になったら次の処理に進む
-          if (currentCount === 0) {
-            navigate(`/edit-fin?roomId=${roomId}`, { state: { userId } });
-          }
-        }
-      });
-
-      return () => unsubscribe();
-    }
-  }, [message, roomId, decrementCount, navigate, userId]);
 
   // 画面遷移元に応じてメッセージを設定
   useEffect(() => {
@@ -91,8 +54,6 @@ const WaitRoom = () => {
       setMessage("CreateRoom");
     } else if (from === "game-start") {
       setMessage("GameStart");
-    } else if (from === "CollagePage") {
-      setMessage("CollagePage");
     } else {
       setMessage("Toppage");
     }
@@ -210,6 +171,46 @@ const WaitRoom = () => {
     }
   }, [roomId, navigate, message, userId]);
 
+  // 全メンバーのisReadyを監視
+  useEffect(() => {
+    if (message === "GameStart" && roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      let membersCount = 0;
+
+      const getMembersCount = async () => {
+        const roomSnapshot = await getDoc(roomDocRef);
+        if (roomSnapshot.exists()) {
+          const roomData = roomSnapshot.data();
+          membersCount = roomData.members.length;
+        }
+      };
+
+      getMembersCount();
+
+      const membersRef = collection(roomDocRef, "participants");
+      const unsubscribeParticipants = onSnapshot(
+        membersRef,
+        (participantsSnapshot) => {
+          const participantsData = participantsSnapshot.docs.map((doc) =>
+            doc.data()
+          );
+
+          const readyCount = participantsData.filter(
+            (participant) => participant.isReady
+          ).length;
+
+          if (readyCount === membersCount && membersCount > 0) {
+            navigate(`/shooting-screen?roomId=${roomId}`, {
+              state: { userId },
+            });
+          }
+        }
+      );
+
+      return () => unsubscribeParticipants();
+    }
+  }, [message, navigate, roomId, userId]);
+
   return (
     <div className="waitroom">
       <div className="room-title">
@@ -241,15 +242,7 @@ const WaitRoom = () => {
       )}
 
       {message === "GameStart" && (
-        <div className="text">画像が出揃うまで少々お待ちください</div>
-      )}
-
-      {message === "CollagePage" && count !== null && (
-        <div className="text">
-          全員が揃うまで少々お待ちください
-          <br />
-          残り{count}人です
-        </div>
+        <h3 className="text">画像が出揃うまで少々お待ちください</h3>
       )}
     </div>
   );
