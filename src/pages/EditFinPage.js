@@ -3,18 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import "../styles/EditFinPage.css";
 import "../App.css";
-import ButtonO from '../components/Button_orange/Button_orange';
+import ButtonO from "../components/Button_orange/Button_orange";
 import ButtonW from "../components/Button_white/Button_white";
 import { doc, collection, onSnapshot } from "firebase/firestore"; // Firebase Firestore関連のimport
 import { db } from "../firebase/firebase-app"; // Firebase設定ファイルのimport
 import LeftArrowIcon from "../assets/image/leftarrow.png";
 import RightArrowIcon from "../assets/image/rightarrow.png";
+import { useLocation } from "react-router-dom";
 
 const EditFinPage = () => {
   const [imageList, setImageList] = useState([{}]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModal, setIsModal] = useState(false);
   const navigate = useNavigate();
+  const [roomId, setRoomId] = useState("");
+  const location = useLocation();
 
   // スワイプ操作の設定
   const handlers = useSwipeable({
@@ -31,8 +34,8 @@ const EditFinPage = () => {
 
   // 前の画像に移動
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => 
-      (prevIndex - 1 + imageList.length) % imageList.length
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + imageList.length) % imageList.length
     );
   };
 
@@ -43,38 +46,45 @@ const EditFinPage = () => {
 
   const handleModalClose = () => {
     setIsModal(false);
-  }
+  };
 
   const handleModalOpen = () => {
     setIsModal(true);
-  }
+  };
 
   const handleExit = () => {
-    navigate('/');
-  }
+    navigate("/");
+  };
+
+  // roomIdを取得
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const roomIdFromQuery = params.get("roomId");
+
+    if (roomIdFromQuery) {
+      setRoomId(roomIdFromQuery);
+    }
+  }, [location.search]);
 
   // Firebase
   useEffect(() => {
 
-    // 今だけ手動で設定
-    const roomID = "testRoom";
-    
-    const participantsRef = collection(db, "rooms", roomID, "participants");
+    const participantsRef = collection(db, "rooms", roomId, "participants");
 
     const unsubscribe = onSnapshot(participantsRef, (snapshot) => {
-      const updatedImageList = snapshot.docs.map(doc => {
+      const updatedImageList = snapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          user: data.name || '匿名さん',
-          image: data.collageImage
+          user: data.name || "匿名さん",
+          image: data.collageImage,
         };
       });
-      
+
       setImageList(updatedImageList);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [roomId]);
 
   return (
     <div className="all-contain">
@@ -109,7 +119,9 @@ const EditFinPage = () => {
               {imageList.map((_, index) => (
                 <span
                   key={index}
-                  className={`indicators-span ${currentIndex === index ? "active" : ""}`}
+                  className={`indicators-span ${
+                    currentIndex === index ? "active" : ""
+                  }`}
                   onClick={() => goToSlide(index)}
                 >
                   ●
@@ -132,7 +144,7 @@ const EditFinPage = () => {
           <div className="Exit-items-container">
             <div className="Exit-stop-message">
               <h3 className="hontoni-taisyutu">本当に退出しますか？</h3>
-              
+
               <p>「退出」を押すとトップページに戻ります</p>
               <p>一度退出すると同じ部屋に入ることはできません</p>
             </div>
