@@ -26,11 +26,11 @@
   }
   
   .image {
-    width: 100%;        /* 画像の幅を白いボックスの幅に合わせる */
-    height: auto;       /* 高さを自動調整してアスペクト比を維持する */
-    max-width: 80%;     /* 最大幅を80%に制限して、白いボックス内に余白を作る */
-    max-height: 80%;    /* 最大高さを80%に制限して、ボックス内に収める */
-    object-fit: contain; /* 画像のアスペクト比を維持しながら白いボックスに収める */
+    width: 100%;
+    height: auto; 
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
   }
   
   .image-button-container {
