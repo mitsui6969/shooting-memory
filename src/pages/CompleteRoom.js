@@ -1,46 +1,94 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import "../styles/CompleteRoom.css";
 import "../App.css";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from '../components/Button_orange/Button_orange';
-import Image1 from "../assets/image/sample.png";
-import Image2 from "../assets/image/sample2.png";
-import Image3 from "../assets/image/sample3.png";
+import { db } from "../firebase/firebase-app";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 // アップロードされた矢印画像
 import LeftArrowIcon from "../assets/image/leftarrow.png";
 import RightArrowIcon from "../assets/image/rightarrow.png";
+import Spinner from "../components/Spinner/Spinner";
 
-const imageList = [
-  Image1,
-  Image2,
-  Image3,
-];
 
 const CompleteRoom = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const navigate = useNavigate(); // useNavigateフックを使用
-
+  const [roomId, setRoomId] = useState("");
+  const [photos, setPhotos] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const userId = location.state?.id;
   const handlers = useSwipeable({
     onSwipedLeft: () => handleNext(),
     onSwipedRight: () => handlePrev(),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
+  // roomIdを取得
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const roomIdFromQuery = params.get("roomId");
 
+    if (roomIdFromQuery) {
+      setRoomId(roomIdFromQuery);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    if (roomId) {
+      const roomDocRef = doc(db, "selected_images", roomId);
+
+      const fetchPhotos = async () => {
+        try {
+          const docSnap = await getDoc(roomDocRef);
+          if (docSnap.exists()) {
+            const roomData = docSnap.data();
+            setPhotos(roomData.photos || []);
+          } else {
+            console.error("No such document!");
+          }
+        } catch (error) {
+          console.error("Error fetching photos : ", error);
+        }
+      };
+      
+      fetchPhotos();
+    }
+  }, [roomId]);
+  
+  
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % imageList.length);
+    if (photos) {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
+    }
   };
-
+  
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => 
-      (prevIndex - 1 + imageList.length) % imageList.length
+    if (photos) {
+      setCurrentIndex((prevIndex) => 
+        (prevIndex - 1 + photos.length) % photos.length
     );
+    }
+};
+
+const goToSlide = (index) => {
+  setCurrentIndex(index);
   };
 
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
+  const handleNextTV = () => {
+    if (roomId) {
+      navigate(`/frame-selection?roomId=${roomId}`, {
+        state: { from: "complete-room", roomId, userId },
+      });
+    } else {
+      console.error("roomId が存在しません。");
+    }
   };
 
   const handleNextClick = () => {
@@ -59,13 +107,17 @@ const CompleteRoom = () => {
             </button>
 
             {/* 画像表示 */}
-            <img
-              src={imageList[currentIndex]}
-              alt="swipeable content"
-              draggable="false"
-              onDragStart={(e) => e.preventDefault()}
-              className="image nopointer"
-            />
+            {
+              photos ? (
+                <img
+                  src={photos[currentIndex]}
+                  alt="swipeable content"
+                  draggable="false"
+                  onDragStart={(e) => e.preventDefault()}
+                  className="image nopointer"
+                />
+              ):<Spinner />
+            }
 
             {/* 右矢印ボタン */}
             <button className="right-arrow" onClick={handleNext}>
@@ -75,7 +127,7 @@ const CompleteRoom = () => {
 
           {/* インジケーター */}
           <div className="indicators">
-            {imageList.map((_, index) => (
+            {photos?.map((_, index) => (
               <span
                 key={index}
                 className={currentIndex === index ? "active" : ""}
@@ -86,10 +138,10 @@ const CompleteRoom = () => {
             ))}
           </div>
 
-          {/* 次へボタン */}
-          <div className="image-button-container">
-            <Button onClick={handleNextClick}>次へ</Button> {/* クリック時にページ遷移 */}
-          </div>
+        {/* 次へボタン */}
+        <div className="image-button-container">
+          <Button onClick={handleNextTV}>次へ</Button>
+        </div>
         </div>
       </div>
     </div>
