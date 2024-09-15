@@ -14,7 +14,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
-import { ref, set } from "firebase/database";
+import { get, ref, set } from "firebase/database";
 import { realtimeDb } from "../firebase/firebase-app";
 import { onValue } from "firebase/database";
 
@@ -244,6 +244,8 @@ const ShootingScreen = () => {
   };
 
   // カーソル位置を取得
+  const [cursorColors, setCursorColors] = useState({});
+
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -266,6 +268,13 @@ const ShootingScreen = () => {
     };
   }, [roomId, userId]);
 
+  // ランダムな色を生成する関数
+  const getRandomColor = useCallback(() => {
+    const colors = ["orange", "blue", "black", "green"];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  }, []);
+
   // 他のユーザーのカーソル位置を取得
   const [otherCursors, setOtherCursors] = useState({});
 
@@ -277,34 +286,46 @@ const ShootingScreen = () => {
     // Firebase Realtime Databaseのデータをリアルタイムで取得
     const unsubscribe = onValue(cursorsRef, (snapshot) => {
       if (snapshot.exists()) {
-        setOtherCursors(snapshot.val());
+        const cursors = snapshot.val();
+        setOtherCursors(cursors);
+
+        // 新しい参加者のカーソルにランダムな色を割り当て
+        const newCursorColors = { ...cursorColors };
+        Object.keys(cursors).forEach((id) => {
+          if (!newCursorColors[id]) {
+            newCursorColors[id] = getRandomColor(); // 新しいユーザーにランダムな色を割り当てる
+          }
+        });
+        setCursorColors(newCursorColors); // Stateに保存
       }
     });
 
     return () => unsubscribe();
-  }, [roomId]);
+  }, [roomId, cursorColors, getRandomColor]);
 
   return (
     <div className="shooting-container">
       <h2>一つ的を選んでください</h2>
-      {Object.keys(otherCursors).map((id) => {
-        const { x, y } = otherCursors[id];
-        return (
-          <div
-            key={id}
-            className="cursor"
-            style={{
-              position: "absolute",
-              left: `${x}px`,
-              top: `${y}px`,
-              backgroundColor: "red",
-              width: "10px",
-              height: "10px",
-              borderRadius: "50%",
-            }}
-          />
-        );
-      })}
+      {Object.keys(otherCursors)
+        .filter((id) => id !== userId)
+        .map((id) => {
+          const { x, y } = otherCursors[id];
+          return (
+            <div
+              key={id}
+              className="cursor"
+              style={{
+                position: "absolute",
+                left: `${x}px`,
+                top: `${y}px`,
+                backgroundColor: cursorColors[id] || "black",
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+              }}
+            />
+          );
+        })}
       <p>
         現在のターン: {playMemberName} さん
         <br />
