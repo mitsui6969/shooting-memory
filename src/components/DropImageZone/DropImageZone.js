@@ -8,7 +8,7 @@ const DropImageZone = ({ image, onDrop, swapImage, index }) => {
     const [file, setFile] = useState(null);
 
     // ドロップ機能
-    const [{ isOver }, drop] = useDrop(() => ({
+    const [{ canDrop, isOver }, drop] = useDrop(() => ({
         accept: "image",
         drop: (item) => {
             if (item.index !== undefined) {
@@ -43,7 +43,7 @@ const DropImageZone = ({ image, onDrop, swapImage, index }) => {
         } else {
             console.error("No file だよ")
         }
-    }, [file,onDrop]);
+    }, [onDrop]);
 
     // 許可するファイル指定
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -62,7 +62,7 @@ const DropImageZone = ({ image, onDrop, swapImage, index }) => {
     const filePreview = useMemo(() => {
         if (file) {
             return (
-                <img src={file} alt='collage' className='frameInImage' />
+                <img src={file} alt='collage image' className='frameInImage' />
             );
         }
         return (
