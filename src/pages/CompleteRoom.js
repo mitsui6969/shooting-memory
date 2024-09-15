@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSwipeable } from "react-swipeable";
+import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import "../styles/CompleteRoom.css";
 import "../App.css";
 import Button from '../components/Button_orange/Button_orange';
@@ -19,6 +20,7 @@ const imageList = [
 
 const CompleteRoom = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate(); // useNavigateフックを使用
 
   const handlers = useSwipeable({
     onSwipedLeft: () => handleNext(),
@@ -39,6 +41,10 @@ const CompleteRoom = () => {
 
   const goToSlide = (index) => {
     setCurrentIndex(index);
+  };
+
+  const handleNextClick = () => {
+    navigate('/frame-selection'); // '/nextpage'を遷移先のURLに変更
   };
 
   return (
@@ -80,10 +86,10 @@ const CompleteRoom = () => {
             ))}
           </div>
 
-        {/* 次へボタン */}
-        <div className="image-button-container">
-          <Button>次へ</Button>
-        </div>
+          {/* 次へボタン */}
+          <div className="image-button-container">
+            <Button onClick={handleNextClick}>次へ</Button> {/* クリック時にページ遷移 */}
+          </div>
         </div>
       </div>
     </div>
