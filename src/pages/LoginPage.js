@@ -37,7 +37,7 @@ const LoginPage = () => {
         {errorMessage && (
           <div
             className="error-message"
-            dangerouslySetInnerHTML={{ __html: errorMessage }} // <br />タグをHTMLとして処理
+            dangerouslySetInnerHTML={{ __html: errorMessage }}
           />
         )}
         {user ? (
