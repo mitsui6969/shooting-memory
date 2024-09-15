@@ -42,8 +42,6 @@ const ShootingScreen = () => {
     }
   }, [location.search]);
 
-  console.log("roomIdFromQuery:", roomId);
-
   // プレイヤーターンを保存
   const saveCurrentPlayMember = useCallback(
     async (nextMember) => {
@@ -187,8 +185,6 @@ const ShootingScreen = () => {
       console.error("選ばれた画像の保存中にエラーが発生しました:", error);
     }
   };
-
-  console.log("現在のターン:", playMember);
 
   // 画像クリック時に発火
   const handleClick = () => {
