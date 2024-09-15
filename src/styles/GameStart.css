@@ -1,23 +1,73 @@
 .gamestart {
-  height: 100vh;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 43px;
+  font-family: "Shippori Mincho", "Georgia", serif;
+  position: relative;
 }
 
-.gamestart h2,
-h3 {
-  color: #fff;
-  padding-top: 75px;
-  padding-bottom: 20px;
+/* テキストの位置を任意に指定 */
+.text-base {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  color: white;
 }
 
-.gamestart input {
-  margin: 0 auto;
-  height: 40px;
+.name {
+  top: 190px;
+}
+
+.select {
+  top: 315px;
+}
+
+.input-name {
   width: 300px;
-  border-radius: 6px;
-  border: none;
-  padding: 5px 10px;
   text-align: center;
+  height: 40px;
+  border-radius: 0.375rem;
+  font-size: 19px;
+  position: absolute;
+  top: 225px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input-name {
+  outline: none;
+  border: none;
+}
+
+.input-name:focus {
+  outline: none;
+}
+
+/* アップロードコンポーネント全体のスタイル */
+.gamestart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-button {
+  margin-bottom: 20px;
+}
+
+.text {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.input-name {
+  width: 200px;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
 }
 
 /* アップロードコンポーネント全体のスタイル */
@@ -25,7 +75,10 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 60px;
+  position: absolute;
+  top: 350px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* input[type="file"] を非表示 */
@@ -38,7 +91,7 @@ h3 {
   cursor: pointer;
   display: inline-block;
   width: 300px; /* 横幅を固定 */
-  height: 130px;
+  height: 180px;
   padding: 20px;
   border: 2px solid #ebf0f3;
   border-radius: 10px;
@@ -47,6 +100,16 @@ h3 {
   justify-content: center;
   align-items: center;
   background-color: white;
+  box-sizing: border-box;
+}
+
+/* デフォルト画像のスタイル */
+.image-default {
+  width: 150px; /* 画像の横幅を200pxに固定 */
+  height: 150px; /* 画像の高さを200pxに固定 */
+  object-fit: contain; /* 画像のアスペクト比を保持しながらボックスに収める */
+  display: block;
+  margin: auto; /* 画像を中央揃えにする */
 }
 
 .file-label:hover {
@@ -54,11 +117,8 @@ h3 {
 }
 
 .upload-image {
-  max-width: 100%; /* ボックス内で画像の幅をフィットさせる */
-  max-height: 100%; /* ボックス内で画像の高さをフィットさせる */
-  width: auto; /* 幅の自動調整 */
-  height: auto; /* 高さの自動調整 */
-  object-fit: cover; /* ボックス内に収める際、画像のアスペクト比を維持してクロップする */
+  max-width: 100%; /* 画像の幅をボックス内にフィットさせる */
+  max-height: 100%; /* 画像の高さをボックス内にフィットさせる */
 }
 
 /* プレビュー画像コンテナのスタイル */
@@ -76,9 +136,9 @@ h3 {
 
 .text-base.select {
   white-space: nowrap; /* 改行を防ぐ */
-  display: block; /* 必要に応じて、displayプロパティを調整 */
-  text-align: center; /* 中央揃えにする場合 */
-  width: 100%; /* 幅を調整する */
+  display: block;      /* 必要に応じて、displayプロパティを調整 */
+  text-align: center;  /* 中央揃えにする場合 */
+  width: 100%;         /* 幅を調整する */
   font-size: 20px;
 }
 
@@ -93,53 +153,91 @@ h3 {
   text-align: center; /* テキストを中央揃えにする */
 }
 
-/* 画像コンテナを左右に分ける */
-.image-default {
-  width: 150px; /* デフォルト画像の幅を指定 */
-  height: auto; /* 高さは画像の比率に応じて自動調整 */
-  display: block;
-  margin: 0 auto; /* 中央に配置 */
-  border-radius: 10px; /* 角を丸くする */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影をつける */
-}
-
-/* 左側に表示される画像のスタイル */
-.image-left {
-  width: 40%; /* 幅を40%に制限 */
-  max-width: 150px; /* 画像の最大幅 */
-  max-height: 150px; /* 画像の最大高さを制限 */
-  object-fit: cover; /* アスペクト比を維持しながら、ボックス内に収める */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-right: 10px; /* 左右の画像の間に余白を追加 */
-}
-
-/* 右側に表示される画像のスタイル */
-.image-right {
-  width: 40%; /* 幅を40%に制限 */
-  max-width: 150px; /* 画像の最大幅 */
-  max-height: 150px; /* 画像の最大高さを制限 */
-  object-fit: cover; /* アスペクト比を維持しながら、ボックス内に収める */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-left: 10px; /* 左右の画像の間に余白を追加 */
-}
-
-/* 画像を2つ並べるコンテナ */
 .image-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* 画像を左右に分ける */
   align-items: center;
-  gap: 10px; /* 左右の画像間にスペースを追加 */
+  width: 300px; /* コンテナの幅を固定 */
+  margin-top: 20px;
 }
 
-/* メモリバー */
+/* 左側の画像 */
+.image-left {
+  width: 130px; /* 画像の幅を調整 */
+  height: 130px; /* 画像の高さを調整 */
+  object-fit: cover; /* 画像をボックスに収める */
+  border-radius: 10px; /* 角を丸くする */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 画像の影 */
+  position: relative; /* 相対位置を設定 */
+}
 
-.progress-container {
-  margin: 10px 0;
-  width: 100%;
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  overflow: hidden;
+/* 右側の画像 */
+.image-right {
+  width: 130px; /* 画像の幅を調整 */
+  height: 130px; /* 画像の高さを調整 */
+  object-fit: cover; /* 画像をボックスに収める */
+  border-radius: 10px; /* 角を丸くする */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 画像の影 */
+  position: relative; /* 相対位置を設定 */
+}
+
+/* 画像削除ボタンのスタイル */
+.remove-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.remove-button:hover {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+/* 画像ラッパーのスタイル */
+.image-wrapper {
   position: relative;
+  display: inline-block;
+  margin: 0 10px; /* 左右の画像に余白を持たせる */
+}
+
+.start-button {
+  position: absolute;
+  width: 200px;
+  height: auto;
+  top: 600px;
+  left: 50%;
+  transform: translateX(-50%); /* 中央寄せ */
+}
+
+/* 独立した進捗バーのスタイル */
+.progress-container {
+  width: 300px; /* 横幅を設定 */
+  max-width: 600px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  height: 20px; /* 通常の高さ設定 */
+  margin: 20px auto;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  top: 550px; /* 位置を550pxの高さに調整 */
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #83c1e8;
+  width: 0%;
+  transition: width 0.4s ease;
 }
