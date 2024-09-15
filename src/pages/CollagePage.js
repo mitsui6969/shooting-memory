@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Frame from "../components/Frame/Frame";
 import "../styles/CollagePage.css";
 import testImage from "../assets/image/toppage-background.jpeg";
@@ -40,7 +40,10 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   );
 };
 
-const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=2, selectBorder=true, userID}) => {
+const CollagePage = ({images}) => {
+  const location = useLocation();
+  const { title, date, selectColor, selectBorder } = location.state
+
   images = [testImage, testImage2, testImage3];
   const [draggedImages, setDraggedImages] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);

@@ -14,6 +14,9 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
+import { get, ref, set } from "firebase/database";
+import { realtimeDb } from "../firebase/firebase-app";
+import { onValue } from "firebase/database";
 
 const ShootingScreen = () => {
   const navigate = useNavigate();
@@ -38,8 +41,6 @@ const ShootingScreen = () => {
       setRoomId(roomIdFromQuery);
     }
   }, [location.search]);
-
-  console.log("roomIdFromQuery:", roomId);
 
   // プレイヤーターンを保存
   const saveCurrentPlayMember = useCallback(
@@ -185,8 +186,6 @@ const ShootingScreen = () => {
     }
   };
 
-  console.log("現在のターン:", playMember);
-
   // 画像クリック時に発火
   const handleClick = () => {
     if (!members || members.length === 0) {
@@ -240,9 +239,89 @@ const ShootingScreen = () => {
     }, 1000);
   };
 
+  // カーソル位置を取得
+  const [cursorColors, setCursorColors] = useState({});
+
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const { clientX, clientY } = event;
+      setCursorPosition({ x: clientX, y: clientY });
+
+      // Firebase Realtime Databaseにカーソル位置を保存
+      const cursorRef = ref(realtimeDb, `rooms/${roomId}/cursors/${userId}`);
+      set(cursorRef, {
+        x: clientX,
+        y: clientY,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [roomId, userId]);
+
+  // ランダムな色を生成する関数
+  const getRandomColor = useCallback(() => {
+    const colors = ["orange", "blue", "black", "green"];
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    return colors[randomIndex];
+  }, []);
+
+  // 他のユーザーのカーソル位置を取得
+  const [otherCursors, setOtherCursors] = useState({});
+
+  useEffect(() => {
+    if (!roomId) return;
+
+    const cursorsRef = ref(realtimeDb, `rooms/${roomId}/cursors`);
+
+    // Firebase Realtime Databaseのデータをリアルタイムで取得
+    const unsubscribe = onValue(cursorsRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const cursors = snapshot.val();
+        setOtherCursors(cursors);
+
+        // 新しい参加者のカーソルにランダムな色を割り当て
+        const newCursorColors = { ...cursorColors };
+        Object.keys(cursors).forEach((id) => {
+          if (!newCursorColors[id]) {
+            newCursorColors[id] = getRandomColor(); // 新しいユーザーにランダムな色を割り当てる
+          }
+        });
+        setCursorColors(newCursorColors); // Stateに保存
+      }
+    });
+
+    return () => unsubscribe();
+  }, [roomId, cursorColors, getRandomColor]);
+
   return (
     <div className="shooting-container">
       <h2>一つ的を選んでください</h2>
+      {Object.keys(otherCursors)
+        .filter((id) => id !== userId)
+        .map((id) => {
+          const { x, y } = otherCursors[id];
+          return (
+            <div
+              key={id}
+              className="cursor"
+              style={{
+                position: "absolute",
+                left: `${x}px`,
+                top: `${y}px`,
+                backgroundColor: cursorColors[id] || "black",
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+              }}
+            />
+          );
+        })}
       <p>
         現在のターン: {playMemberName} さん
         <br />
@@ -261,7 +340,9 @@ const ShootingScreen = () => {
       {showSquare && (
         <div className={`click-target ${isClosing ? "closing" : ""}`}>
           <img src={randomImage} alt="sample" />
-          <button onClick={handleNext} className="next-button">次の人へ</button>
+          <button onClick={handleNext} className="next-button">
+            次の人へ
+          </button>
         </div>
       )}
     </div>

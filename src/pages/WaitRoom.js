@@ -233,16 +233,23 @@ const WaitRoom = () => {
       )}
 
       {message === "CreateRoom" && (
-        <>
+        <div className="er">
           <h3>参加人数: {memberCount}人</h3>
+          {memberCount < 2 && (
+            <p style={{ color: "white" }}>
+              ゲームを開始するには2人以上の参加者が必要です
+            </p>
+          )}
           <div className="start-button">
-            <Button onClick={handleStartClick}>はじめる</Button>
+            <Button onClick={handleStartClick} disabled={memberCount < 2}>
+              はじめる
+            </Button>
           </div>
-        </>
+        </div>
       )}
 
       {message === "GameStart" && (
-        <div className="text">画像が出揃うまで少々お待ちください</div>
+        <h3 className="text">画像が出揃うまで少々お待ちください</h3>
       )}
     </div>
   );
