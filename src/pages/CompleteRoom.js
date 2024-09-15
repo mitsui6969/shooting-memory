@@ -13,12 +13,13 @@ import {
 // アップロードされた矢印画像
 import LeftArrowIcon from "../assets/image/leftarrow.png";
 import RightArrowIcon from "../assets/image/rightarrow.png";
+import Spinner from "../components/Spinner/Spinner";
 
 
 const CompleteRoom = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [roomId, setRoomId] = useState("");
-  const [photos, setPhotos] = useState([""]);
+  const [photos, setPhotos] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const userId = location.state?.id;
@@ -55,24 +56,28 @@ const CompleteRoom = () => {
           console.error("Error fetching photos : ", error);
         }
       };
-
+      
       fetchPhotos();
     }
   }, [roomId]);
-
-
+  
+  
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
+    if (photos) {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
+    }
   };
-
+  
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => 
-      (prevIndex - 1 + photos.length) % photos.length
+    if (photos) {
+      setCurrentIndex((prevIndex) => 
+        (prevIndex - 1 + photos.length) % photos.length
     );
-  };
+    }
+};
 
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
+const goToSlide = (index) => {
+  setCurrentIndex(index);
   };
 
   const handleNextTV = () => {
@@ -97,13 +102,17 @@ const CompleteRoom = () => {
             </button>
 
             {/* 画像表示 */}
-            <img
-              src={photos[currentIndex]}
-              alt="swipeable content"
-              draggable="false"
-              onDragStart={(e) => e.preventDefault()}
-              className="image nopointer"
-            />
+            {
+              photos ? (
+                <img
+                  src={photos[currentIndex]}
+                  alt="swipeable content"
+                  draggable="false"
+                  onDragStart={(e) => e.preventDefault()}
+                  className="image nopointer"
+                />
+              ):<Spinner />
+            }
 
             {/* 右矢印ボタン */}
             <button className="right-arrow" onClick={handleNext}>
@@ -113,7 +122,7 @@ const CompleteRoom = () => {
 
           {/* インジケーター */}
           <div className="indicators">
-            {photos.map((_, index) => (
+            {photos?.map((_, index) => (
               <span
                 key={index}
                 className={currentIndex === index ? "active" : ""}
