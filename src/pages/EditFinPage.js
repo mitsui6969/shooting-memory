@@ -131,7 +131,7 @@ const EditFinPage = () => {
         <div className="Exit-modal">
           <div className="Exit-items-container">
             <div className="Exit-stop-message">
-              <h3>本当に退出しますか？</h3>
+              <h3 className="hontoni-taisyutu">本当に退出しますか？</h3>
               
               <p>「退出」を押すとトップページに戻ります</p>
               <p>一度退出すると同じ部屋に入ることはできません</p>
