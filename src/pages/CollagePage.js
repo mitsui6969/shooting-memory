@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Frame from "../components/Frame/Frame";
 import "../styles/CollagePage.css";
 import testImage from "../assets/image/toppage-background.jpeg";
@@ -43,14 +43,18 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   );
 };
 
-const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=2, selectBorder=true, userID}) => {
+const CollagePage = ({ images, title = "title", date = "yyyy/mm/dd", selectColor = 2, selectBorder = true, userID }) => {
   images = [testImage, testImage2, testImage3];
   const [draggedImages, setDraggedImages] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);
   const [isModal, setIsModal] = useState(false);
 
   const navigate = useNavigate();
-  const roomId = "yourRoomId"; // roomIdを適宜設定する
+  const location = useLocation();
+
+  // クエリパラメータからroomIdを取得
+  const params = new URLSearchParams(location.search);
+  const roomId = params.get("roomId");
 
   const removeImage = (index) => {
     setDraggedImages((prevDraggedImages) => [...prevDraggedImages, index]);
@@ -76,7 +80,7 @@ const CollagePage = ({images, title="title", date="yyyy/mm/dd", selectColor=2, s
     const userID = "user2";
 
     // クエリパラメータとしてroomIdを追加
-    navigate(`/wait-room?roomId=${roomId}`, { state: { from: "CollagePage" } });
+    navigate(`/wait-room?roomId=${roomId}`, { state: { from: "CollagePage", roomId } });
 
     await DBtoCollageImage(roomId, userID, imageSrc);
   };
