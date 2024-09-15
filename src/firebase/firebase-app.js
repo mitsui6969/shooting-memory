@@ -6,14 +6,14 @@ import { getStorage } from "firebase/storage";
 
 // Firebaseの設定情報
 const firebaseConfig = {
-  apiKey: "AIzaSyDb4R-ic3zS_ZuZ_B-I_9auKUDQ9bHEndo",
-  authDomain: "shooting-memory.firebaseapp.com",
-  databaseURL: "https://shooting-memory-default-rtdb.firebaseio.com",
-  projectId: "shooting-memory",
-  storageBucket: "shooting-memory.appspot.com",
-  messagingSenderId: "1060901624376",
-  appId: "1:1060901624376:web:102972d4b1e928184ea4cd",
-  measurementId: "G-FD5L6GZSS9",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 // Firebaseアプリを初期化
