@@ -85,7 +85,7 @@ const CompleteRoom = () => {
   // 次のページに遷移
   const handleNextTV = () => {
     if (roomId) {
-      navigate(`/collage-page?roomId=${roomId}`, {
+      navigate(`/frame-selection?roomId=${roomId}`, {
         state: { from: "complete-room", roomId, userId },
       });
     } else {

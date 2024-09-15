@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import "../styles/EditFinPage.css";
 import "../App.css";
-import ButtonO from '../components/Button_orange/Button_orange';
+import ButtonO from "../components/Button_orange/Button_orange";
 import ButtonW from "../components/Button_white/Button_white";
 import { doc, collection, onSnapshot } from "firebase/firestore"; // Firebase Firestore関連のimport
 import { db } from "../firebase/firebase-app"; // Firebase設定ファイルのimport
@@ -31,8 +31,8 @@ const EditFinPage = () => {
 
   // 前の画像に移動
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => 
-      (prevIndex - 1 + imageList.length) % imageList.length
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + imageList.length) % imageList.length
     );
   };
 
@@ -43,33 +43,32 @@ const EditFinPage = () => {
 
   const handleModalClose = () => {
     setIsModal(false);
-  }
+  };
 
   const handleModalOpen = () => {
     setIsModal(true);
-  }
+  };
 
   const handleExit = () => {
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   // Firebase
   useEffect(() => {
-
     // 今だけ手動で設定
     const roomID = "testRoom";
-    
+
     const participantsRef = collection(db, "rooms", roomID, "participants");
 
     const unsubscribe = onSnapshot(participantsRef, (snapshot) => {
-      const updatedImageList = snapshot.docs.map(doc => {
+      const updatedImageList = snapshot.docs.map((doc) => {
         const data = doc.data();
         return {
-          user: data.name || '匿名さん',
-          image: data.collageImage
+          user: data.name || "匿名さん",
+          image: data.collageImage,
         };
       });
-      
+
       setImageList(updatedImageList);
     });
 
@@ -109,7 +108,9 @@ const EditFinPage = () => {
               {imageList.map((_, index) => (
                 <span
                   key={index}
-                  className={`indicators-span ${currentIndex === index ? "active" : ""}`}
+                  className={`indicators-span ${
+                    currentIndex === index ? "active" : ""
+                  }`}
                   onClick={() => goToSlide(index)}
                 >
                   ●
@@ -132,7 +133,7 @@ const EditFinPage = () => {
           <div className="Exit-items-container">
             <div className="Exit-stop-message">
               <h3 className="hontoni-taisyutu">本当に退出しますか？</h3>
-              
+
               <p>「退出」を押すとトップページに戻ります</p>
               <p>一度退出すると同じ部屋に入ることはできません</p>
             </div>
