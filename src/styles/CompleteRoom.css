@@ -50,9 +50,9 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    flex-shrink: 0; /* 幅が縮小しないように設定 */
-    flex-grow: 0; /* 幅が成長しないように設定 */
-    box-sizing: border-box; /* パディングとボーダーを含めてサイズを計算 */
+    flex-shrink: 0;
+    flex-grow: 0;
+    box-sizing: border-box;
   }
   
   .nopointer {
