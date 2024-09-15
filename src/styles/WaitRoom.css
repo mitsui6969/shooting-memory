@@ -1,36 +1,22 @@
 /* WaitRoomのスタイル */
-.waitroom {
-	display: flex;
-	flex-direction: column; /* 縦に並べる */
-	align-items: center;    /* 水平方向の中央揃え */
-	justify-content: center;
-	font-size: 43px;
-	font-family: "Shippori Mincho", "Georgia", serif;
-	position: relative;
+.waitroom h2 {
+  padding-top: 55px;
 }
 
 .spinner-container {
-	margin-top: 150px;
+  margin: 30px auto;
 }
 
-/* テキストの位置を任意に指定 */
-.text {
-	position: absolute;
-	top: 600px;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	font-size: 24px;
-	color: white;
+.waitroom h3 {
+  padding: 0;
+  padding-bottom: 10px;
+  color: #fff;
+  text-align: center;
 }
 
-.text-host {
-	position: absolute;
-	top: 500px;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	font-size: 24px;
-	color: white;
-	text-align: center; /* テキストを中央揃え */
+.start-button {
+  margin: 0 auto;
+  width: 50%;
 }
 
 .start-button{
