@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import styles from './Frame.module.css';
 import DropImageZone from '../DropImageZone/DropImageZone';
+// import { DndProvider } from 'react-dnd';
+// import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export default function Frame({ imageCount, title, date, selectColor, selectBorder }) {
+
+    // title = "タイトル" // 20文字まで
+    // date = "yyyy/mm/dd"
+    // selectColor = 4 // 0.white/1.black/2.blue/3.white2p/4.black2p //
+    // selectBorder = 1 // 1(on)/0(of) //
 
     const [imageList, setImageList] = useState(Array.from({ length: imageCount }, () => null));
 
@@ -12,11 +19,11 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
             const newList = [...previewList];
             newList[index] = newImage;
             return newList;
-        });
-    };
+        })
+    }
 
-    // 画像入れ替え
-    const swapImage = (fromIndex, toIndex) => {
+    //画像入れ替え
+    const swapImage = ( fromIndex, toIndex ) => {
         setImageList((imageList) => {
             const newList = [...imageList];
             [newList[fromIndex], newList[toIndex]] = [newList[toIndex], newList[fromIndex]];
@@ -27,14 +34,14 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
     // 画像枚数によるレイアウト
     const getLayoutClass = () => {
         switch (imageCount) {
-            case 2:
-                return styles.twoImages;
-            case 3:
-                return styles.threeImages;
-            case 4:
-                return styles.fourImages;
-            default:
-                return '';
+        case 2:
+            return styles.twoImages;
+        case 3:
+            return styles.threeImages;
+        case 4:
+            return styles.fourImages;
+        default:
+            return '';
         }
     };
 
@@ -52,24 +59,24 @@ export default function Frame({ imageCount, title, date, selectColor, selectBord
             case 4:
                 return styles.black2p;
             default:
-                return "white";
+                return "white"
         }
-    };
+    }
 
     // 枠ありなし
-    const getBorder = () => (selectBorder ? styles.frameBorder : '');
+    const getBorder = () => selectBorder ? styles.frameBorder : '';
 
     // タイトル日付ありなし
     const getOverlay = (title, date) => {
-        return title || date ? '' : styles.hiddenTitle;
-    };
+        return title || date ?  '' : styles.hiddenTitle
+    }
 
     return (
         <div id='target-to-image' className={`${styles.collage} ${getLayoutClass()} ${getBackgroundColor()} ${getBorder()}`}>
             {imageList.map((src, index) => (
-                <div key={index} className={styles.imageContainer}>
+                <div key={index} className={styles.imageContainer}>                    
                     <DropImageZone
-                        image={src}
+                        image = {src}
                         onDrop={(newImage) => handleDropImage(index, newImage)}
                         swapImage={(fromIndex, toIndex) => swapImage(fromIndex, toIndex)}
                         index={index}

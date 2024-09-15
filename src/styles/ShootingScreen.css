@@ -40,7 +40,7 @@
 }
 
 .click-target {
-  width: 360px;
+  width: 300px;
   height: 450px;
   background-image: linear-gradient(
     0deg,
@@ -49,7 +49,7 @@
   );
   box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
   transform: translate(-50%, -50%);
-  border-radius: 12px;
+  border-radius: 5px;
   animation: expand 1s ease-out forwards;
   padding: 20px 10px;
   display: flex;
@@ -59,16 +59,12 @@
   left: 50%;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  padding-top: 70px;
-  padding-bottom: 40px;
 }
 
 .click-target img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  margin: 10px auto;
   box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+  width: 95%;
 }
 
 @keyframes expand {
