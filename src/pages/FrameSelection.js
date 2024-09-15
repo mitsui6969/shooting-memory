@@ -4,7 +4,7 @@ import Button from "../components/Button_orange/Button_orange";
 import Frame from "../components/Frame/Frame";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
+import { useNavigate, useLocation } from 'react-router-dom'; // useNavigateとuseLocationをインポート
 
 const FrameSelection = () => {
     const [isFrameChecked, setIsFrameChecked] = useState(false);
@@ -13,6 +13,7 @@ const FrameSelection = () => {
     const [selectedOption, setSelectedOption] = useState('option1');
     const [selectColor, setSelectColor] = useState(0);
     const navigate = useNavigate(); // useNavigateを使用
+    const location = useLocation(); // 現在のクエリを取得するためにuseLocationを使用
 
     const handleSelectChange = (e) => {
         setSelectedOption(e.target.value);
@@ -43,7 +44,12 @@ const FrameSelection = () => {
 
     // 次へボタンを押した時にページを遷移する関数
     const handleNextClick = () => {
-        navigate('/collage-page'); // 'nextpage'は遷移先のURLに変更
+        // クエリを維持しながら次のページに遷移する
+        navigate({
+            pathname: '/collage-page',
+            search: location.search, // 現在のクエリを維持する
+            state: { isFrameChecked, isTitleChecked, isDayChecked, selectedOption }
+        });
     };
 
     return (

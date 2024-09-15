@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "../App.css";
 import "../styles/WaitRoom.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner/Spinner";
 import Button from "../components/Button_orange/Button_orange";
 import { db } from "../firebase/firebase-app";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  doc,
-  updateDoc,
-  onSnapshot,
-  arrayUnion,
-  getDoc,
-} from "firebase/firestore";
+import { doc, updateDoc, getDoc, arrayUnion, increment, onSnapshot } from "firebase/firestore";
 
 const WaitRoom = () => {
   const navigate = useNavigate();
@@ -24,6 +14,8 @@ const WaitRoom = () => {
   const [memberCount, setMemberCount] = useState(0);
   const [roomTitle, setRoomTitle] = useState("");
   const [userId, setUserId] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // エラーメッセージの状態
+  const [count, setCount] = useState(null); // Firestoreのcount値を保持
 
   // userIdを取得
   const location = useLocation();
@@ -46,6 +38,39 @@ const WaitRoom = () => {
     }
   }, [message, userId]);
 
+  // Firestoreのcountを1減らす
+  const decrementCount = useCallback(async () => {
+    if (roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      try {
+        await updateDoc(roomDocRef, {
+          count: increment(-1), // countを1減らす
+        });
+        console.log("Count decremented");
+      } catch (error) {
+        console.error("Error decrementing count: ", error);
+      }
+    }
+  }, [roomId]);
+
+  // game-startから戻ってきた場合にcountとmembersを比較してロード終了
+  const checkCompletion = useCallback(async () => {
+    if (roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      const docSnap = await getDoc(roomDocRef);
+      if (docSnap.exists()) {
+        const roomData = docSnap.data();
+        const members = roomData.members.length; // membersの数を取得
+        const currentCount = roomData.count; // countを取得
+
+        if (members === currentCount) {
+          // countとmembersが同じ場合、ロードを終了する
+          handleCompletion();
+        }
+      }
+    }
+  }, [roomId]);
+
   // 画面遷移元に応じてメッセージを設定
   useEffect(() => {
     const from = location.state?.from;
@@ -54,10 +79,14 @@ const WaitRoom = () => {
       setMessage("CreateRoom");
     } else if (from === "game-start") {
       setMessage("GameStart");
+      checkCompletion(); // game-startから来た時にcountとmembersの数を比較する
+    } else if (from === "CollagePage") {
+      setMessage("CollagePage"); // CollagePageから来た場合
+      decrementCount(); // CollagePageから来た時にcountを1減らす
     } else {
       setMessage("Toppage");
     }
-  }, [location.state]);
+  }, [location.state, decrementCount, checkCompletion]);
 
   // roomIdを取得
   useEffect(() => {
@@ -69,28 +98,39 @@ const WaitRoom = () => {
     }
   }, [location.search]);
 
-  // Firestoreからroomのtitleを取得
+  // Firestoreからroomのtitleとcountを取得し、countが0になったらロードを終了
   useEffect(() => {
     if (roomId) {
       const roomDocRef = doc(db, "rooms", roomId);
 
-      const fetchRoomTitle = async () => {
+      const fetchRoomData = async () => {
         try {
           const docSnap = await getDoc(roomDocRef);
           if (docSnap.exists()) {
             const roomData = docSnap.data();
             setRoomTitle(roomData.roomName || "No Title");
+            setCount(roomData.count || 0); // count値を取得
+            if (roomData.count === 0) {
+              // countが0になったらロード終了処理
+              handleCompletion();
+            }
           } else {
             console.error("No such document!");
           }
         } catch (error) {
-          console.error("Error fetching room title: ", error);
+          console.error("Error fetching room data: ", error);
         }
       };
 
-      fetchRoomTitle();
+      fetchRoomData();
     }
   }, [roomId]);
+
+  // ロードが完了したら次の処理に進む
+  const handleCompletion = () => {
+    console.log("ロードが完了しました");
+    // ここにロード終了後の処理を追加する（例: 次のページに遷移するなど）
+  };
 
   // メンバーのIDをroomsコレクションに追加
   useEffect(() => {
@@ -102,7 +142,9 @@ const WaitRoom = () => {
           await updateDoc(roomDocRef, {
             members: arrayUnion(userId),
           });
-        } catch (error) {}
+        } catch (error) {
+          console.error("Error adding user to room: ", error);
+        }
       };
 
       addUserToRoom();
@@ -128,39 +170,14 @@ const WaitRoom = () => {
     }
   }, [roomId, message]);
 
-  // ホストが「はじめる」ボタンを押したときの処理
-  const handleStartClick = async () => {
-    if (roomId) {
-      const roomRef = query(
-        collection(db, "rooms"),
-        where("roomId", "==", roomId)
-      );
-      try {
-        const querySnapshot = await getDocs(roomRef);
-        const updatePromises = querySnapshot.docs.map((roomDoc) => {
-          const roomDocRef = doc(db, "rooms", roomDoc.id);
-          return updateDoc(roomDocRef, {
-            isActive: true,
-          });
-        });
-        await Promise.all(updatePromises);
-        navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
-      } catch (error) {}
-    }
-  };
-
-  // ホスト以外のメンバーのisActive監視
+  // Toppageのとき、isActiveの変化を監視して、trueになったらgame-startに遷移する処理
   useEffect(() => {
     if (message === "Toppage" && roomId) {
-      const roomQuery = query(
-        collection(db, "rooms"),
-        where("roomId", "==", roomId)
-      );
+      const roomDocRef = doc(db, "rooms", roomId);
 
-      const unsubscribe = onSnapshot(roomQuery, (querySnapshot) => {
-        const roomDoc = querySnapshot.docs[0];
-        if (roomDoc) {
-          const roomData = roomDoc.data();
+      const unsubscribe = onSnapshot(roomDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const roomData = docSnapshot.data();
           if (roomData.isActive) {
             navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
           }
@@ -169,47 +186,28 @@ const WaitRoom = () => {
 
       return () => unsubscribe();
     }
-  }, [roomId, navigate, message, userId]);
+  }, [roomId, message, navigate, userId]);
 
-  // 全メンバーのisReadyを監視
-  useEffect(() => {
-    if (message === "GameStart" && roomId) {
-      const roomDocRef = doc(db, "rooms", roomId);
-      let membersCount = 0;
-
-      const getMembersCount = async () => {
-        const roomSnapshot = await getDoc(roomDocRef);
-        if (roomSnapshot.exists()) {
-          const roomData = roomSnapshot.data();
-          membersCount = roomData.members.length;
-        }
-      };
-
-      getMembersCount();
-
-      const membersRef = collection(roomDocRef, "participants");
-      const unsubscribeParticipants = onSnapshot(
-        membersRef,
-        (participantsSnapshot) => {
-          const participantsData = participantsSnapshot.docs.map((doc) =>
-            doc.data()
-          );
-
-          const readyCount = participantsData.filter(
-            (participant) => participant.isReady
-          ).length;
-
-          if (readyCount === membersCount && membersCount > 0) {
-            navigate(`/shooting-screen?roomId=${roomId}`, {
-              state: { userId },
-            });
-          }
-        }
-      );
-
-      return () => unsubscribeParticipants();
+  // ホストが「はじめる」ボタンを押したときの処理
+  const handleStartClick = async () => {
+    if (memberCount <= 1) {
+      // 参加人数が1人以下の場合、エラーメッセージを表示
+      setErrorMessage("参加人数が1人のため、開始できません。");
+      return;
     }
-  }, [message, navigate, roomId, userId]);
+
+    if (roomId) {
+      const roomDocRef = doc(db, "rooms", roomId);
+      try {
+        await updateDoc(roomDocRef, {
+          isActive: true,
+        });
+        navigate(`/game-start?roomId=${roomId}`, { state: { userId } });
+      } catch (error) {
+        console.error("Error starting game: ", error);
+      }
+    }
+  };
 
   return (
     <div className="waitroom">
@@ -236,13 +234,25 @@ const WaitRoom = () => {
         <>
           <h3>参加人数: {memberCount}人</h3>
           <div className="start-button">
-            <Button onClick={handleStartClick}>はじめる</Button>
+            <Button onClick={handleStartClick}>
+              はじめる
+            </Button>
+            {/* エラーメッセージを表示 */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
           </div>
         </>
       )}
 
       {message === "GameStart" && (
         <div className="text">画像が出揃うまで少々お待ちください</div>
+      )}
+
+      {message === "CollagePage" && count !== null && (
+        <div className="text">
+          全員が揃うまで少々お待ちください
+          <br />
+          残り{count}人です
+        </div>
       )}
     </div>
   );
