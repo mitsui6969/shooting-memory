@@ -25,7 +25,6 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
         }
       },
     }),
-    [index, removeImage]
   );
 
   return (
@@ -42,25 +41,14 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
 
 const CollagePage = () => {
   const location = useLocation();
-  const { title, date, selectColor, selectBorder, userId, numImages } = location.state
+  const { title, date, selectColor, selectBorder, userId, numImages, roomId } = location.state
   console.log("location.stateの値:", location.state)
+  console.log("roomIdの値:", roomId);
 
-  // roomIdを取得
-  const [roomId, setRoomId] = useState('')
-  useEffect(() => {
-      const params = new URLSearchParams(location.search);
-      const roomIdFromQuery = params.get("roomId");
-
-      if (roomIdFromQuery) {
-      setRoomId(roomIdFromQuery);
-      }
-  }, [location.search]);;
-
-
-  const [images, setImages] = useState([]);
-
+  const [images, setImages] = useState([]); // 射的で取った画像
+  console.log("images:", images);
   const [draggedImages, setDraggedImages] = useState([]);
-  const [imageSrc, setImageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null); // html2canvasで画像化したもの
   const [isModal, setIsModal] = useState(false);
   const navigate = useNavigate();
 
@@ -71,6 +59,10 @@ const CollagePage = () => {
   // 射的した画像取得
   const fetchSelectedImages = async () => {
     try {
+      if (!roomId) {
+        console.error("Invalid roomId:", roomId);
+        return [];
+      }
 
       const selectedImagesDocRef = doc(db, "selected_images", roomId );
       const selectedImagesDoc = await getDoc(selectedImagesDocRef);
@@ -87,6 +79,7 @@ const CollagePage = () => {
 
     } catch (e) {
       console.error("Error fetching selected images: ", e);
+      console.log("roomId:", roomId);
       return [];
     }
   };
@@ -99,6 +92,11 @@ const CollagePage = () => {
       width: target.clientWidth,
       height: target.clientHeight,
       backgroundColor: null,
+      proxy:true,
+      useCORS: true,
+      onrendered: function(canvas) {
+        canvas.toDataURL();
+      }
     }).then((canvas) => {
       const targetImgUri = canvas.toDataURL("image/png");
       setImageSrc(targetImgUri);
@@ -114,7 +112,7 @@ const CollagePage = () => {
       // return;
     }
 
-    navigate(`/edit-fin?roomId=${roomId}`);
+    navigate(`/edit-fin?roomId=${roomId}`, {state:{ from:'collage-page', roomId, userId }});
     await DBtoCollageImage(roomId, userId, imageSrc);
     }
 
@@ -156,6 +154,7 @@ const CollagePage = () => {
     };
 
     fetchImages();
+    console.log("Frameの中:", images)
   }, [roomId]);
 
 

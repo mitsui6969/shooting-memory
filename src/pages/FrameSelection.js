@@ -20,7 +20,7 @@ const FrameSelection = () => {
     const [date, setDate] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
-    const { roomId, userId, numImages } = location.state
+    const { roomId, userId, numImages } = location.state;
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
@@ -64,8 +64,9 @@ const FrameSelection = () => {
                     date:frameDate,
                     selectColor:selectColor,
                     selectBorder:isFrameChecked,
-                    userID:userId,
-                    numImages:numImages
+                    userId,
+                    numImages,
+                    roomId
                 }
             });
         }

@@ -31,15 +31,13 @@ const DropImageZone = ({ image, onDrop, swapImage, index }) => {
                 // FileオブジェクトならURLを生成
                 const newFileUrl = URL.createObjectURL(newFile);
                 setFile(newFileUrl);
-                onDrop(newFileUrl); // URLをonDropで渡す
+                onDrop(newFileUrl);
             } else {
                 // すでにURLの場合はそのままセット
                 setFile(newFile);
                 onDrop(newFile);
+                console.log("画像URLだったぞ")
             }
-            // const newFileURL = URL.createObjectURL(newFile);
-            // setFile(newFileURL);
-            // onDrop(newFileURL);
         } else {
             console.error("No file だよ")
         }
