@@ -3,7 +3,7 @@ import "../styles/FrameSelection.css";
 import Button from "../components/Button_orange/Button_orange";
 import Frame from "../components/Frame/Frame";
 import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend'; // DndProviderのインポート
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { collection, getDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/firebase-app';
 import { useNavigate, useLocation } from 'react-router-dom';
