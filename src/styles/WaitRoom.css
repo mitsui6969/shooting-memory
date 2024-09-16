@@ -18,3 +18,8 @@
   margin: 0 auto;
   width: 50%;
 }
+
+.er p {
+  text-align: center;
+  padding-bottom: 10px;
+}

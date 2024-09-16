@@ -12,18 +12,21 @@ import { db } from "../firebase/firebase-app";
 import { getStorage, getDownloadURL, ref, uploadString } from "firebase/storage";
 
 const DraggableImage = ({ src, index, removeImage, isDragged }) => {
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: "image",
-    item: { src },
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: "image",
+      item: { src },
+      collect: (monitor) => ({
+        isDragging: !!monitor.isDragging(),
+      }),
+      end: (item, monitor) => {
+        if (monitor.didDrop()) {
+          removeImage(index);
+        }
+      },
     }),
-    end: (item, monitor) => {
-      if (monitor.didDrop()) {
-        removeImage(index);
-      }
-    },
-  }), [index, removeImage]);
+    [index, removeImage]
+  );
 
   return (
     <li
@@ -58,7 +61,6 @@ const CollagePage = () => {
   const [draggedImages, setDraggedImages] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);
   const [isModal, setIsModal] = useState(false);
-
   const navigate = useNavigate();
 
   const removeImage = (index) => {
@@ -89,13 +91,18 @@ const CollagePage = () => {
 
   // 画像化
   const handleCompletion = () => {
-    const target = document.getElementById('target-to-image')
-    html2canvas(target, { scale:5, width:target.clientWidth, height:target.clientHeight, backgroundColor: null }).then((canvas) => {
+    const target = document.getElementById("target-to-image");
+    html2canvas(target, {
+      scale: 5,
+      width: target.clientWidth,
+      height: target.clientHeight,
+      backgroundColor: null,
+    }).then((canvas) => {
       const targetImgUri = canvas.toDataURL("image/png");
-      setImageSrc(targetImgUri)
-      setIsModal(true)
+      setImageSrc(targetImgUri);
+      setIsModal(true);
     });
-  }
+  };
 
   // 出揃い画面にgo
   const handletoEditFinPage = async () => {
@@ -111,7 +118,7 @@ const CollagePage = () => {
 
   const handleModalClose = () => {
     setIsModal(false);
-  }
+  };
 
   // db処理
   const DBtoCollageImage = async (roomId, userId, collageImageUrl) => {
@@ -120,22 +127,22 @@ const CollagePage = () => {
       const storage = getStorage();
       const storageRef = ref(storage, `collages/${roomId}/${userId}.png`);
 
-      await uploadString(storageRef, collageImageUrl, 'data_url');
+      await uploadString(storageRef, collageImageUrl, "data_url");
       const downloadURL = await getDownloadURL(storageRef);
 
       // コレクション追加
       const participantDocRef = doc(db, "rooms", roomId, "participants", userId);
       await updateDoc(participantDocRef, {
-        collageImage: downloadURL
+        collageImage: downloadURL,
       });
 
       const roomDocRef = doc(db, "rooms", roomId);
       await updateDoc(roomDocRef, {
-        collagedImageList: arrayUnion(downloadURL)
+        collagedImageList: arrayUnion(downloadURL),
       });
 
       console.log("collageImage successfully added or updated!");
-    } catch(e) {
+    } catch (e) {
       console.error("Error adding collageImage: ", e);
     }
   }
@@ -164,41 +171,41 @@ const CollagePage = () => {
         />
       </div>
 
-      <div className="imagesArea">
-        <ul className="imagesArray">
-          {images.map((src, index) => (
-            <DraggableImage
-              key={index}
-              src={src}
-              index={index}
-              removeImage={removeImage}
-              isDragging={draggedImages.includes(index)}
-            />
-          ))}
-        </ul>
+        <div className="imagesArea">
+          <ul className="imagesArray">
+            {images.map((src, index) => (
+              <DraggableImage
+                key={index}
+                src={src}
+                index={index}
+                removeImage={removeImage}
+                isDragging={draggedImages.includes(index)}
+              />
+            ))}
+          </ul>
+        </div>
+      </DndProvider>
+      <div className="completionButton">
+        <ButtonO onClick={handleCompletion}>完成！</ButtonO>
       </div>
-    </DndProvider>
-    <div className="completionButton">
-    <ButtonO onClick={handleCompletion}>完成！</ButtonO>
-    </div>
 
-    {isModal && (
-      <div className="complet-modal">
-        <div className="modal-button-container">
-          <img src={imageSrc} className="collage-image"/>
+      {isModal && (
+        <div className="complet-modal">
+          <div className="modal-button-container">
+            <img src={imageSrc} alt="Collage result" className="collage-image" />
 
-          <div className="button-container">
-            <div className="button-modal go-white">
-              <ButtonW onClick={handleModalClose}>編集を続ける</ButtonW>
-            </div>
+            <div className="button-container">
+              <div className="button-modal go-white">
+                <ButtonW onClick={handleModalClose}>編集を続ける</ButtonW>
+              </div>
 
-            <div className="button-modal go-orange">
-              <ButtonO onClick={handletoEditFinPage}>次へ</ButtonO>
+              <div className="button-modal go-orange">
+                <ButtonO onClick={handletoEditFinPage}>次へ</ButtonO>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
     </div>
   );
 };
