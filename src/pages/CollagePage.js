@@ -43,6 +43,7 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
 const CollagePage = () => {
   const location = useLocation();
   const { title, date, selectColor, selectBorder, userId, numImage } = location.state
+  console.log("location.stateの値:", location.state)
 
   // roomIdを取得
   const [roomId, setRoomId] = useState('')
@@ -83,6 +84,7 @@ const CollagePage = () => {
         console.log("No such document!");
         return [];
       }
+
     } catch (e) {
       console.error("Error fetching selected images: ", e);
       return [];
