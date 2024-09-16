@@ -5,7 +5,7 @@ import './DropImagezone.css';
 import plusIcon from '../../assets/image/plus-icon.png';
 
 const DropImageZone = ({ image, onDrop, swapImage, index }) => {
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState(image);
 
     // ドロップ機能
     const [{ canDrop, isOver }, drop] = useDrop(() => ({
