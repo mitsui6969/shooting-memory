@@ -20,19 +20,7 @@ const FrameSelection = () => {
     const [date, setDate] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
-    // const roomId = location.state?.id;
     const { roomId, userId, numImages } = location.state
-
-    // // roomIdを取得
-    // const [roomId, setRoomId] = useState('')
-    // useEffect(() => {
-    //     const params = new URLSearchParams(location.search);
-    //     const roomIdFromQuery = params.get("roomId");
-
-    //     if (roomIdFromQuery) {
-    //     setRoomId(roomIdFromQuery);
-    //     }
-    // }, [location.search]);;
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
@@ -61,16 +49,6 @@ const FrameSelection = () => {
         }
     };
 
-    // roomIdを取得
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const roomIdFromQuery = params.get("roomId");
-
-        if (roomIdFromQuery) {
-        setRoomId(roomIdFromQuery);
-        }
-    }, [location.search]);
-
     // タイトルの中身を動的に切り替える
     const frameTitle = isTitleChecked ? title : ""; // タイトルチェックボックスの状態により内容を切り替え
     // 日付の中身を動的に切り替える
@@ -81,6 +59,7 @@ const FrameSelection = () => {
         if (roomId) {
             navigate(`/collage-page?roomId=${roomId}`,
                 {state:{
+                    from:'frame-selection',
                     title:frameTitle,
                     date:frameDate,
                     selectColor:selectColor,

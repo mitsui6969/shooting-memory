@@ -15,10 +15,11 @@ import Spinner from "../components/Spinner/Spinner";
 const CompleteRoom = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [roomId, setRoomId] = useState("");
-  const [photos, setPhotos] = useState(null);
+  const [photos, setPhotos] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const userId = location.state?.id;
+  const numImages = photos.length;
 
   // Swipeable handler
   const handlers = useSwipeable({
@@ -84,7 +85,6 @@ const CompleteRoom = () => {
 
   // 次のページに遷移
   const handleNextTV = () => {
-    const numImages = photos.length;
     if (roomId) {
       navigate(`/frame-selection?roomId=${roomId}`, {
         state: { from: "complete-room", roomId, userId, numImages },
