@@ -107,14 +107,19 @@ const CollagePage = () => {
   // 出揃い画面にgo
   const handletoEditFinPage = async () => {
 
-    if (!userId || !roomId) {
-      console.error("userID または roomID が無効です");
+    if (!userId || !roomId || !imageSrc) {
+      console.error("userID, roomID または imageSrc が無効です");
       // return;
     }
 
-    navigate(`/edit-fin?roomId=${roomId}`, {state:{ from:'collage-page', roomId, userId }});
-    await DBtoCollageImage(roomId, userId, imageSrc);
+    try {
+      await DBtoCollageImage(roomId, userId, imageSrc);
+      
+      navigate(`/edit-fin?roomId=${roomId}`, {state:{ from:'collage-page', roomId, userId }});
+    } catch (error) {
+      console.error("コラージュ画面でエラーが発生しました:", error);
     }
+  }
 
   const handleModalClose = () => {
     setIsModal(false);
@@ -126,8 +131,8 @@ const CollagePage = () => {
       // storageに保存
       const storage = getStorage();
       const storageRef = ref(storage, `collages/${roomId}/${userId}.png`);
-
       await uploadString(storageRef, collageImageUrl, "data_url");
+
       const downloadURL = await getDownloadURL(storageRef);
 
       // コレクション追加

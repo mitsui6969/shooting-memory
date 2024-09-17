@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import "../styles/EditFinPage.css";
 import "../App.css";
@@ -15,6 +15,8 @@ const EditFinPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModal, setIsModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { roomId, userId } = location.state;
 
   // スワイプ操作の設定
   const handlers = useSwipeable({
@@ -58,7 +60,7 @@ const EditFinPage = () => {
     // 今だけ手動で設定
     const roomID = "testRoom";
 
-    const participantsRef = collection(db, "rooms", roomID, "participants");
+    const participantsRef = collection(db, "rooms", roomId, "participants");
 
     const unsubscribe = onSnapshot(participantsRef, (snapshot) => {
       const updatedImageList = snapshot.docs.map((doc) => {

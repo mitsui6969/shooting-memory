@@ -18,7 +18,7 @@ const CompleteRoom = () => {
   const [photos, setPhotos] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const userId = location.state;
+  const {userId} = location.state;
   const numImages = photos.length;
 
   // Swipeable handler

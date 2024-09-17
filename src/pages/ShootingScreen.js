@@ -134,7 +134,7 @@ const ShootingScreen = () => {
         // isEndがtrueになったら画面遷移
         if (roomData.isEnd === true) {
           console.log("ゲーム終了: isEndがtrueになりました");
-          navigate(`/complete-room?roomId=${roomId}`, {state:{userId}});
+          navigate(`/complete-room?roomId=${roomId}`, {state:{ from:"shooting-screen", userId }});
           return;
         }
       }
