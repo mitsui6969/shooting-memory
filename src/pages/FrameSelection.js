@@ -21,6 +21,7 @@ const FrameSelection = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { roomId, userId, numImages } = location.state;
+    console.log("location.stateの値(フレーム選択画面):", location.state);
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
