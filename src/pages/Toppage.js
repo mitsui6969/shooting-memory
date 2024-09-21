@@ -10,8 +10,7 @@ const Toppage = () => {
   const [showUsage, setShowUsage] = useState(false);
   const navigate = useNavigate(); // navigate関数を定義
   const location = useLocation(); // useLocationで渡されたstateを取得
-  const { userId, guestId } = location.state || {}; // userIdまたはguestIdを取得
-
+  const { userId, guestId } = location.state || ''; // userIdまたはguestIdを取得
   const [link, setLink] = useState(""); // 入力フォームの状態管理
 
   // ページ遷移時にIDがない場合、ログインページにリダイレクト

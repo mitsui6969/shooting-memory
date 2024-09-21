@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Frame from "../components/Frame/Frame";
 import "../styles/CollagePage.css";
-import testImage from "../assets/image/hinamaturi.png";
-import testImage2 from "../assets/image/paskon.png";
-import testImage3 from "../assets/image/omatsuri.png";
-import { DndProvider, useDrag } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider, useDrag } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import ButtonO from "../components/Button_orange/Button_orange";
 import ButtonW from "../components/Button_white/Button_white";
 import html2canvas from "html2canvas";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../firebase/firebase-app";
 import { getStorage, getDownloadURL, ref, uploadString } from "firebase/storage";
 
@@ -28,7 +25,6 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
         }
       },
     }),
-    [index, removeImage]
   );
 
   return (
@@ -43,22 +39,49 @@ const DraggableImage = ({ src, index, removeImage, isDragged }) => {
   );
 };
 
-const CollagePage = ({ images }) => {
-  const navigate = useNavigate();
-  const location = useLocation(); // useLocationをここで呼び出す
-  const { title, date, selectColor, selectBorder } = location.state;
+const CollagePage = () => {
+  const location = useLocation();
+  const { title, date, selectColor, selectBorder, userId, numImages, roomId } = location.state
+  console.log("location.stateの値:", location.state)
+  console.log("roomIdの値:", roomId);
 
-  images = [testImage, testImage2, testImage3];
+  const [images, setImages] = useState([]); // 射的で取った画像
+  console.log("images:", images);
   const [draggedImages, setDraggedImages] = useState([]);
-  const [imageSrc, setImageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null); // html2canvasで画像化したもの
   const [isModal, setIsModal] = useState(false);
-
-  // クエリパラメータからroomIdを取得
-  const params = new URLSearchParams(location.search);
-  const roomId = params.get("roomId");
+  const navigate = useNavigate();
 
   const removeImage = (index) => {
-    setDraggedImages((prevDraggedImages) => [...prevDraggedImages, index]);
+    setDraggedImages((prevDraggedImages) => [...prevDraggedImages, index])
+  };
+
+  // 射的した画像取得
+  const fetchSelectedImages = async () => {
+    try {
+      if (!roomId) {
+        console.error("Invalid roomId:", roomId);
+        return [];
+      }
+
+      const selectedImagesDocRef = doc(db, "selected_images", roomId );
+      const selectedImagesDoc = await getDoc(selectedImagesDocRef);
+  
+      if (selectedImagesDoc.exists()) {
+        const data = selectedImagesDoc.data();
+        const photos = data.photos || [];
+  
+        return photos;
+      } else {
+        console.log("No such document!");
+        return [];
+      }
+
+    } catch (e) {
+      console.error("Error fetching selected images: ", e);
+      console.log("roomId:", roomId);
+      return [];
+    }
   };
 
   // 画像化
@@ -69,6 +92,11 @@ const CollagePage = ({ images }) => {
       width: target.clientWidth,
       height: target.clientHeight,
       backgroundColor: null,
+      proxy:true,
+      useCORS: true,
+      onrendered: function(canvas) {
+        canvas.toDataURL();
+      }
     }).then((canvas) => {
       const targetImgUri = canvas.toDataURL("image/png");
       setImageSrc(targetImgUri);
@@ -78,35 +106,42 @@ const CollagePage = ({ images }) => {
 
   // 出揃い画面にgo
   const handletoEditFinPage = async () => {
-    const userID = "user2";
 
-    // クエリパラメータとしてroomIdを追加
-    navigate(`/wait-room?roomId=${roomId}`, { state: { from: "CollagePage", roomId } });
+    if (!userId || !roomId || !imageSrc) {
+      console.error("userID, roomID または imageSrc が無効です");
+      // return;
+    }
 
-    await DBtoCollageImage(roomId, userID, imageSrc);
-  };
+    try {
+      await DBtoCollageImage(roomId, userId, imageSrc);
+      
+      navigate(`/edit-fin?roomId=${roomId}`, {state:{ from:'collage-page', roomId, userId }});
+    } catch (error) {
+      console.error("コラージュ画面でエラーが発生しました:", error);
+    }
+  }
 
   const handleModalClose = () => {
     setIsModal(false);
   };
 
   // db処理
-  const DBtoCollageImage = async (roomID, userID, collageImageUrl) => {
-    try {
+  const DBtoCollageImage = async (roomId, userId, collageImageUrl) => {
+    try{
       // storageに保存
       const storage = getStorage();
-      const storageRef = ref(storage, `collages/${roomID}/${userID}.png`);
-
+      const storageRef = ref(storage, `collages/${roomId}/${userId}.png`);
       await uploadString(storageRef, collageImageUrl, "data_url");
+
       const downloadURL = await getDownloadURL(storageRef);
 
       // コレクション追加
-      const participantDocRef = doc(db, "rooms", roomID, "participants", userID);
+      const participantDocRef = doc(db, "rooms", roomId, "participants", userId);
       await updateDoc(participantDocRef, {
         collageImage: downloadURL,
       });
 
-      const roomDocRef = doc(db, "rooms", roomID);
+      const roomDocRef = doc(db, "rooms", roomId);
       await updateDoc(roomDocRef, {
         collagedImageList: arrayUnion(downloadURL),
       });
@@ -115,21 +150,32 @@ const CollagePage = ({ images }) => {
     } catch (e) {
       console.error("Error adding collageImage: ", e);
     }
-  };
+  }
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const fetchedImages = await fetchSelectedImages(roomId);
+      setImages(fetchedImages);
+    };
+
+    fetchImages();
+    console.log("Frameの中:", images)
+  }, [roomId]);
+
 
   return (
     <div className="collagePage">
-      <DndProvider backend={HTML5Backend}>
-        <div className="frameArea">
-          <Frame
-            imageCount={images.length}
-            title={title}
-            date={date}
-            selectColor={selectColor}
-            selectBorder={selectBorder}
-            id="target-to-image"
-          />
-        </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="frameArea">
+        <Frame
+          imageCount={numImages}
+          title={title}
+          date={date}
+          selectColor={selectColor}
+          selectBorder={selectBorder}
+          id="target-to-image"
+        />
+      </div>
 
         <div className="imagesArea">
           <ul className="imagesArray">

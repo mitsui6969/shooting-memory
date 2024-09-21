@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../styles/FrameSelection.css";
 import Button from "../components/Button_orange/Button_orange";
 import Frame from "../components/Frame/Frame";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend"; // DndProviderのインポート
-import { collection, getDoc, doc } from "firebase/firestore";
-import { db } from "../firebase/firebase-app";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { collection, getDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase/firebase-app';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 const FrameSelection = () => {
     // チェックボックスの状態を個別に管理
@@ -19,8 +19,9 @@ const FrameSelection = () => {
     const [title, setTitle] = useState("");
     const [date, setDate] = useState("");
     const navigate = useNavigate();
-    const [roomId, setRoomId] = useState("");
     const location = useLocation();
+    const { roomId, userId, numImages } = location.state;
+    console.log("location.stateの値(フレーム選択画面):", location.state);
 
     // セレクトボックスの選択値に応じて selectColor を変更
     const handleSelectChange = (e) => {
@@ -49,16 +50,6 @@ const FrameSelection = () => {
         }
     };
 
-    // roomIdを取得
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const roomIdFromQuery = params.get("roomId");
-
-        if (roomIdFromQuery) {
-        setRoomId(roomIdFromQuery);
-        }
-    }, [location.search]);
-
     // タイトルの中身を動的に切り替える
     const frameTitle = isTitleChecked ? title : ""; // タイトルチェックボックスの状態により内容を切り替え
     // 日付の中身を動的に切り替える
@@ -66,43 +57,50 @@ const FrameSelection = () => {
 
     // コラージュ画面にGO
     const handleToCollage = () => {
-        navigate(`/collage-page?roomId=${roomId}`, {
-        state: {
-            title: frameTitle,
-            date: frameDate,
-            selectColor: selectColor,
-            selectBorder: isFrameChecked,
-        },
-        });
-    };
+        if (roomId) {
+            navigate(`/collage-page?roomId=${roomId}`,
+                {state:{
+                    from:'frame-selection',
+                    title:frameTitle,
+                    date:frameDate,
+                    selectColor:selectColor,
+                    selectBorder:isFrameChecked,
+                    userId,
+                    numImages,
+                    roomId
+                }
+            });
+        }
+    }
 
     // db処理
     useEffect(() => {
         const fetchRoomData = async () => {
-        try {
-            const roomID = "testRoom";
-            const roomDocRef = doc(db, "rooms", roomID);
-            const roomDoc = await getDoc(roomDocRef);
+            try {
+                const roomDocRef = doc(db, "rooms", roomId);
+                const roomDoc = await getDoc(roomDocRef);
 
-            if (roomDoc.exists()) {
-            const data = roomDoc.data();
-            setTitle(data.roomName || "");
+                if (roomDoc.exists()) {
+                    const data = roomDoc.data();
+                    setTitle(data.roomName || '');
+                    
+                    if (data.createdAt && data.createdAt.toDate) {
+                        setDate(data.createdAt.toDate().toLocaleDateString());
+                    } else {
+                        setDate(data.createdAt || '');
+                    }
+                } else {
+                console.log("ドキュメントが存在しません！");
+                }
 
-            if (data.createdAt && data.createdAt.toDate) {
-                setDate(data.createdAt.toDate().toLocaleDateString());
-            } else {
-                setDate(data.createdAt || "");
+            } catch (error) {
+                console.error("ルームデータの取得中にエラーが発生しました: ", error);
             }
-            } else {
-            console.log("ドキュメントが存在しません！");
-            }
-        } catch (error) {
-            console.error("ルームデータの取得中にエラーが発生しました: ", error);
-        }
         };
 
         fetchRoomData();
-    }, []);
+    }, [roomId]);
+
 
     return (
         <div className="frame-selection">
@@ -110,20 +108,20 @@ const FrameSelection = () => {
             <h2 className="frameSelection-h2">フレームを選択してください</h2>
         </div>
 
-        <div className="select-item-all">
-            <DndProvider backend={HTML5Backend}>
-            <div className="gray-square">
-                <div className="frame-change">
-                <Frame
-                    imageCount={2}
-                    title={frameTitle}
-                    date={frameDate}
-                    selectColor={selectColor}
-                    selectBorder={isFrameChecked}
-                />
+            <div className='select-item-all'>
+                <DndProvider backend={HTML5Backend}>
+                <div className="gray-square">
+                    <div className='frame-change'>
+                        <Frame
+                            imageCount={numImages} 
+                            title={frameTitle}
+                            date={frameDate}
+                            selectColor={selectColor}
+                            selectBorder={isFrameChecked}
+                        />
+                    </div>
                 </div>
-            </div>
-            </DndProvider>
+                </DndProvider>
 
             <div className="selectBoxs-container">
             <div className="image-checkbox-container">
